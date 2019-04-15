@@ -36,7 +36,7 @@ module.exports = serverConfig
 ```
 `port` _(number, default: 3000)_ - server port number.
 
-`databaseConnectionURL` _(string, default: "mongodb://localhost:27017/PortalForStudents")_ - MongoDB connection URL.
+`databaseConnectionURL` _(string, default: "mongodb://localhost:27017/Contest")_ - MongoDB connection URL.
 
 ### Authorization configuration file
 Location: `_{project directory}_/server/authorization.config.js`
