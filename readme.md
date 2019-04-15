@@ -3,7 +3,7 @@ Contest
 Usage
 -----------------------------------
 ### Setting up MongoDB
-1. Create database `PortalForStudents` _(configurable)_;
+1. Create database `Contest` _(configurable)_;
 2. Create 8 collections in the database:
     * `users`;
     * `groupsOfUsers`;
@@ -18,9 +18,9 @@ Usage
 ### NPM Scripts
 `npm run build` - builds server and client applications into `dist` folder.
 
-`npm run prod` - starts `npm run build` script and then starts PortalForStudents server in `production mode` from `dist` folder.
+`npm run prod` - starts `npm run build` script and then starts Contest server in `production mode` from `dist` folder.
 
-`npm run dev` - starts PortalForStudents server in `development mode`.
+`npm run dev` - starts Contest server in `development mode`.
 
 Configuration
 -----------------------------------
@@ -29,7 +29,7 @@ Location: `_{project directory}_/server/server.config.js`
 ```
 const serverConfig = {
   port: 3000,
-  databaseConnectionURL: "mongodb://localhost:27017/PortalForStudents"
+  databaseConnectionURL: "mongodb://localhost:27017/Contest"
 }
 
 module.exports = serverConfig
