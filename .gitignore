@@ -10,3 +10,4 @@ dist
 .chrome
 .npmrc
 local-packages.json
+package-lock.json

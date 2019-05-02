@@ -23,7 +23,7 @@ export const GroupOfUsersSchema = new Schema({
     users: [ObjectId]
 });
 
-export const Problem = new Schema({
+export const ProblemSchema = new Schema({
     name: {
         type: String,
         unique: true,
@@ -91,7 +91,7 @@ export const SetOfProblemsSchema = new Schema({
     problems: [ObjectId]
 });
 
-export const СontestSchema = new Schema({
+export const ContestSchema = new Schema({
     name: {
         type: String,
         unique: true,
@@ -113,13 +113,17 @@ export const СontestSchema = new Schema({
         type: Boolean,
         required: true
     },
+    isFinished: {
+        type: Boolean,
+        required: true
+    },
     startingDate:{
         type: Date,
-        required: true
+        //required: true
     },
     endingDate:{
         type: Date,
-        required: true
+        //required: true
     },
 });
 
