@@ -151,7 +151,8 @@ export const ParcelSchema = new Schema({
         }
     },
     code: {
-        type: String,
+        type: Buffer,
+        default: new Buffer(''),
         required: true
     },
     date: {
@@ -177,8 +178,9 @@ export const SolutionSchema = new Schema({
         type: Number,
         required: true
     },
-    code:{
-        type: String,
+    code: {
+        type: Buffer,
+        default: new Buffer(''),
         required: true
     }
 });

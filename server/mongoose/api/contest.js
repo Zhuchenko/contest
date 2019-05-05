@@ -7,6 +7,10 @@ export const getContestById = (contestId) => {
     return Contest.findOne({ _id: contestId }).exec();
 };
 
+export const getAllContests = () => {
+    return Contest.find({});
+};
+
 export const addContest = (newContest) => {
     return Contest.create(newContest)
         .then(contest => {
