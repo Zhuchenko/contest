@@ -14,7 +14,7 @@ export const getAllContests = () => {
 export const addContest = (newContest) => {
     return Contest.create(newContest)
         .then(contest => {
-            return contest._id.toString();
+            return contest;
         });
 };
 
@@ -24,7 +24,7 @@ export const updateContest = async (contestId, contestNewState) => {
             ...contestNewState
         }
     }).exec();
-    return contestId;
+    return getContestById(contestId);
 };
 
 export const deleteContest = (contestId) => {

@@ -47,6 +47,9 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use('/', authorizationRouter);
 app.use('/problems', problemRouter);
+app.use('/contests', problemRouter);
+app.use('/groups', problemRouter);
+app.use('/sets', problemRouter);
 
 app.get('/*', (req, res) => {
   res.send(template({

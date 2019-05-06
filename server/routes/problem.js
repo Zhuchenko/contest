@@ -9,24 +9,29 @@ router.get('/:problemId', auth.required, (req, res) => {
         if (error) {
             return res.status(500).end()
         }
-        res.json({problem})
+        return res.json({problem})
     })
 });
 
 router.post('/', auth.required, (req, res) => {
-    addProblem(req.body.problem)
-        .then(problem => {
-            return res.json({problem})
+    let { body: {problem}, payload: { id }} = req;
+    problem.authorId = id;
+
+    addProblem(problem)
+        .then(addedProblem => {
+            return res.json({ problem: addedProblem})
         });
 });
 
 router.post('/:problemId', auth.required, (req, res) => {
-    return getProblemById(req.params.problemId)
-        .then(problem => {
-            if(problem) {
-                updateProblem(req.params.problemId, req.body.problem)
-                    .then(problem => {
-                        return res.json({ problem })
+    const { body: {problem}, params: { problemId }} = req;
+
+    return getProblemById(problemId)
+        .then(foundProblem => {
+            if(foundProblem) {
+                updateProblem(problemId, problem)
+                    .then(newProblem => {
+                        return res.json({ problem: newProblem })
                     })
             }
             else{

@@ -10,7 +10,7 @@ export const getSetOfProblemsById = (setId) => {
 export const addSetOfProblems = (newSet) => {
     return SetOfProblems.create(newSet)
         .then(set => {
-            return set._id.toString();
+            return set;
         });
 };
 
@@ -20,7 +20,7 @@ export const updateSetOfProblems = async (setId, setNewState) => {
             ...setNewState
         }
     }).exec();
-    return setId;
+    return getSetOfProblemsById(setId);
 };
 
 export const deleteSetOfProblems = (setId) => {

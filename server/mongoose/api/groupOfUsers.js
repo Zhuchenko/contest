@@ -10,7 +10,7 @@ export const getGroupOfUsersById = (groupId) => {
 export const addGroupOfUsers = (newGroup) => {
     return GroupOfUsers.create(newGroup)
         .then(group => {
-            return group._id.toString();
+            return group;
         });
 };
 
@@ -20,7 +20,7 @@ export const updateGroupOfUsers = async (groupId, groupNewState) => {
             ...groupNewState
         }
     }).exec();
-    return groupId;
+    return getGroupOfUsersById(groupId);
 };
 
 export const deleteGroupOfUsers = (groupId) => {

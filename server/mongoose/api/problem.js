@@ -8,6 +8,12 @@ export const getProblemById = (problemId) => {
 };
 
 export const addProblem = (newProblem) => {
+    newProblem.numberOfTests = newProblem.tests.length;
+
+    for (let i = 0, l = newProblem.tests.length; i < l; i++){
+        newProblem.tests[i].number = i+1;
+    }
+
     return Problem.create(newProblem)
         .then(problem => {
             return problem;
@@ -15,6 +21,14 @@ export const addProblem = (newProblem) => {
 };
 
 export const updateProblem = async (problemId, problemNewState) => {
+    if(problemNewState.tests){
+        problemNewState.numberOfTests = problemNewState.tests.length;
+
+        for (let i = 0, l = problemNewState.tests.length; i < l; i++){
+            problemNewState.tests[i].number = i+1;
+        }
+    }
+
     await Problem.updateOne({_id: problemId}, {
         $set: {
             ...problemNewState
