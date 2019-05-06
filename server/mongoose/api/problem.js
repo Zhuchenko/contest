@@ -10,7 +10,7 @@ export const getProblemById = (problemId) => {
 export const addProblem = (newProblem) => {
     return Problem.create(newProblem)
         .then(problem => {
-            return problem._id.toString();
+            return problem;
         });
 };
 
@@ -20,7 +20,7 @@ export const updateProblem = async (problemId, problemNewState) => {
             ...problemNewState
         }
     }).exec();
-    return problemId;
+    return getProblemById(problemId);
 };
 
 export const deleteProblem = (problemId) => {

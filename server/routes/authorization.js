@@ -1,80 +1,81 @@
 import express from 'express'
 import { User } from '../mongoose/api/user'
 import passport from 'passport'
-import minimist from 'minimist'
-
-const argv = minimist(process.argv.slice(2))
-const serverConfig =
-  argv.mode === 'production' ?
-    require('../production.server.config')
-    :
-    require('../development.server.config')
+import auth from './auth'
+import '../config/passport'
 
 const router = express.Router();
 
-router.route('/signin')
-    .get((req, res) => {
-      const username =
-          req.isAuthenticated() ?
-              req.user.username
-              :
-              '';
-      res.json({username})
-    })
-    .post((req, res) => {
-      const allowedLogins = serverConfig.authorization.allowedLogins
-      if (allowedLogins && allowedLogins.length > 0 && !allowedLogins.includes(req.body.username)) {
-        return res.status(403).end()
-      }
+router.post('/signup', auth.optional, (req, res) => {
+  const { body: { user } } = req;
 
-      return User.findOne({username: req.body.username}, (error, user) => {
-        if (error) {
-          return res.status(500).end()
-        }
-        if (user) {
-          passport.authenticate('local')(req, res, () => {
-            res.json({username: req.user.username})
-          })
-        }
-        else {
-          return res.status(422).end();
-        }
-      })
+  if(!user.username) {
+    return res.status(422).json({
+      errors: {
+        username: 'is required',
+      },
     });
+  }
 
-router.route('/signup')
-    .post((req, res) => {
-      const allowedLogins = serverConfig.authorization.allowedLogins
-      if (allowedLogins && allowedLogins.length > 0 && !allowedLogins.includes(req.body.username)) {
-        return res.status(403).end()
-      }
-
-      return User.findOne({username: req.body.username}, (error, user) => {
-        if (error) {
-          return res.status(500).end()
-        }
-        if (!user) {
-          User.register(new User({username: req.body.username}), req.body.password, (error) => {
-            if (error) {
-              return res.status(500).end()
-            }
-            passport.authenticate('local')(req, res, () => {
-              res.json({username: req.body.username})
-            })
-          })
-        }
-        else {
-          return res.status(422).end();
-        }
-      })
+  if(!user.password) {
+    return res.status(422).json({
+      errors: {
+        password: 'is required',
+      },
     });
+  }
+  const finalUser = new User(user);
 
-router.route('/signout')
-    .get((req, res) => {
-      req.logout()
-      req.session.destroy(() => {
-        res.redirect('/')
-      })
+  finalUser.generateHash(user.password);
+
+  return finalUser.save()
+      .then(() => res.json({ user: finalUser.toAuthJSON() }));
+});
+
+router.get('/signin', auth.required, (req, res) => {
+  const { payload: { id } } = req;
+  return User.findById(id)
+      .then((user) => {
+        if(!user) {
+          return res.sendStatus(400);
+        }
+        return res.json({ user: user.toAuthJSON() });
+      });
+});
+
+router.post('/signin', auth.optional, (req, res, next) => {
+  const { body: { user } } = req;
+
+  if(!user.username) {
+    return res.status(422).json({
+      errors: {
+        username: 'is required',
+      },
     });
+  }
 
-export default router
+  if(!user.password) {
+    return res.status(422).json({
+      errors: {
+        password: 'is required',
+      },
+    });
+  }
+
+  return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
+    if(err) {
+      return next(err);
+    }
+
+    if(passportUser) {
+      const user = passportUser;
+      user.token = passportUser.generateJWT();
+
+      return res.json({ user: user.toAuthJSON() });
+    }
+
+    return res.status(400).info;
+  })(req, res, next);
+});
+
+module.exports = router;

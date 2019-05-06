@@ -8,14 +8,10 @@ import { connect } from './mongoose'
 import { User } from './mongoose/api/user'
 import expressSession  from 'express-session'
 import passport from 'passport'
-import LocalStrategy from 'passport-local'
 
 import authorizationRouter from './routes/authorization'
-/*
-import avatarRouter from './routes/avatar'
-import resumeRouter from './routes/resume'
-import commentAttachmentRouter from './routes/commentAttachment'
-import graphqlRouter from './routes/graphql'*/
+import problemRouter from './routes/problem'
+
 import template from './template'
 
 const argv = minimist(process.argv.slice(2));
@@ -46,17 +42,12 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use(authorizationRouter)
-/*
-app.use(avatarRouter)
-app.use(resumeRouter)
-app.use(commentAttachmentRouter)
-app.use(graphqlRouter)
-*/
+app.use('/', authorizationRouter);
+app.use('/problems', problemRouter);
+
 app.get('/*', (req, res) => {
   res.send(template({
     assetsRoot: serverConfig.assetsRoot,
