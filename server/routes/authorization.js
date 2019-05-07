@@ -7,9 +7,9 @@ import '../config/passport'
 const router = express.Router();
 
 router.post('/signup', auth.optional, (req, res) => {
-  const { body: { user } } = req;
+  const { body: { username, password } } = req;
 
-  if(!user.username) {
+  if(!username) {
     return res.status(422).json({
       errors: {
         username: 'is required',
@@ -17,16 +17,16 @@ router.post('/signup', auth.optional, (req, res) => {
     });
   }
 
-  if(!user.password) {
+  if(!password) {
     return res.status(422).json({
       errors: {
         password: 'is required',
       },
     });
   }
-  const finalUser = new User(user);
+  const finalUser = new User({username});
 
-  finalUser.generateHash(user.password);
+  finalUser.generateHash(password);
 
   return finalUser.save()
       .then(() => res.json({ user: finalUser.toAuthJSON() }));
@@ -44,9 +44,9 @@ router.get('/signin', auth.required, (req, res) => {
 });
 
 router.post('/signin', auth.optional, (req, res, next) => {
-  const { body: { user } } = req;
+  const { body: { username, password } } = req;
 
-  if(!user.username) {
+  if(!username) {
     return res.status(422).json({
       errors: {
         username: 'is required',
@@ -54,7 +54,7 @@ router.post('/signin', auth.optional, (req, res, next) => {
     });
   }
 
-  if(!user.password) {
+  if(!password) {
     return res.status(422).json({
       errors: {
         password: 'is required',

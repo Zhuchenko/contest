@@ -1,0 +1,12 @@
+.appbar {
+  top: 0;
+  left: auto;
+  right: 0;
+  position: fixed;
+
+  background: cadetblue;
+  color: whitesmoke;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}

@@ -13,7 +13,7 @@ router.get('/:contestId', auth.required, (req, res) => {
     })
 });
 
-router.get('/:', auth.required, (req, res) => {
+router.get('/', auth.required, (req, res) => {
     return getAllContests().then((contests, error) => {
         if (error) {
             return res.status(500).end()

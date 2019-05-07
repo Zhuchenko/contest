@@ -1,0 +1,30 @@
+.sign__form{
+  background: white;
+  border-width: 0;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sign__input{
+  width: 90%;
+  margin: 10px;
+}
+
+.sign__button-panel{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+
+.sign__button{
+  height: 30px;
+  cursor: pointer;
+  border: 0;
+  background-color: transparent;
+  margin: 10px;
+}

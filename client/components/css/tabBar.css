@@ -1,0 +1,19 @@
+.tab-bar{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background: cadetblue;
+}
+
+.tab{
+  height: 50px;
+  cursor: pointer;
+  border: 0;
+  color: black;
+  background-color: transparent;
+  opacity: 0.5;
+}
+
+.tab--selected{
+  opacity: 1;
+}
