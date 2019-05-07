@@ -15,6 +15,24 @@ const reducer = handleActions(
             username: initialState.username,
         }),
 
+        [application.authorized]: (state, {payload}) => ({
+            ...state,
+            authorized: true,
+            username: payload.username,
+        }),
+
+        [application.notAuthorized]: (state) => ({
+            ...state,
+            authorized: false,
+            username: '',
+        }),
+
+        [application.initFailure]: (state) => ({
+            ...state,
+            authorized: false,
+            username: '',
+        }),
+
         [authorization.signinSuccess]: (state, {payload}) => ({
             ...state,
             authorized: true,

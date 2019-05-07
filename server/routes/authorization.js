@@ -29,17 +29,18 @@ router.post('/signup', auth.optional, (req, res) => {
   finalUser.generateHash(password);
 
   return finalUser.save()
-      .then(() => res.json({ user: finalUser.toAuthJSON() }));
+      .then(() => res.json({ ...finalUser.toAuthJSON() }));
 });
 
 router.get('/signin', auth.required, (req, res) => {
   const { payload: { id } } = req;
+
   return User.findById(id)
       .then((user) => {
         if(!user) {
           return res.sendStatus(400);
         }
-        return res.json({ user: user.toAuthJSON() });
+        return res.json({ ...user.toAuthJSON() });
       });
 });
 
@@ -71,10 +72,10 @@ router.post('/signin', auth.optional, (req, res, next) => {
       const user = passportUser;
       user.token = passportUser.generateJWT();
 
-      return res.json({ user: user.toAuthJSON() });
+      return res.json({ ...user.toAuthJSON() });
     }
 
-    return res.status(400).info;
+    return res.sendStatus(400);
   })(req, res, next);
 });
 

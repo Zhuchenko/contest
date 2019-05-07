@@ -1,3 +1,25 @@
+import {saveToken, clear, setAuthToken} from '../utilities/sessionStorage';
+
+export const getUsername = () => {
+    const headers = setAuthToken({ });
+
+    return fetch('/signin', {
+        method: 'GET',
+        credentials: 'include',
+        headers
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json()
+                    .then(user =>{
+                        return user.username;
+                    })
+            } else {
+                throw response.status
+            }
+        })
+};
+
 export const signin = (username, password) => {
     return fetch('/signin', {
         method: 'POST',
@@ -9,7 +31,11 @@ export const signin = (username, password) => {
     })
         .then(response => {
             if (response.status === 200) {
-                return response.json();
+                return response.json()
+                    .then(user =>{
+                        saveToken(user.token);
+                        return user;
+                    })
             } else {
                 throw response.status
             }
@@ -27,9 +53,17 @@ export const signup = (username, password) => {
     })
         .then(response => {
             if (response.status === 200) {
-                return response.json();
+                return response.json()
+                    .then(user =>{
+                        saveToken(user.token);
+                        return user;
+                })
             } else {
                 throw response.status
             }
         })
+};
+
+export const signout = () => {
+    clear();
 };

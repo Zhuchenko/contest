@@ -1,6 +1,6 @@
 import { all, takeLatest, call, put } from 'redux-saga/effects'
 import * as actions from './actions'
-import { signin, signup } from '../api/authorizationService'
+import { signin, signup, signout } from '../api/authorizationService'
 
 export default  function* authorizationSaga() {
     yield all([
@@ -25,9 +25,7 @@ function* watchSignout() {
 function* signinSaga(action) {
     try {
         const { username, password } = action.payload;
-        const { user } = yield call(signin, username, password);
-
-        setStorage(user);
+        const user = yield call(signin, username, password);
 
         yield put(actions.signinSuccess({ user }));
     }
@@ -39,9 +37,7 @@ function* signinSaga(action) {
 function* signupSaga(action) {
     try {
         const { username, password } = action.payload;
-        const { user } = yield call(signup, username, password);
-
-        setStorage(user);
+        const user = yield call(signup, username, password);
 
         yield put(actions.signupSuccess({user}));
     }
@@ -52,16 +48,10 @@ function* signupSaga(action) {
 
 function* signoutSaga() {
     try {
-        sessionStorage.clear();
+        yield call(signout);
         yield put(actions.signoutSuccess())
     }
     catch (error) {
         yield put(actions.signoutFailure({error}))
     }
-}
-
-function setStorage(user) {
-    sessionStorage.setItem("id", user._id);
-    sessionStorage.setItem("username", user.username);
-    sessionStorage.setItem("token", user.token);
 }
