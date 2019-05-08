@@ -36,8 +36,8 @@ function* signinSaga(action) {
 
 function* signupSaga(action) {
     try {
-        const { username, password } = action.payload;
-        const user = yield call(signup, username, password);
+        const { username, password, email, name, lastname } = action.payload;
+        const user = yield call(signup, username, password, email, name, lastname);
 
         yield put(actions.signupSuccess({user}));
     }

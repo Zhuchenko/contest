@@ -24,6 +24,14 @@ export const showForm = createAction('SHOW_FORM');
 
 export const hideForm = createAction('HIDE_FORM');
 
+export const enterUsername = createAction('ENTER_USERNAME');
+
 export const enterPassword = createAction('ENTER_PASSWORD');
 
-export const enterUsername = createAction('ENTER_USERNAME');
+export const enterRepeatPassword = createAction('ENTER_REPEAT_PASSWORD');
+
+export const enterEmail = createAction('ENTER_EMAIL');
+
+export const enterName = createAction('ENTER_NAME');
+
+export const enterLastname = createAction('ENTER_LASTNAME');

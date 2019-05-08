@@ -42,14 +42,14 @@ export const signin = (username, password) => {
         })
 };
 
-export const signup = (username, password) => {
+export const signup = (username, password, email, name, lastname) => {
     return fetch('/signup', {
         method: 'POST',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password})
+        body: JSON.stringify({ username, password, email, name, lastname})
     })
         .then(response => {
             if (response.status === 200) {
