@@ -4,19 +4,11 @@ import * as actions from './actions'
 const initialState = {
     isShown: false,
 
-    username: '',
-    password: '',
-    repeatPassword: '',
-    email: '',
-    name: '',
-    lastname: '',
-
-    usernameIsValid: true,
-    passwordIsValid: true,
-    repeatPasswordIsValid: true,
-    emailIsValid: true,
-    nameIsValid: true,
-    lastnameIsValid: true
+    input: {
+        value: '',
+        isValid: true,
+        errorMessage: ''
+    }
 };
 
 const reducer = handleActions(
@@ -25,209 +17,180 @@ const reducer = handleActions(
             ...state,
             isShown: initialState.isShown,
 
-            username: initialState.username,
-            password: initialState.password,
-            repeatPassword: initialState.repeatPassword,
-            email: initialState.email,
-            name: initialState.name,
-            lastname: initialState.lastname,
-
-            usernameIsValid: initialState.usernameIsValid,
-            passwordIsValid: initialState.passwordIsValid,
-            repeatPasswordIsValid: initialState.repeatPasswordIsValid,
-            emailIsValid: initialState.emailIsValid,
-            nameIsValid: initialState.nameIsValid,
-            lastnameIsValid: initialState.lastnameIsValid
+            username: initialState.input,
+            password: initialState.input,
+            repeatPassword: initialState.input,
+            email: initialState.input,
+            name: initialState.input,
+            lastname: initialState.input
         }),
 
         [actions.signinSuccess]: state => ({
             ...state,
             isShown: false,
 
-            username: '',
-            password: '',
-            repeatPassword: '',
-            email: '',
-            name: '',
-            lastname: '',
-
-            usernameIsValid: true,
-            passwordIsValid: true,
-            repeatPasswordIsValid: true,
-            emailIsValid: true,
-            nameIsValid: true,
-            lastnameIsValid: true
+            username: initialState.input,
+            password: initialState.input,
+            repeatPassword: initialState.input,
+            email: initialState.input,
+            name: initialState.input,
+            lastname: initialState.input
         }),
 
-        [actions.signinFailure]: state => ({    //validation
+        [actions.signinFailure]: (state, {payload}) => ({    //validation
             ...state,
             isShown: true,
 
-            username: '',
-            password: '',
-            repeatPassword: '',
-            email: '',
-            name: '',
-            lastname: '',
+            username: {
+                value: '',
+                isValid: payload.username.isValid,
+                errorMessage: payload.username.errorMessage
+            },
+            password: {
+                value: '',
+                isValid: payload.password.isValid,
+                errorMessage: payload.password.errorMessage
+            },
 
-            usernameIsValid: true,
-            passwordIsValid: true,
-            repeatPasswordIsValid: true,
-            emailIsValid: true,
-            nameIsValid: true,
-            lastnameIsValid: true
+            repeatPassword: initialState.input,
+            email: initialState.input,
+            name: initialState.input,
+            lastname: initialState.input
         }),
 
         [actions.signupSuccess]: state => ({
             ...state,
             isShown: false,
 
-            username: '',
-            password: '',
-            repeatPassword: '',
-            email: '',
-            name: '',
-            lastname: '',
-
-            usernameIsValid: true,
-            passwordIsValid: true,
-            repeatPasswordIsValid: true,
-            emailIsValid: true,
-            nameIsValid: true,
-            lastnameIsValid: true
+            username: initialState.input,
+            password: initialState.input,
+            repeatPassword: initialState.input,
+            email: initialState.input,
+            name: initialState.input,
+            lastname: initialState.input
         }),
 
-        [actions.signupFailure]: state => ({    //validation
+        [actions.signupFailure]: (state, {payload}) => ({    //validation
             ...state,
             isShown: true,
 
-            username: '',
-            password: '',
-            repeatPassword: '',
-            email: '',
-            name: '',
-            lastname: '',
-
-            usernameIsValid: true,
-            passwordIsValid: true,
-            repeatPasswordIsValid: true,
-            emailIsValid: true,
-            nameIsValid: true,
-            lastnameIsValid: true
+            username: {
+                value: '',
+                isValid: payload.username.isValid,
+                errorMessage: payload.username.errorMessage
+            },
+            email: {
+                value: '',
+                isValid: payload.email.isValid,
+                errorMessage: payload.email.errorMessage
+            },
+            password: initialState.input,
+            repeatPassword: initialState.input,
+            name: initialState.input,
+            lastname: initialState.input
         }),
 
         [actions.signoutSuccess]: state => ({
             ...state,
             isShown: false,
 
-            username: '',
-            password: '',
-            repeatPassword: '',
-            email: '',
-            name: '',
-            lastname: '',
-
-            usernameIsValid: true,
-            passwordIsValid: true,
-            repeatPasswordIsValid: true,
-            emailIsValid: true,
-            nameIsValid: true,
-            lastnameIsValid: true
+            username: initialState.input,
+            password: initialState.input,
+            repeatPassword: initialState.input,
+            email: initialState.input,
+            name: initialState.input,
+            lastname: initialState.input
         }),
 
         [actions.signoutFailure]: state => ({
             ...state,
             isShown: false,
 
-            username: '',
-            password: '',
-            repeatPassword: '',
-            email: '',
-            name: '',
-            lastname: '',
-
-            usernameIsValid: true,
-            passwordIsValid: true,
-            repeatPasswordIsValid: true,
-            emailIsValid: true,
-            nameIsValid: true,
-            lastnameIsValid: true
+            username: initialState.input,
+            password: initialState.input,
+            repeatPassword: initialState.input,
+            email: initialState.input,
+            name: initialState.input,
+            lastname: initialState.input
         }),
 
         [actions.showForm]: state => ({
             ...state,
             isShown: true,
 
-            username: '',
-            password: '',
-            repeatPassword: '',
-            email: '',
-            name: '',
-            lastname: '',
-
-            usernameIsValid: true,
-            passwordIsValid: true,
-            repeatPasswordIsValid: true,
-            emailIsValid: true,
-            nameIsValid: true,
-            lastnameIsValid: true
+            username: initialState.input,
+            password: initialState.input,
+            repeatPassword: initialState.input,
+            email: initialState.input,
+            name: initialState.input,
+            lastname: initialState.input
         }),
 
         [actions.hideForm]: state => ({
             ...state,
             isShown: false,
 
-            username: '',
-            password: '',
-            repeatPassword: '',
-            email: '',
-            name: '',
-            lastname: '',
-
-            usernameIsValid: true,
-            passwordIsValid: true,
-            repeatPasswordIsValid: true,
-            emailIsValid: true,
-            nameIsValid: true,
-            lastnameIsValid: true
+            username: initialState.input,
+            password: initialState.input,
+            repeatPassword: initialState.input,
+            email: initialState.input,
+            name: initialState.input,
+            lastname: initialState.input
         }),
 
         [actions.enterUsername]: (state, {payload}) => ({
             ...state,
-            username: payload.username,
-            usernameIsValid: true,
+            username: {
+                value: payload.username,
+                isValid: true,
+                errorMessage: ''
+            }
         }),
 
         [actions.enterPassword]: (state, {payload}) => ({
             ...state,
-            password: payload.password,
-            passwordIsValid: true
+            password: {
+                value: payload.password,
+                isValid: true,
+                errorMessage: ''
+            }
         }),
 
         [actions.enterRepeatPassword]: (state, {payload}) => ({
             ...state,
-            username: payload.repeatPassword,
-            repeatPasswordIsValid: true
+            repeatPassword: {
+                value: payload.repeatPassword,
+                isValid: true,
+                errorMessage: ''
+            }
         }),
 
         [actions.enterEmail]: (state, {payload}) => ({
             ...state,
-            username: payload.email,
-            emailIsValid: true
+            email: {
+                value: payload.value,
+                isValid: true,
+                errorMessage: ''
+            }
         }),
 
         [actions.enterName]: (state, {payload}) => ({
             ...state,
-            username: payload.name,
-            nameIsValid: true
+            name: {
+                value: payload.value,
+                isValid: true,
+                errorMessage: ''
+            }
         }),
 
         [actions.enterLastname]: (state, {payload}) => ({
             ...state,
-            username: payload.lastname,
-            lastnameIsValid: true
+            lastname: {
+                value: payload.lastname,
+                isValid: true,
+                errorMessage: ''
+            }
         }),
-
     },
     initialState
 );
