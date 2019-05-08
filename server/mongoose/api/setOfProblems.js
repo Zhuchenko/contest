@@ -4,7 +4,7 @@ import { SetOfProblemsSchema } from '../schemas'
 export const SetOfProblems = mongoose.model('SetOfProblems', SetOfProblemsSchema, 'setsOfProblems')
 
 export const getSetOfProblemsById = (setId) => {
-    return SetOfProblems.findOne({ _id: setlId }).exec();
+    return SetOfProblems.findOne({ _id: setId }).exec();
 };
 
 export const addSetOfProblems = (newSet) => {
