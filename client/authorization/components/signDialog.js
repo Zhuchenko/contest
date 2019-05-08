@@ -7,8 +7,6 @@ import SignInForm from './signInForm';
 import SignUpForm from './signUpForm';
 import TabBar from '../../components/tabBar';
 
-import './css/button.css'
-
 import './css/signDialog.css'
 
 const signIn = {
@@ -43,12 +41,14 @@ class SignDialog extends Component {
 
         return (
             <React.Fragment>
+                <div className={'appbar__button-panel'}>
                 <button onClick={this.showSignInForm} className={'appbar__button'}>
                     {signIn.text}
                 </button>
                 <button onClick={this.showSignUpForm} className={'appbar__button'}>
                     {signUp.text}
                 </button>
+                </div>
                 {
                     isShown &&
                     <Popup>

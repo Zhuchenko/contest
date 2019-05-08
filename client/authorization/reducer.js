@@ -191,6 +191,60 @@ const reducer = handleActions(
                 errorMessage: ''
             }
         }),
+
+        [actions.usernameIsNotValid]: (state, {payload}) => ({
+            ...state,
+            username: {
+                value: payload.username,
+                isValid: false,
+                errorMessage: payload.errorMessage
+            }
+        }),
+
+        [actions.passwordIsNotValid]: (state, {payload}) => ({
+            ...state,
+            password: {
+                value: payload.password,
+                isValid: false,
+                errorMessage: payload.errorMessage
+            }
+        }),
+
+        [actions.repeatPasswordIsNotValid]: (state, {payload}) => ({
+            ...state,
+            repeatPassword: {
+                value: payload.repeatPassword,
+                isValid: false,
+                errorMessage: payload.errorMessage
+            }
+        }),
+
+        [actions.emailIsNotValid]: (state, {payload}) => ({
+            ...state,
+            email: {
+                value: payload.email,
+                isValid: false,
+                errorMessage: payload.errorMessage
+            }
+        }),
+
+        [actions.nameIsNotValid]: (state, {payload}) => ({
+            ...state,
+            name: {
+                value: payload.name,
+                isValid: false,
+                errorMessage: payload.errorMessage
+            }
+        }),
+
+        [actions.lastnameIsNotValid]: (state, {payload}) => ({
+            ...state,
+            lastname: {
+                value: payload.lastname,
+                isValid: false,
+                errorMessage: payload.errorMessage
+            }
+        }),
     },
     initialState
 );

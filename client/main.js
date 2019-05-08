@@ -9,7 +9,6 @@ import reducer from './rootReducer'
 import rootSaga from './rootSaga'
 import  { createStore, sagaMiddleware } from './utilities/createStore'
 import {init} from './rootActions';
-import { CookiesProvider } from 'react-cookie';
 
 const history = createBrowserHistory();
 const store = createStore(reducer);
@@ -22,11 +21,9 @@ store.dispatch(init());
 const renderApp = (app) => {
     ReactDOM.render(
         <Provider store={store}>
-            <CookiesProvider>
                 <Router history={history}>
                     {app}
                 </Router>
-            </CookiesProvider>
         </Provider>,
         document.getElementById('root')
     )

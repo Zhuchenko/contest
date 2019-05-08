@@ -30,6 +30,7 @@ function* signinSaga(action) {
         yield put(actions.signinSuccess({ user }));
     }
     catch (error) {
+        console.log(error)
         yield put(actions.signinFailure({error}))
     }
 }

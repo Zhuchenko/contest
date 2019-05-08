@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 import SignInDialog from './signDialog'
-import './css/button.css'
+
+import './css/signDialog.css'
 
 const UserControls = (props) => {
     const { authorized, signout} = props;

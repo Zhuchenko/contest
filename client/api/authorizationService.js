@@ -37,7 +37,7 @@ export const signin = (username, password) => {
                         return user;
                     })
             } else {
-                throw response.status
+                throw response.json()
             }
         })
 };
@@ -59,7 +59,7 @@ export const signup = (username, password, email, name, lastname) => {
                         return user;
                 })
             } else {
-                throw response.status
+                throw response.json()
             }
         })
 };

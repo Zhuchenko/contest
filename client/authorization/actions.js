@@ -35,3 +35,15 @@ export const enterEmail = createAction('ENTER_EMAIL');
 export const enterName = createAction('ENTER_NAME');
 
 export const enterLastname = createAction('ENTER_LASTNAME');
+
+export const usernameIsNotValid = createAction('USERNAME_IS_NOT_VALID');
+
+export const passwordIsNotValid = createAction('PASSWORD_IS_NOT_VALID');
+
+export const repeatPasswordIsNotValid = createAction('REPEAT_PASSWORD_IS_NOT_VALID');
+
+export const emailIsNotValid = createAction('EMAIL_IS_NOT_VALID');
+
+export const nameIsNotValid = createAction('NAME_IS_NOT_VALID');
+
+export const lastnameIsNotValid = createAction('LASTNAME_IS_NOT_VALID');
