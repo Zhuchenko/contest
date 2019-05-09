@@ -3,11 +3,11 @@ import { ProblemSchema } from '../schemas'
 
 export const Problem = mongoose.model('Problem', ProblemSchema, 'problems')
 
-export const getProblemById = (problemId) => {
+export const getProblemById = async (problemId) => {
     return Problem.findOne({ _id: problemId }).exec();
 };
 
-export const addProblem = (newProblem) => {
+export const addProblem = async (newProblem) => {
     newProblem.numberOfTests = newProblem.tests.length;
 
     for (let i = 0, l = newProblem.tests.length; i < l; i++){

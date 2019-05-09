@@ -11,6 +11,10 @@ import passport from 'passport'
 
 import authorizationRouter from './routes/authorization'
 import problemRouter from './routes/problem'
+import contestRouter from './routes/contest'
+import groupRouter from './routes/groupOfUsers'
+import setRouter from './routes/setOfProblems'
+import parcelRouter from './routes/parcel'
 
 import template from './template'
 
@@ -47,9 +51,10 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use('/', authorizationRouter);
 app.use('/problems', problemRouter);
-app.use('/contests', problemRouter);
-app.use('/groups', problemRouter);
-app.use('/sets', problemRouter);
+app.use('/contests', contestRouter);
+app.use('/groups', groupRouter);
+app.use('/sets', setRouter);
+app.use('/parcels', parcelRouter);
 
 app.get('/*', (req, res) => {
   res.send(template({

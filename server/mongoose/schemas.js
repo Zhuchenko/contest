@@ -74,6 +74,10 @@ export const ProblemSchema = new Schema({
         type: ObjectId,
         required: true
     },
+    checker:{
+        type: Buffer,
+        required: true
+    },
     limitation: {
         time:{
             type: Number,
@@ -86,11 +90,11 @@ export const ProblemSchema = new Schema({
     },
     tests:[{
         input: {
-            type: String,
+            type: Buffer,
             required: true
         },
         output: {
-            type: String,
+            type: Buffer,
             required: true
         },
         number: {
@@ -178,7 +182,7 @@ export const ParcelSchema = new Schema({
         required: true
     },
     options:{
-        programmingLanguage:{
+        language:{
             type: String,
             required: true
         },
@@ -228,7 +232,7 @@ export const TestResultSchema = new Schema({
         required: true
     },
     tests:[{
-        numberOfTest:{
+        number:{
             type: Number,
             required: true
         },
@@ -241,11 +245,11 @@ export const TestResultSchema = new Schema({
         },
         time:{
             type: Number,
-            required: true
+            //required: true
         },
         memory:{
             type: Number,
-            required: true
+            //required: true
         }
     }]
 });

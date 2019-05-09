@@ -3,14 +3,14 @@ import { ParcelSchema } from '../schemas'
 
 export const Parcel = mongoose.model('Parcel', ParcelSchema, 'parcels')
 
-export const getParcelById = (parcelId) => {
+export const getParcelById = async (parcelId) => {
     return Parcel.findOne({ _id: parcelId }).exec();
 };
 
-export const addParcel = (newParcel) => {
+export const addParcel = async (newParcel) => {
     return Parcel.create(newParcel)
         .then(parcel => {
-            return parcel._id.toString();
+            return parcel._id;
         });
 };
 
@@ -23,6 +23,6 @@ export const updateParcel = async (parcelId, parcelNewState) => {
     return parcelId;
 };
 
-export const deleteParcel = (parcelId) => {
+export const deleteParcel = async (parcelId) => {
     return Parcel.findByIdAndRemove(parcelId).exec();
 };

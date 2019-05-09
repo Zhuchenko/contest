@@ -3,11 +3,11 @@ import { SetOfProblemsSchema } from '../schemas'
 
 export const SetOfProblems = mongoose.model('SetOfProblems', SetOfProblemsSchema, 'setsOfProblems')
 
-export const getSetOfProblemsById = (setId) => {
+export const getSetOfProblemsById = async (setId) => {
     return SetOfProblems.findOne({ _id: setId }).exec();
 };
 
-export const addSetOfProblems = (newSet) => {
+export const addSetOfProblems = async (newSet) => {
     return SetOfProblems.create(newSet)
         .then(set => {
             return set;
@@ -23,6 +23,6 @@ export const updateSetOfProblems = async (setId, setNewState) => {
     return getSetOfProblemsById(setId);
 };
 
-export const deleteSetOfProblems = (setId) => {
+export const deleteSetOfProblems = async (setId) => {
     return SetOfProblems.findByIdAndRemove(setId).exec();
 };

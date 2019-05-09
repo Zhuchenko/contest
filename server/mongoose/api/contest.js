@@ -3,15 +3,15 @@ import { ContestSchema } from '../schemas'
 
 export const Contest = mongoose.model('Contest', ContestSchema, 'contests')
 
-export const getContestById = (contestId) => {
+export const getContestById = async (contestId) => {
     return Contest.findOne({ _id: contestId }).exec();
 };
 
-export const getAllContests = () => {
+export const getAllContests = async () => {
     return Contest.find({});
 };
 
-export const addContest = (newContest) => {
+export const addContest = async (newContest) => {
     return Contest.create(newContest)
         .then(contest => {
             return contest;
@@ -27,6 +27,6 @@ export const updateContest = async (contestId, contestNewState) => {
     return getContestById(contestId);
 };
 
-export const deleteContest = (contestId) => {
+export const deleteContest = async (contestId) => {
     return Contest.findByIdAndRemove(contestId).exec();
 };

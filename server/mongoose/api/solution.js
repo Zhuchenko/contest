@@ -7,7 +7,11 @@ export const getSolutionById = (solutionId) => {
     return Solution.findOne({ _id: solutionId }).exec();
 };
 
-export const addSolution = (newSolution) => {
+export const getSolutionByOptions = async (options) => {
+    return Solution.findOne({ user: options.user, problem: options.problem, contest: options.contest }).exec();
+};
+
+export const addSolution = async (newSolution) => {
     return Solution.create(newSolution)
         .then(solution => {
             return solution._id.toString();
@@ -15,14 +19,13 @@ export const addSolution = (newSolution) => {
 };
 
 export const updateSolution = async (solutionId, solutionNewState) => {
-    await Solution.updateOne({_id: solutionId}, {
+    Solution.updateOne({_id: solutionId}, {
         $set: {
             ...solutionNewState
         }
     }).exec();
-    return solutionId;
 };
 
-export const deleteSolution = (solutionId) => {
+export const deleteSolution = async (solutionId) => {
     return Solution.findByIdAndRemove(solutionId).exec();
 };
