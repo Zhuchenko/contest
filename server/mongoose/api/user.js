@@ -7,7 +7,16 @@ export const getUserById = async (userId) => {
     return User.findOne({ _id: userId }).exec();
 };
 
+export const getUserByUsername = (username) => {
+    return User.findOne({ username: username }).exec();
+};
+
+export const getUserByEmail = (email) => {
+    return User.findOne({ email: email }).exec();
+};
+
 export const addUser = async (newUser) => {
+
     return User.create(newUser)
         .then(user => {
             return user._id.toString();

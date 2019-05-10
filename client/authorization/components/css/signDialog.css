@@ -8,11 +8,6 @@
   align-items: center;
 }
 
-.sign__input{
-  width: 90%;
-  margin: 10px;
-}
-
 .sign__button-panel{
   width: 100%;
   display: flex;
@@ -27,4 +22,20 @@
   border: 0;
   background-color: transparent;
   margin: 10px;
+}
+
+.appbar__button-panel{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-around;
+  margin-left: auto;
+}
+
+.appbar__button {
+  height: 30px;
+  cursor: pointer;
+  border: 0;
+  background-color: transparent;
+  color: whitesmoke;
 }

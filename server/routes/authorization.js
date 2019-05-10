@@ -1,5 +1,6 @@
 import express from 'express'
 import { User } from '../mongoose/api/user'
+import {getUserById, getUserByUsername, getUserByEmail} from '../mongoose/api/user';
 import passport from 'passport'
 import auth from './auth'
 import '../config/passport'
@@ -7,25 +8,31 @@ import '../config/passport'
 const router = express.Router();
 
 router.post('/signup', auth.optional, (req, res) => {
-  const { body: { username, password } } = req;
+  const { body: { username, password, email, name, lastname } } = req;
+
+  getUserByUsername(username)
+      .then((user) => {
+        if(user){
+          return res.status(422).json({ username: { errorMessage: 'it already exists' } });
+        }
+      });
+
+  getUserByEmail(email)
+      .then((user) => {
+        if(user){
+          return res.status(422).json({ email: { errorMessage: 'it already exists' } });
+        }
+      });
 
   if(!username) {
-    return res.status(422).json({
-      errors: {
-        username: 'is required',
-      },
-    });
+    return res.status(422).json({ username: { errorMessage: 'it is required' } });
   }
 
   if(!password) {
-    return res.status(422).json({
-      errors: {
-        password: 'is required',
-      },
-    });
+    return res.status(422).json({ password: { errorMessage: 'it is required' } });
   }
-  const finalUser = new User({username});
 
+  const finalUser = new User({username, email, name, lastname});
   finalUser.generateHash(password);
 
   return finalUser.save()
@@ -35,7 +42,7 @@ router.post('/signup', auth.optional, (req, res) => {
 router.get('/signin', auth.required, (req, res) => {
   const { payload: { id } } = req;
 
-  return User.findById(id)
+  return getUserById(id)
       .then((user) => {
         if(!user) {
           return res.sendStatus(400);
@@ -48,24 +55,23 @@ router.post('/signin', auth.optional, (req, res, next) => {
   const { body: { username, password } } = req;
 
   if(!username) {
-    return res.status(422).json({
-      errors: {
-        username: 'is required',
-      },
-    });
+    return res.status(422).json({ username: { errorMessage: 'it is required' } });
   }
 
   if(!password) {
-    return res.status(422).json({
-      errors: {
-        password: 'is required',
-      },
-    });
+    return res.status(422).json({ password: { errorMessage: 'it is required' } });
   }
+
+  getUserByUsername(username)
+      .then((user) => {
+        if(!user){
+          return res.status(422).json({ username: { errorMessage: 'it is wrong' } });
+        }
+      });
 
   return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
     if(err) {
-      return next(err);
+      return res.status(500).json({ err });
     }
 
     if(passportUser) {
@@ -75,7 +81,7 @@ router.post('/signin', auth.optional, (req, res, next) => {
       return res.json({ ...user.toAuthJSON() });
     }
 
-    return res.sendStatus(400);
+    return res.status(422).json({ password: { errorMessage: 'it is wrong' } });
   })(req, res, next);
 });
 

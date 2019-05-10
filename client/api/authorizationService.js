@@ -20,7 +20,7 @@ export const getUsername = () => {
         })
 };
 
-export const signin = (username, password) => {
+export const signIn = (username, password) => {
     return fetch('/signin', {
         method: 'POST',
         credentials: 'include',
@@ -34,36 +34,42 @@ export const signin = (username, password) => {
                 return response.json()
                     .then(user =>{
                         saveToken(user.token);
-                        return user;
+                        return { user };
                     })
             } else {
-                throw response.status
+                return response.json()
+                    .then(error => {
+                        throw error
+                    })
             }
-        })
+        }).catch(error => ({ error }))
 };
 
-export const signup = (username, password) => {
+export const signUp = (username, password, email, name, lastName) => {
     return fetch('/signup', {
         method: 'POST',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password})
+        body: JSON.stringify({ username, password, email, name, lastName})
     })
         .then(response => {
             if (response.status === 200) {
                 return response.json()
                     .then(user =>{
                         saveToken(user.token);
-                        return user;
-                })
+                        return { user };
+                    })
             } else {
-                throw response.status
+                return response.json()
+                    .then(error => {
+                        throw error
+                    })
             }
-        })
+        }).catch(error => ({ error }))
 };
 
-export const signout = () => {
+export const signOut = () => {
     clear();
 };
