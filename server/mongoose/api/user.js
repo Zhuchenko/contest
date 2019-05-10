@@ -3,7 +3,7 @@ import { UserSchema } from '../schemas'
 
 export const User = mongoose.model('User', UserSchema, 'users')
 
-export const getUserById = (userId) => {
+export const getUserById = async (userId) => {
     return User.findOne({ _id: userId }).exec();
 };
 
@@ -15,7 +15,8 @@ export const getUserByEmail = (email) => {
     return User.findOne({ email: email }).exec();
 };
 
-export const addUser = (newUser) => {
+export const addUser = async (newUser) => {
+
     return User.create(newUser)
         .then(user => {
             return user._id.toString();
@@ -31,6 +32,6 @@ export const updateUser = async (userId, userNewState) => {
     return userId;
 };
 
-export const deleteUser = (userId) => {
+export const deleteUser = async (userId) => {
     return User.findByIdAndRemove(userId).exec();
 };

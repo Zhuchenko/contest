@@ -3,11 +3,11 @@ import { GroupOfUsersSchema } from '../schemas'
 
 export const GroupOfUsers = mongoose.model('GroupOfUsers', GroupOfUsersSchema, 'groupsOfUsers')
 
-export const getGroupOfUsersById = (groupId) => {
+export const getGroupOfUsersById = async (groupId) => {
     return GroupOfUsers.findOne({ _id: groupId }).exec();
 };
 
-export const addGroupOfUsers = (newGroup) => {
+export const addGroupOfUsers = async (newGroup) => {
     return GroupOfUsers.create(newGroup)
         .then(group => {
             return group;
@@ -23,6 +23,6 @@ export const updateGroupOfUsers = async (groupId, groupNewState) => {
     return getGroupOfUsersById(groupId);
 };
 
-export const deleteGroupOfUsers = (groupId) => {
+export const deleteGroupOfUsers = async (groupId) => {
     return GroupOfUsers.findByIdAndRemove(groupId).exec();
 };
