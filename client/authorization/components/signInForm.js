@@ -22,15 +22,13 @@ class SignInForm extends Component {
         const {username, password, usernameIsNotValid, passwordIsNotValid} = this.props;
 
         const usernameErrorMessage = validateInput(username.value);
-        console.log('usernameErrorMessage ' + usernameErrorMessage)
         if(usernameErrorMessage){
+            console.log('im here')
             usernameIsNotValid({username:username.value, errorMessage:usernameErrorMessage})
         }
 
         const passwordErrorMessage = validateInput(password.value);
-        console.log('passwordErrorMessage ' + passwordErrorMessage)
         if(passwordErrorMessage){
-            console.log('im here')
             passwordIsNotValid({password:password.value, errorMessage:passwordErrorMessage})
         }
     };
@@ -38,10 +36,9 @@ class SignInForm extends Component {
     signIn = () => {
         this.check();
         const {username, password} = this.props;
-        console.log('check username.isValid ' + username.isValid)
-        console.log('check password.isValid ' + password.isValid)
+
         if(username.isValid && password.isValid) {
-            this.props.signin({username: username.value, password: password.value});
+            this.props.signIn({username: username.value, password: password.value});
         }
     };
 
@@ -82,7 +79,7 @@ class SignInForm extends Component {
 }
 
 SignInForm.propTypes = {
-    signin: PropTypes.func.isRequired,
+    signIn: PropTypes.func.isRequired,
     hideForm: PropTypes.func.isRequired,
     enterUsername: PropTypes.func.isRequired,
     enterPassword: PropTypes.func.isRequired,

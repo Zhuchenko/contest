@@ -28,67 +28,67 @@ class SignUpForm extends Component {
         this.props.enterEmail({email});
     };
 
-
     handleChangedName = (event) => {
         const name = event.target.value;
         this.props.enterName({name});
     };
 
-    handleChangedLastname = (event) => {
-        const lastname = event.target.value;
-        this.props.enterLastname({lastname});
+    handleChangedLastName = (event) => {
+        const lastName = event.target.value;
+        this.props.enterLastName({lastName});
     };
 
-    check = () =>{
-        const {username, password, repeatPassword, email, name, lastname} = this.props;
+    check = async () =>{
+        const {username, password, repeatPassword, email, name, lastName} = this.props;
 
         const usernameErrorMessage = validateInput(username.value);
         if(usernameErrorMessage){
-            this.props.usernameIsNotValid({username:username.value, errorMessage:usernameErrorMessage})
+            await this.props.usernameIsNotValid({value:username.value, errorMessage:usernameErrorMessage})
         }
 
         const passwordErrorMessage = validatePassword(password.value);
         if(passwordErrorMessage){
-            this.props.passwordIsNotValid({password:password.value, errorMessage: passwordErrorMessage})
+            await this.props.passwordIsNotValid({value:password.value, errorMessage: passwordErrorMessage})
         }
 
-        const repeatPasswordErrorMessage = validateRepeatPassword(repeatPassword.value);
+        const repeatPasswordErrorMessage = validateRepeatPassword(password.value, repeatPassword.value);
         if(repeatPasswordErrorMessage){
-            this.props.passwordIsNotValid({repeatPassword:repeatPassword.value, errorMessage: repeatPasswordErrorMessage})
+            await this.props.repeatPasswordIsNotValid({value:repeatPassword.value, errorMessage: repeatPasswordErrorMessage})
         }
 
         const emailErrorMessage = validateEmail(email.value);
         if(emailErrorMessage){
-            this.props.passwordIsNotValid({email:email.value, errorMessage: emailErrorMessage})
+            console.log('emailErrorMessage: ' + emailErrorMessage)
+            await this.props.emailIsNotValid({value:email.value, errorMessage: emailErrorMessage})
         }
 
         const nameErrorMessage = validateInput(name.value);
         if(nameErrorMessage){
-            this.props.usernameIsNotValid({name:name.value, errorMessage:nameErrorMessage})
+            await this.props.nameIsNotValid({value:name.value, errorMessage:nameErrorMessage})
         }
 
-        const lastnameErrorMessage = validateInput(lastname.value);
-        if(lastnameErrorMessage) {
-            this.props.usernameIsNotValid({lastname: lastname.value, errorMessage: lastnameErrorMessage})
+        const lastNameErrorMessage = validateInput(lastName.value);
+        if(lastNameErrorMessage) {
+            await this.props.lastNameIsNotValid({value: lastName.value, errorMessage: lastNameErrorMessage})
         }
     };
 
-    signUp = () => {
-        this.check();
-        const {username, password, repeatPassword, email, name, lastname} = this.props;
-        if (username.isValid && password.isValid && repeatPassword.isValid && email.isValid && name.isValid && lastname.isValid) {
-            this.props.signup({
+    signUp = async () => {
+        await this.check();
+        const {username, password, repeatPassword, email, name, lastName} = this.props;
+        if (username.isValid && password.isValid && repeatPassword.isValid && email.isValid && name.isValid && lastName.isValid) {
+            this.props.signUp({
                 username: username.value,
                 password: password.value,
                 email: email.value,
                 name: name.value,
-                lastname: lastname.value
+                lastName: lastName.value
             });
         }
     }
 
     render() {
-        const {username, password, repeatPassword, email, name, lastname, hideForm} = this.props;
+        const {username, password, repeatPassword, email, name, lastName, hideForm} = this.props;
 
         const inputs = [
             {
@@ -107,9 +107,9 @@ class SignUpForm extends Component {
                 onChange:this.handleChangedName
             },
             {
-                placeholder: 'lastname',
-                ...lastname,
-                onChange:this.handleChangedLastname
+                placeholder: 'last name',
+                ...lastName,
+                onChange:this.handleChangedLastName
             },
             {
                 placeholder: 'password',
@@ -145,20 +145,26 @@ class SignUpForm extends Component {
 }
 
 SignUpForm.propTypes = {
-    signup: PropTypes.func.isRequired,
+    signUp: PropTypes.func.isRequired,
     hideForm: PropTypes.func.isRequired,
     enterUsername: PropTypes.func.isRequired,
     enterPassword: PropTypes.func.isRequired,
     enterRepeatPassword: PropTypes.func.isRequired,
     enterEmail: PropTypes.func.isRequired,
     enterName: PropTypes.func.isRequired,
-    enterLastname: PropTypes.func.isRequired,
+    enterLastName: PropTypes.func.isRequired,
     username: PropTypes.object.isRequired,
     password: PropTypes.object.isRequired,
     repeatPassword: PropTypes.object.isRequired,
     email: PropTypes.object.isRequired,
     name: PropTypes.object.isRequired,
-    lastname: PropTypes.object.isRequired,
+    lastName: PropTypes.object.isRequired,
+    usernameIsNotValid: PropTypes.func.isRequired,
+    passwordIsNotValid: PropTypes.func.isRequired,
+    repeatPasswordIsNotValid: PropTypes.func.isRequired,
+    emailIsNotValid: PropTypes.func.isRequired,
+    nameIsNotValid: PropTypes.func.isRequired,
+    lastNameIsNotValid: PropTypes.func.isRequired,
 };
 
 export default connect(state => ({
@@ -167,5 +173,5 @@ export default connect(state => ({
     repeatPassword: state.authorization.repeatPassword,
     email: state.authorization.email,
     name: state.authorization.name,
-    lastname: state.authorization.lastname,
+    lastName: state.authorization.lastName,
 }), actions)(SignUpForm)

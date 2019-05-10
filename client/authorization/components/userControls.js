@@ -7,21 +7,23 @@ import SignInDialog from './signDialog'
 import './css/signDialog.css'
 
 const UserControls = (props) => {
-    const { authorized, signout} = props;
+    const { authorized,  signOut} = props;
     if (!authorized) {
         return <SignInDialog/>
     }
 
     return (
-        <button onClick={signout} className={'appbar__button'}>
-            Sign out
-        </button>
+        <div className={'appbar__button-panel'}>
+            <button onClick={signOut} className={'appbar__button'}>
+                Sign out
+            </button>
+        </div>
     );
 };
 
 UserControls.propTypes = {
     authorized: PropTypes.bool.isRequired,
-    signout: PropTypes.func.isRequired
+    signOut: PropTypes.func.isRequired
 };
 
 export default connect(state => ({

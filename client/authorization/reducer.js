@@ -22,10 +22,10 @@ const reducer = handleActions(
             repeatPassword: initialState.input,
             email: initialState.input,
             name: initialState.input,
-            lastname: initialState.input
+            lastName: initialState.input
         }),
 
-        [actions.signinSuccess]: state => ({
+        [actions.signInSuccess]: state => ({
             ...state,
             isShown: false,
 
@@ -34,31 +34,43 @@ const reducer = handleActions(
             repeatPassword: initialState.input,
             email: initialState.input,
             name: initialState.input,
-            lastname: initialState.input
+            lastName: initialState.input
         }),
 
-        [actions.signinFailure]: (state, {payload}) => ({    //validation
+        [actions.signInFailureUsername]: (state, {payload}) => ({    //validation
             ...state,
             isShown: true,
 
             username: {
                 value: '',
-                isValid: payload.username.isValid,
-                errorMessage: payload.username.errorMessage
+                isValid: payload.isValid,
+                errorMessage: payload.errorMessage
             },
+
+            password: initialState.input,
+            repeatPassword: initialState.input,
+            email: initialState.input,
+            name: initialState.input,
+            lastName: initialState.input
+        }),
+
+        [actions.signInFailurePassword]: (state, {payload}) => ({
+            ...state,
+            isShown: true,
+
             password: {
                 value: '',
-                isValid: payload.password.isValid,
-                errorMessage: payload.password.errorMessage
+                isValid: payload.isValid,
+                errorMessage: payload.errorMessage
             },
 
             repeatPassword: initialState.input,
             email: initialState.input,
             name: initialState.input,
-            lastname: initialState.input
+            lastName: initialState.input
         }),
 
-        [actions.signupSuccess]: state => ({
+        [actions.signUpSuccess]: state => ({
             ...state,
             isShown: false,
 
@@ -67,30 +79,49 @@ const reducer = handleActions(
             repeatPassword: initialState.input,
             email: initialState.input,
             name: initialState.input,
-            lastname: initialState.input
+            lastName: initialState.input
         }),
 
-        [actions.signupFailure]: (state, {payload}) => ({    //validation
+        [actions.signUpFailureEmail]: (state, {payload}) => ({
+            ...state,
+            isShown: true,
+
+            email: {
+                value: '',
+                isValid: payload.isValid,
+                errorMessage: payload.errorMessage
+            },
+            password: initialState.input,
+            repeatPassword: initialState.input,
+        }),
+
+        [actions.signUpFailureUsername]: (state, {payload}) => ({
             ...state,
             isShown: true,
 
             username: {
                 value: '',
-                isValid: payload.username.isValid,
-                errorMessage: payload.username.errorMessage
+                isValid: payload.isValid,
+                errorMessage: payload.errorMessage
             },
+            password: initialState.input,
+            repeatPassword: initialState.input,
+        }),
+
+        [actions.signUpFailureEmail]: (state, {payload}) => ({
+            ...state,
+            isShown: true,
+
             email: {
                 value: '',
-                isValid: payload.email.isValid,
-                errorMessage: payload.email.errorMessage
+                isValid: payload.isValid,
+                errorMessage: payload.errorMessage
             },
             password: initialState.input,
             repeatPassword: initialState.input,
-            name: initialState.input,
-            lastname: initialState.input
         }),
 
-        [actions.signoutSuccess]: state => ({
+        [actions.signOutSuccess]: state => ({
             ...state,
             isShown: false,
 
@@ -99,10 +130,10 @@ const reducer = handleActions(
             repeatPassword: initialState.input,
             email: initialState.input,
             name: initialState.input,
-            lastname: initialState.input
+            lastName: initialState.input
         }),
 
-        [actions.signoutFailure]: state => ({
+        [actions.signOutFailure]: state => ({
             ...state,
             isShown: false,
 
@@ -111,7 +142,7 @@ const reducer = handleActions(
             repeatPassword: initialState.input,
             email: initialState.input,
             name: initialState.input,
-            lastname: initialState.input
+            lastName: initialState.input
         }),
 
         [actions.showForm]: state => ({
@@ -123,7 +154,7 @@ const reducer = handleActions(
             repeatPassword: initialState.input,
             email: initialState.input,
             name: initialState.input,
-            lastname: initialState.input
+            lastName: initialState.input
         }),
 
         [actions.hideForm]: state => ({
@@ -135,7 +166,7 @@ const reducer = handleActions(
             repeatPassword: initialState.input,
             email: initialState.input,
             name: initialState.input,
-            lastname: initialState.input
+            lastName: initialState.input
         }),
 
         [actions.enterUsername]: (state, {payload}) => ({
@@ -168,7 +199,7 @@ const reducer = handleActions(
         [actions.enterEmail]: (state, {payload}) => ({
             ...state,
             email: {
-                value: payload.value,
+                value: payload.email,
                 isValid: true,
                 errorMessage: ''
             }
@@ -177,16 +208,16 @@ const reducer = handleActions(
         [actions.enterName]: (state, {payload}) => ({
             ...state,
             name: {
-                value: payload.value,
+                value: payload.name,
                 isValid: true,
                 errorMessage: ''
             }
         }),
 
-        [actions.enterLastname]: (state, {payload}) => ({
+        [actions.enterLastName]: (state, {payload}) => ({
             ...state,
-            lastname: {
-                value: payload.lastname,
+            lastName: {
+                value: payload.lastName,
                 isValid: true,
                 errorMessage: ''
             }
@@ -195,7 +226,7 @@ const reducer = handleActions(
         [actions.usernameIsNotValid]: (state, {payload}) => ({
             ...state,
             username: {
-                value: payload.username,
+                value: payload.value,
                 isValid: false,
                 errorMessage: payload.errorMessage
             }
@@ -204,7 +235,7 @@ const reducer = handleActions(
         [actions.passwordIsNotValid]: (state, {payload}) => ({
             ...state,
             password: {
-                value: payload.password,
+                value: payload.value,
                 isValid: false,
                 errorMessage: payload.errorMessage
             }
@@ -213,7 +244,7 @@ const reducer = handleActions(
         [actions.repeatPasswordIsNotValid]: (state, {payload}) => ({
             ...state,
             repeatPassword: {
-                value: payload.repeatPassword,
+                value: payload.value,
                 isValid: false,
                 errorMessage: payload.errorMessage
             }
@@ -222,7 +253,7 @@ const reducer = handleActions(
         [actions.emailIsNotValid]: (state, {payload}) => ({
             ...state,
             email: {
-                value: payload.email,
+                value: payload.value,
                 isValid: false,
                 errorMessage: payload.errorMessage
             }
@@ -231,16 +262,16 @@ const reducer = handleActions(
         [actions.nameIsNotValid]: (state, {payload}) => ({
             ...state,
             name: {
-                value: payload.name,
+                value: payload.value,
                 isValid: false,
                 errorMessage: payload.errorMessage
             }
         }),
 
-        [actions.lastnameIsNotValid]: (state, {payload}) => ({
+        [actions.lastNameIsNotValid]: (state, {payload}) => ({
             ...state,
-            lastname: {
-                value: payload.lastname,
+            lastName: {
+                value: payload.value,
                 isValid: false,
                 errorMessage: payload.errorMessage
             }

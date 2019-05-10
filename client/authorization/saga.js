@@ -1,58 +1,65 @@
 import { all, takeLatest, call, put } from 'redux-saga/effects'
 import * as actions from './actions'
-import { signin, signup, signout } from '../api/authorizationService'
+import { signIn, signUp, signOut } from '../api/authorizationService'
 
 export default  function* authorizationSaga() {
     yield all([
-        watchSignin(),
-        watchSignup(),
-        watchSignout()
+        watchSignIn(),
+        watchSignUp(),
+        watchSignOut()
     ])
 }
 
-function* watchSignin() {
-    yield takeLatest(actions.signin, signinSaga)
+function* watchSignIn() {
+    yield takeLatest(actions.signIn, signInSaga)
 }
 
-function* watchSignup() {
-    yield takeLatest(actions.signup, signupSaga)
+function* watchSignUp() {
+    yield takeLatest(actions.signUp, signUpSaga)
 }
 
-function* watchSignout() {
-    yield takeLatest(actions.signout, signoutSaga)
+function* watchSignOut() {
+    yield takeLatest(actions.signOut, signOutSaga)
 }
 
-function* signinSaga(action) {
+function* signInSaga(action) {
+    const {username, password} = action.payload;
+    const {user, error} = yield call(signIn, username, password);
+
+    if (user) {
+        yield put(actions.signInSuccess(user));
+    } else{
+        if(error.username){
+            yield put(actions.signInFailureUsername({...error.username, isValid:false}));
+        }
+        if(error.password){
+            yield put(actions.signInFailurePassword({...error.password, isValid:false}));
+        }
+    }
+}
+
+function* signUpSaga(action) {
+    const {username, password, email, name, lastName} = action.payload;
+    const {user, error} = yield call(signUp, username, password, email, name, lastName);
+
+    if (user) {
+        yield put(actions.signUpSuccess(user));
+    } else {
+        if (error.email) {
+            yield put(actions.signUpFailureEmail({...error.email, isValid: false}));
+        }
+        if (error.username) {
+            yield put(actions.signUpFailureUsername({...error.username, isValid: false}));
+        }
+    }
+}
+
+function* signOutSaga() {
     try {
-        const { username, password } = action.payload;
-        const user = yield call(signin, username, password);
-
-        yield put(actions.signinSuccess({ user }));
+        yield call(signOut);
+        yield put(actions.signOutSuccess())
     }
     catch (error) {
-        console.log(error)
-        yield put(actions.signinFailure({error}))
-    }
-}
-
-function* signupSaga(action) {
-    try {
-        const { username, password, email, name, lastname } = action.payload;
-        const user = yield call(signup, username, password, email, name, lastname);
-
-        yield put(actions.signupSuccess({user}));
-    }
-    catch (error) {
-        yield put(actions.signinFailure({error}))
-    }
-}
-
-function* signoutSaga() {
-    try {
-        yield call(signout);
-        yield put(actions.signoutSuccess())
-    }
-    catch (error) {
-        yield put(actions.signoutFailure({error}))
+        yield put(actions.signOutFailure(error))
     }
 }

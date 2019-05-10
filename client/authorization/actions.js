@@ -2,23 +2,27 @@ import { createAction } from 'redux-actions'
 
 export const init = createAction('INIT');
 
-export const signin = createAction('SIGNIN');
+export const signIn = createAction('SIGN_IN');
 
-export const signinSuccess = createAction('SIGNIN_SUCCESS');
+export const signInSuccess = createAction('SIGN_IN_SUCCESS');
 
-export const signinFailure = createAction('SIGNIN_FAILURE');
+export const signInFailureUsername = createAction('SIGN_IN_FAILURE_USERNAME');
 
-export const signup = createAction('SIGNUP');
+export const signInFailurePassword = createAction('SIGN_IN_FAILURE_PASSWORD');
 
-export const signupSuccess = createAction('SIGNUP_SUCCESS');
+export const signUp = createAction('SIGN_UP');
 
-export const signupFailure = createAction('SIGNUP_FAILURE');
+export const signUpSuccess = createAction('SIGN_UP_SUCCESS');
 
-export const signout = createAction('SIGNOUT');
+export const signUpFailureEmail = createAction('SIGN_UP_FAILURE_EMAIL');
 
-export const signoutSuccess = createAction('SIGNOUT_SUCCESS');
+export const signUpFailureUsername = createAction('SIGN_UP_FAILURE_USERNAME');
 
-export const signoutFailure = createAction('SIGNOUT_FAILURE');
+export const signOut = createAction('SIGN_OUT');
+
+export const signOutSuccess = createAction('SIGN_OUT_SUCCESS');
+
+export const signOutFailure = createAction('SIGN_OUT_FAILURE');
 
 export const showForm = createAction('SHOW_FORM');
 
@@ -34,7 +38,7 @@ export const enterEmail = createAction('ENTER_EMAIL');
 
 export const enterName = createAction('ENTER_NAME');
 
-export const enterLastname = createAction('ENTER_LASTNAME');
+export const enterLastName = createAction('ENTER_LAST_NAME');
 
 export const usernameIsNotValid = createAction('USERNAME_IS_NOT_VALID');
 
@@ -46,4 +50,4 @@ export const emailIsNotValid = createAction('EMAIL_IS_NOT_VALID');
 
 export const nameIsNotValid = createAction('NAME_IS_NOT_VALID');
 
-export const lastnameIsNotValid = createAction('LASTNAME_IS_NOT_VALID');
+export const lastNameIsNotValid = createAction('LAST_NAME_IS_NOT_VALID');

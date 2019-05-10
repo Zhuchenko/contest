@@ -8,7 +8,7 @@ class Input extends Component {
     render() {
         const {placeholder, onChange, value, isValid, errorMessage} = this.props;
         const classes =  getClassNames({['input']: true, ['input--error']: !isValid});
-//console.log(placeholder + ' ' + value + ' ' + isValid + ' ' + errorMessage)
+
         return (
             <div>
                 <input
