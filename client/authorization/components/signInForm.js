@@ -18,23 +18,22 @@ class SignInForm extends Component {
         this.props.enterPassword({password});
     };
 
-    check = () =>{
+    check = async () =>{
         const {username, password, usernameIsNotValid, passwordIsNotValid} = this.props;
 
         const usernameErrorMessage = validateInput(username.value);
         if(usernameErrorMessage){
-            console.log('im here')
-            usernameIsNotValid({username:username.value, errorMessage:usernameErrorMessage})
+            await usernameIsNotValid({value:username.value, errorMessage:usernameErrorMessage})
         }
 
         const passwordErrorMessage = validateInput(password.value);
         if(passwordErrorMessage){
-            passwordIsNotValid({password:password.value, errorMessage:passwordErrorMessage})
+            await passwordIsNotValid({value:password.value, errorMessage:passwordErrorMessage})
         }
     };
 
-    signIn = () => {
-        this.check();
+    signIn = async () => {
+        await this.check();
         const {username, password} = this.props;
 
         if(username.isValid && password.isValid) {
