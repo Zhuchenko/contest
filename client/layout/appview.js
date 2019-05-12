@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Appbar from './appbar';
 import {Route} from 'react-router-dom'
+import Problem from '../components/problem'
 
 import './css/appview.css';
 
@@ -9,11 +10,10 @@ class AppView extends Component {
         return (
             <div className={'appview'}>
                 <Appbar/>
-                <Route exact path='' component{}/>
+                <Route path='/problems/:problemId' component={Problem}/>
             </div>
         )
     }
 }
 
 export default AppView
-

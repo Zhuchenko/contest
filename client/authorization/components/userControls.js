@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 import SignInDialog from './signDialog'
 
-import './css/signDialog.css'
+import './css/signForm.css'
+import './css/button.css'
 
 const UserControls = (props) => {
     const { authorized,  signOut} = props;

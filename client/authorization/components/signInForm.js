@@ -5,7 +5,8 @@ import * as actions from '../actions'
 import Input from '../../components/input';
 import {validateInput} from '../../utilities/checks';
 
-import './css/signDialog.css'
+import './css/signForm.css'
+import './css/button.css'
 
 class SignInForm extends Component {
     handleChangedUsername = (event) => {
@@ -51,6 +52,7 @@ class SignInForm extends Component {
             },
             {
                 placeholder: 'password',
+                type: 'password',
                 ...password,
                 onChange:this.handleChangedPassword
             }
@@ -63,6 +65,7 @@ class SignInForm extends Component {
                         <Input key={item.placeholder}
                                placeholder={item.placeholder}
                                value={item.value}
+                               type={item.type}
                                isValid={item.isValid}
                                errorMessage={item.errorMessage}
                                onChange={item.onChange} />

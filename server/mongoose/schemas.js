@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
+import {serverConfig} from '../config/serverConfig'
 
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
@@ -40,7 +41,7 @@ UserSchema.methods.generateJWT = function() {
         username: this.username,
         id: this._id,
         exp: parseInt(expirationDate.getTime() / 1000, 10),
-    }, 'secret');
+    }, serverConfig.authorization.jwtSecret);
 }
 
 UserSchema.methods.toAuthJSON = function() {
@@ -108,7 +109,7 @@ export const ProblemSchema = new Schema({
         required: true
     },
     options:[{
-        programmingLanguage:{
+        language:{
             type: String,
             required: true
         },

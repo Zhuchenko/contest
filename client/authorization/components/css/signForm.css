@@ -1,0 +1,25 @@
+.sign__form{
+  width:100%;
+  background: white;
+  border-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sign__button-panel{
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+
+.sign__button{
+  height: 30px;
+  cursor: pointer;
+  border: 0;
+  background-color: transparent;
+  margin: 10px;
+}

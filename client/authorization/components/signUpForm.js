@@ -5,7 +5,8 @@ import {connect} from 'react-redux'
 import * as actions from '../actions'
 import {validateEmail, validatePassword, validateRepeatPassword, validateInput} from '../../utilities/checks'
 
-import './css/signDialog.css'
+import './css/signForm.css'
+import './css/button.css'
 
 class SignUpForm extends Component {
     handleChangedUsername = (event) => {
@@ -113,11 +114,13 @@ class SignUpForm extends Component {
             },
             {
                 placeholder: 'password',
+                type: 'password',
                 ...password,
                 onChange:this.handleChangedPassword
             },
             {
                 placeholder: 'repeat password',
+                type: 'password',
                 ...repeatPassword,
                 onChange:this.handleChangedRepeatPassword
             }
@@ -130,6 +133,7 @@ class SignUpForm extends Component {
                         <Input key={item.placeholder}
                                placeholder={item.placeholder}
                                value={item.value}
+                               type={item.type}
                                isValid={item.isValid}
                                errorMessage={item.errorMessage}
                                onChange={item.onChange} />

@@ -10,10 +10,11 @@ import auth from './auth'
 const router = express.Router();
 
 router.post('/', auth.required, (req, res) => {
-    let {body: {parcel}, payload: {id}} = req;
+    let {body: {parcel}, files: {code}, payload: {id}} = req;
+    parcel = JSON.parse(parcel);
     parcel.user = id;
     parcel.date = Date.now();
-
+    parcel.code = code.data;
     return (async () => {
         const problem = await getProblemById(parcel.problem);
         const results = await fetch('http://localhost:51786/api/check', {
@@ -23,7 +24,7 @@ router.post('/', auth.required, (req, res) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                solution: parcel.code,
+                solution: Array.from(code.data),
                 checker: Array.from(problem.checker),
                 language: parcel.options.language,
                 timeLimit: problem.limitation.time,
@@ -39,17 +40,17 @@ router.post('/', auth.required, (req, res) => {
                 }
             });
         const parcelId = await addParcel(parcel);
-        addTestResult({ parcel: parcelId, tests: results });
+        await addTestResult({ parcel: parcelId, tests: results });
         const options = {user: id, problem: parcel.problem, contest: parcel.contest};
         const solution = await getSolutionByOptions(options);
 
         if (solution) {
-            updateSolution(solution._id, {
+            await updateSolution(solution._id, {
                 attemptNumber: solution.attemptNumber + 1,
                 code: parcel.code
             })
         } else {
-            addSolution({
+            await addSolution({
                 user: id,
                 problem: parcel.problem,
                 contest: parcel.contest,

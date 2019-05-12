@@ -1,12 +1,15 @@
-.input{
-    width: 90%;
+.sign__input{
     margin: 10px;
+    padding: 4px;
 }
 
-.input--error{
-
+.sign__input--error{
+    margin-bottom: 0;
+    border: solid 1px red;
 }
 
-.error_message{
-
+.sign__error_message{
+    margin: 0 10px;
+    color: red;
+    font-size: 0.8rem;
 }

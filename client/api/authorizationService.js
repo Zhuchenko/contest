@@ -3,7 +3,7 @@ import {saveToken, clear, setAuthToken} from '../utilities/sessionStorage';
 export const getUsername = () => {
     const headers = setAuthToken({ });
 
-    return fetch('/signin', {
+    return fetch('/api/signin', {
         method: 'GET',
         credentials: 'include',
         headers
@@ -21,7 +21,7 @@ export const getUsername = () => {
 };
 
 export const signIn = (username, password) => {
-    return fetch('/signin', {
+    return fetch('/api/signin', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -46,7 +46,7 @@ export const signIn = (username, password) => {
 };
 
 export const signUp = (username, password, email, name, lastName) => {
-    return fetch('/signup', {
+    return fetch('/api/signup', {
         method: 'POST',
         credentials: 'include',
         headers: {

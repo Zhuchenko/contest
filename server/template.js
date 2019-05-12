@@ -1,11 +1,7 @@
 import React from 'react'
-import ReactDOMServer from 'react-dom/server'
-import { ServerStyleSheet } from 'styled-components'
 
 const template = (props) => {
-  const { assetsRoot, username } = props
-
-  const config = { username }
+  const { assetsRoot } = props;
 
   return (
     `<!doctype html>
@@ -19,7 +15,6 @@ const template = (props) => {
         <div id="root">
         </div>                      
         <script type="text/javascript">
-         window['APP_CONFIG'] = ${JSON.stringify(config)}
         </script>
         <script async type="text/javascript" src="${assetsRoot + 'vendors.js'}"></script>
         <script async type="text/javascript" src="${assetsRoot + 'main.js'}"></script>

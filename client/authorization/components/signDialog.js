@@ -8,6 +8,7 @@ import SignUpForm from './signUpForm';
 import TabBar from '../../components/tabBar';
 
 import './css/signDialog.css'
+import './css/button.css'
 
 const signIn = {
     id: "signIn",
@@ -52,7 +53,7 @@ class SignDialog extends Component {
                 {
                     isShown &&
                     <Popup>
-                        <div className={'sign__form'}>
+                        <div className={'sign__dialog'}>
                             <TabBar handleChanged={this.handleChanged} tabs={this.tabs} selectedId={this.state.selectedId}/>
                             {
                                 (this.state.selectedId === signIn.id) &&
