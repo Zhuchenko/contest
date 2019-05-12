@@ -1,14 +1,13 @@
 export const convertTests = (tests) => {
-    const normTests = [];
+    const testsWithByteArrayData = [];
 
     for (let i = 0, l = tests.length; i < l; i++){
-        console.log(tests[i].input);
-        normTests[i] = {
+        testsWithByteArrayData[i] = {
             input: Array.from(tests[i].input),
             output: Array.from(tests[i].output),
             number: tests[i].number
         };
     }
 
-    return normTests
+    return testsWithByteArrayData;
 }

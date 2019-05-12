@@ -33,7 +33,6 @@ router.post('/', auth.required, (req, res) => {
         })
             .then(response => {
                 if (response.status === 200) {
-                    console.log('i have got results')
                     return response.json();
                 } else {
                     throw response.status
