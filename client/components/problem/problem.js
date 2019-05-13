@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import { getProblem, sendParcel } from '../../services/problemApi'
 import FileUploader from 'react-input-files'
 
+import './css/problem.css';
+
 class Problem extends Component {
     constructor(props) {
         super(props);
@@ -53,20 +55,26 @@ class Problem extends Component {
     render() {
         const {name, text, limitation: {time, memory}, options, results} = this.state;
         return (
-            <div>
-                <h3>{name}</h3>
-                <div>{text}</div>
-                <div>Limitations:<br/>time: {time}<br/>memory: {memory}</div>
-                <label>Language:</label>
-                <select onChange={this.handleOptionsChange}>
-                    {
-                        options.map((option, index) =>
-                            <option key={index}>{option.language} ({option.compiler})</option>)
-                    }
-                </select>
+            <div className={'problem'}>
+                <h1>{name}</h1>
+                <div className={'problem__text'}>{text}</div>
+                <div className={'problem__limitations'}>
+                    <label>Limitations:</label>
+                    <div>time: {time}</div>
+                    <div>memory: {memory}</div>
+                </div>
+                <div>
+                    <label>Language:</label>
+                    <select className={'problem__select'} onChange={this.handleOptionsChange}>
+                        {
+                            options.map((option, index) =>
+                                <option key={index}>{option.language} ({option.compiler})</option>)
+                        }
+                    </select>
+                </div>
                 <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadFile}>
-                    <button onClick={(e) => {
-                    }}>Х
+                    <button className={'problem__button'} onClick={(e) => {
+                    }}>Upload
                     </button>
                 </FileUploader>
                 {

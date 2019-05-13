@@ -2,6 +2,9 @@
   width:100%;
   background: white;
   border-width: 0;
+  padding: 8px;
+  margin: 8px;
+  box-sizing: border-box;
 
   display: flex;
   flex-direction: column;
