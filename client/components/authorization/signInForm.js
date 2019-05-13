@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux';
-import * as actions from '../actions'
-import Input from '../../components/input';
+import * as actions from '../../redux/authorization/actions'
+import Input from '../common/input';
 import {validateInput} from '../../utilities/checks';
 
 import './css/signForm.css'
-import './css/button.css'
+import './css/appbar__button.css'
 
 class SignInForm extends Component {
     handleChangedUsername = (event) => {
@@ -24,12 +24,12 @@ class SignInForm extends Component {
 
         const usernameErrorMessage = validateInput(username.value);
         if(usernameErrorMessage){
-            await usernameIsNotValid({value:username.value, errorMessage:usernameErrorMessage})
+            await usernameIsNotValid({errorMessage: usernameErrorMessage})
         }
 
         const passwordErrorMessage = validateInput(password.value);
         if(passwordErrorMessage){
-            await passwordIsNotValid({value:password.value, errorMessage:passwordErrorMessage})
+            await passwordIsNotValid({errorMessage:passwordErrorMessage})
         }
     };
 

@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import * as actions from '../actions'
+import * as actions from '../../redux/authorization/actions'
 import SignInDialog from './signDialog'
 
 import './css/signForm.css'
-import './css/button.css'
+import './css/appbar__button.css'
 
 const UserControls = (props) => {
     const { authorized,  signOut} = props;

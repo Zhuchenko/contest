@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import * as actions from '../actions';
-import Popup from './popup';
+import * as actions from '../../redux/authorization/actions';
+import Popup from '../common/popup';
 import SignInForm from './signInForm';
 import SignUpForm from './signUpForm';
-import TabBar from '../../components/tabBar';
+import TabBar from '../common/tabBar';
 
 import './css/signDialog.css'
-import './css/button.css'
+import './css/appbar__button.css'
 
 const signIn = {
     id: "signIn",
@@ -70,6 +70,7 @@ class SignDialog extends Component {
         )
     }
 }
+
 SignDialog.propTypes = {
     isShown: PropTypes.bool.isRequired,
     showForm: PropTypes.func.isRequired,

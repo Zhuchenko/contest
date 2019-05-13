@@ -1,6 +1,6 @@
-import { all, takeLatest, call, put } from 'redux-saga/effects'
+import { all, takeLatest, call, put } from 'redux-saga/es/effects'
 import * as actions from './actions'
-import { signIn, signUp, signOut } from '../api/authorizationService'
+import { signIn, signUp, signOut } from '../../services/authorizationApi'
 
 export default  function* authorizationSaga() {
     yield all([

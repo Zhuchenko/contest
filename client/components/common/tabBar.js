@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import getClassNames from "../utilities/getClassnames";
+import getClassNames from "../../utilities/getClassnames";
 
 import './css/tabBar.css'
 

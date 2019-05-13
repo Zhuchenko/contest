@@ -1,6 +1,6 @@
-import { all } from 'redux-saga/effects'
+import { all } from 'redux-saga/es/effects'
 import authorizationSaga from './authorization/saga'
-import applicationSaga from './applicationSaga'
+import applicationSaga from './application/saga'
 
 const creator = ({ history }) => {
     function* rootSaga() {

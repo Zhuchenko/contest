@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import * as ReactDOM from 'react-dom';
-import styles from './css/popup.css';
+
+import './css/popup.css';
 
 class Popup extends Component {
     constructor(props) {

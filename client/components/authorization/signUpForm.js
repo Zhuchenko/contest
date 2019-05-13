@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Input from '../../components/input'
+import Input from '../common/input'
 import {connect} from 'react-redux'
-import * as actions from '../actions'
+import * as actions from '../../redux/authorization/actions'
 import {validateEmail, validatePassword, validateRepeatPassword, validateInput} from '../../utilities/checks'
 
 import './css/signForm.css'
-import './css/button.css'
+import './css/appbar__button.css'
 
 class SignUpForm extends Component {
     handleChangedUsername = (event) => {
@@ -44,33 +44,32 @@ class SignUpForm extends Component {
 
         const usernameErrorMessage = validateInput(username.value);
         if(usernameErrorMessage){
-            await this.props.usernameIsNotValid({value:username.value, errorMessage:usernameErrorMessage})
+            await this.props.usernameIsNotValid({errorMessage:usernameErrorMessage})
         }
 
         const passwordErrorMessage = validatePassword(password.value);
         if(passwordErrorMessage){
-            await this.props.passwordIsNotValid({value:password.value, errorMessage: passwordErrorMessage})
+            await this.props.passwordIsNotValid({errorMessage: passwordErrorMessage})
         }
 
         const repeatPasswordErrorMessage = validateRepeatPassword(password.value, repeatPassword.value);
         if(repeatPasswordErrorMessage){
-            await this.props.repeatPasswordIsNotValid({value:repeatPassword.value, errorMessage: repeatPasswordErrorMessage})
+            await this.props.repeatPasswordIsNotValid({errorMessage: repeatPasswordErrorMessage})
         }
 
         const emailErrorMessage = validateEmail(email.value);
         if(emailErrorMessage){
-            console.log('emailErrorMessage: ' + emailErrorMessage)
-            await this.props.emailIsNotValid({value:email.value, errorMessage: emailErrorMessage})
+            await this.props.emailIsNotValid({errorMessage: emailErrorMessage})
         }
 
         const nameErrorMessage = validateInput(name.value);
         if(nameErrorMessage){
-            await this.props.nameIsNotValid({value:name.value, errorMessage:nameErrorMessage})
+            await this.props.nameIsNotValid({errorMessage:nameErrorMessage})
         }
 
         const lastNameErrorMessage = validateInput(lastName.value);
         if(lastNameErrorMessage) {
-            await this.props.lastNameIsNotValid({value: lastName.value, errorMessage: lastNameErrorMessage})
+            await this.props.lastNameIsNotValid({errorMessage: lastNameErrorMessage})
         }
     };
 

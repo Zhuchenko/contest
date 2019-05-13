@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions'
-import * as application from './applicationActions'
-import * as authorization from './authorization/actions'
+import * as application from './actions'
+import * as authorization from '../authorization/actions'
 
 const initialState = {
     authorized: false,
