@@ -17,6 +17,7 @@ class Problem extends Component {
             },
             options: [],
             selectedId: 0,
+            attachedFile: '',
             results: ''
         }
     }
@@ -40,11 +41,19 @@ class Problem extends Component {
 
     handleUploadFile = (files) => {
         if (files && files[0]) {
+            this.setState({attachedFile: files[0]});
+        }
+    };
+
+    sendSolution = () => {
+        const {attachedFile, options, selectedId} = this.state;
+
+        if (attachedFile) {
             sendParcel({
                 problem: this.props.match.params.problemId,
                 contest: "5cd846b9d2770317bdf60cdb",
-                options: this.state.options[this.state.selectedId]
-            }, files[0])
+                options: options[selectedId]
+            }, attachedFile)
                 .then(results => {
                     this.setState({results})
                 })
@@ -53,7 +62,27 @@ class Problem extends Component {
     };
 
     render() {
-        const {name, text, limitation: {time, memory}, options, results} = this.state;
+        const {name, text, limitation: {time, memory}, options, attachedFile, results} = this.state;
+
+        const languageOptions =
+            options.map((option, index) =>
+                <option key={index}>{option.language} ({option.compiler})</option>);
+
+        const attachedFileName =
+            attachedFile ?
+                <div>{attachedFile.name}</div>
+                : null;
+
+        const resultsOfSendingSolution =
+            results ?
+                results.map((result, index) =>
+                    <div key={index}>
+                        number: {result.number} {result.shortening}
+                        <br/>
+                        {result.message}
+                    </div>)
+                : null;
+
         return (
             <div className={'problem'}>
                 <h1>{name}</h1>
@@ -66,26 +95,17 @@ class Problem extends Component {
                 <div>
                     <label>Language:</label>
                     <select className={'problem__select'} onChange={this.handleOptionsChange}>
-                        {
-                            options.map((option, index) =>
-                                <option key={index}>{option.language} ({option.compiler})</option>)
-                        }
+                        { languageOptions }
                     </select>
                 </div>
-                <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadFile}>
-                    <button className={'problem__button'} onClick={(e) => {
-                    }}>Upload
-                    </button>
-                </FileUploader>
-                {
-                    results &&
-                    results.map((result, index) =>
-                        <div key={index}>
-                            number: {result.number} {result.shortening}
-                            <br/>
-                            {result.message}
-                        </div>)
-                }
+                <div>
+                    <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadFile}>
+                        <button className={'problem__button'} >Upload</button>
+                    </FileUploader>
+                    { attachedFileName }
+                </div>
+                <button className={'problem__button'} onClick={this.sendSolution}>Send</button>
+                { resultsOfSendingSolution }
             </div>
         )
     }
