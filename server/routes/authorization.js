@@ -3,6 +3,7 @@ import { User } from '../mongoose/api/user'
 import {getUserById, getUserByUsername, getUserByEmail} from '../mongoose/api/user';
 import passport from 'passport'
 import auth from './auth'
+
 import '../config/passport'
 
 const router = express.Router();
@@ -37,12 +38,7 @@ router.post('/signup', auth.optional, (req, res) => {
 
   return finalUser.save()
       .then(() => {
-          console.log('before')
-          let a = finalUser.toAuthJSON();
-          console.log('a')
-          console.log(a)
-
-          res.json({ ...a })});
+          res.json({ ...finalUser.toAuthJSON() })});
 });
 
 router.get('/signin', auth.required, (req, res) => {

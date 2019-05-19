@@ -1,9 +1,10 @@
 import mongoose from 'mongoose'
-import crypto from 'crypto-js';
+import crypto from 'crypto-js'
 import pbkdf2 from '../utils/pbkdf2'
 import pbkdf2Config from '../config/pbkdf2Config'
-import jwt from 'jsonwebtoken';
-const fs = require('fs');
+import jwt from 'jsonwebtoken'
+import fs from 'fs'
+import path from "path"
 import {serverConfig} from '../config/serverConfig'
 
 const Schema = mongoose.Schema;
@@ -44,7 +45,7 @@ UserSchema.methods.generateJWT = function() {
         username: this.username,
         id: this._id,
         exp: parseInt(expirationDate.getTime() / 1000, 10),
-    }, fs.readFileSync(serverConfig.authorization.privateKeyPath), { algorithm: 'RS256'});
+    }, fs.readFileSync(path.join(__dirname, '..', serverConfig.session.privateKeyPath)), { algorithm: 'RS256'});
 };
 
 UserSchema.methods.toAuthJSON = function() {

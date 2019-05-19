@@ -5,9 +5,9 @@ const productionMode = argv.mode === 'production';
 
 export const serverConfig =
     productionMode ?
-        require('../production.server.config')
+        require('./production.server.config')
         :
-        require('../development.server.config');
+        require('./development.server.config');
 
 console.log(
     productionMode ?

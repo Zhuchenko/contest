@@ -10,7 +10,7 @@ export const setAuthToken = (headers) => {
     const token = sessionStorage.getItem("token");
 
     if (token) {
-        headers['Authorization'] = 'Token ' + token;
+        headers['Authorization'] = 'Bearer ' + token;
     }
 
     return headers;

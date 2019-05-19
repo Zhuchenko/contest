@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const serverConfig = require('../server/production.server.config');
+const serverConfig = require('../server/config/production.server.config');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const root = path.join(__dirname, '..');

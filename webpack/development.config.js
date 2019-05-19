@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const serverConfig = require('../server/development.server.config');
+const serverConfig = require('../server/config/development.server.config');
 
 const root = path.join(__dirname, '..');
 
