@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
-import crypto from 'crypto';
+import crypto from 'crypto-js';
+import pbkdf2 from '../utils/pbkdf2'
+import pbkdf2Config from '../config/pbkdf2Config'
 import jwt from 'jsonwebtoken';
 import {serverConfig} from '../config/serverConfig'
 
@@ -23,12 +25,12 @@ export const UserSchema = new Schema({
 });
 
 UserSchema.methods.generateHash = function(password) {
-    this._salt = crypto.randomBytes(16).toString('hex');
-    this._hash = crypto.pbkdf2Sync(password, this._salt, 10000, 512, 'sha512').toString('hex');
+    this._salt = crypto.lib.WordArray.random(16);
+    this._hash = pbkdf2(password, this._salt, pbkdf2Config);
 };
 
 UserSchema.methods.validatePassword = function(password) {
-    const hash = crypto.pbkdf2Sync(password, this._salt, 10000, 512, 'sha512').toString('hex');
+    const hash = pbkdf2(password, this._salt, pbkdf2Config);
     return this._hash === hash;
 };
 

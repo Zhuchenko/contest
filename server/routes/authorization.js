@@ -8,7 +8,7 @@ import '../config/passport'
 const router = express.Router();
 
 router.post('/signup', auth.optional, (req, res) => {
-  const { body: { username, password, email, name, lastname } } = req;
+  const { body: { username, password, email, name, lastName } } = req;
 
   getUserByUsername(username)
       .then((user) => {
@@ -32,7 +32,7 @@ router.post('/signup', auth.optional, (req, res) => {
     return res.status(422).json({ password: { errorMessage: 'it is required' } });
   }
 
-  const finalUser = new User({username, email, name, lastname});
+  const finalUser = new User({username, email, name, lastName});
   finalUser.generateHash(password);
 
   return finalUser.save()
