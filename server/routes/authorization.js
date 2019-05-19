@@ -36,7 +36,13 @@ router.post('/signup', auth.optional, (req, res) => {
   finalUser.generateHash(password);
 
   return finalUser.save()
-      .then(() => res.json({ ...finalUser.toAuthJSON() }));
+      .then(() => {
+          console.log('before')
+          let a = finalUser.toAuthJSON();
+          console.log('a')
+          console.log(a)
+
+          res.json({ ...a })});
 });
 
 router.get('/signin', auth.required, (req, res) => {

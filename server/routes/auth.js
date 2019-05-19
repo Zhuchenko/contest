@@ -15,13 +15,15 @@ const auth = {
         secret: serverConfig.authorization.jwtSecret,
         userProperty: 'payload',
         getToken: getTokenFromHeaders,
+        algorithms: ["RS256"]
     }),
     optional: jwt({
         secret: serverConfig.authorization.jwtSecret,
         userProperty: 'payload',
         getToken: getTokenFromHeaders,
         credentialsRequired: false,
-    }),
+        algorithms: ["RS256"]
+    })
 };
 
 module.exports = auth;
