@@ -1,6 +1,6 @@
 import express from 'express'
 import { getContestById, getAllContests, addContest, updateContest, deleteContest } from '../mongoose/api/contest'
-import auth from './auth'
+import auth from '../config/auth'
 
 const router = express.Router();
 

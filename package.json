@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "webpack --progress --config .\\webpack\\production.config.js & babel .\\server --out-dir .\\dist\\server",
+    "prod": "npm run build & node .\\dist\\index.js --mode=production",
     "start:client": "webpack-dev-server --progress --config .\\webpack\\development.config.js --watch --hotOnly",
     "start:server": "nodemon --exec \"babel-node .\\server\\index.js --mode=development\" -w .\\server"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/polyfill": "7.0.0",
     "body-parser": "1.18.3",
     "crypto-js": "3.1.9-1",

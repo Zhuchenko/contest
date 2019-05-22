@@ -59,14 +59,16 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.IgnorePlugin(
+        /^\.\/locale$/,
+        /moment$/
+    ),
     new CopyWebpackPlugin([
-      {from: path.join(root, 'public', 'assets', 'favicon.ico'), to: path.join(root, 'dist', 'public', 'assets', 'favicon.ico')},
-      {from: path.join(root, 'public', 'assets', 'manifest.json'), to: path.join(root, 'dist', 'public', 'assets', 'manifest.json')},
+      {from: path.join(root, 'public.key'), to: path.join(root, 'dist', 'public.key')},
+      {from: path.join(root, 'private.key'), to: path.join(root, 'dist', 'private.key')},
       {from: path.join(root, 'index.js'), to: path.join(root, 'dist', 'index.js')},
       {from: path.join(root, 'package.json'), to: path.join(root, 'dist', 'package.json')},
-      {from: path.join(root, 'web.config'), to: path.join(root, 'dist', 'web.config')},
-      {from: path.join(root, 'server', 'production.server.config.js'), to: path.join(root, 'dist', 'server', 'production.server.config.js')}
+      {from: path.join(root, 'web.config'), to: path.join(root, 'dist', 'web.config')}
     ])
   ]
 };

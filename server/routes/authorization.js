@@ -2,7 +2,7 @@ import express from 'express'
 import { User } from '../mongoose/api/user'
 import {getUserById, getUserByUsername, getUserByEmail} from '../mongoose/api/user';
 import passport from 'passport'
-import auth from './auth'
+import auth from '../config/auth'
 
 import '../config/passport'
 

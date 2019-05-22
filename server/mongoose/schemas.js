@@ -28,11 +28,11 @@ export const UserSchema = new Schema({
 
 UserSchema.methods.generateHash = function(password) {
     this._salt = crypto.lib.WordArray.random(16);
-    this._hash = pbkdf2(password, this._salt, pbkdf2Config);
+    this._hash = pbkdf2(password, this._salt, serverConfig.authorization.salt, pbkdf2Config);
 };
 
 UserSchema.methods.validatePassword = function(password) {
-    const hash = pbkdf2(password, this._salt, pbkdf2Config);
+    const hash = pbkdf2(password, this._salt, serverConfig.authorization.salt, pbkdf2Config);
     return this._hash === hash;
 };
 
@@ -45,7 +45,7 @@ UserSchema.methods.generateJWT = function() {
         username: this.username,
         id: this._id,
         exp: parseInt(expirationDate.getTime() / 1000, 10),
-    }, fs.readFileSync(path.join(__dirname, '..', serverConfig.session.privateKeyPath)), { algorithm: 'RS256'});
+    }, fs.readFileSync(path.join(__dirname, '../..', serverConfig.session.privateKeyPath)), { algorithm: 'RS256'});
 };
 
 UserSchema.methods.toAuthJSON = function() {

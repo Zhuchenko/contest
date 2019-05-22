@@ -1,6 +1,6 @@
 import express from 'express'
 import { getSetOfProblemsById, addSetOfProblems, updateSetOfProblems, deleteSetOfProblems } from '../mongoose/api/setOfProblems'
-import auth from './auth'
+import auth from '../config/auth'
 
 const router = express.Router();
 

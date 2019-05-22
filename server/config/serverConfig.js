@@ -1,16 +1,16 @@
 import minimist from 'minimist'
 
 const argv = minimist(process.argv.slice(2));
-const productionMode = argv.mode === 'production';
+const developmentMode = argv.mode === 'development';
 
 export const serverConfig =
-    productionMode ?
-        require('./production.server.config')
+    developmentMode ?
+        require('./development.server.config')
         :
-        require('./development.server.config');
+        require('./production.server.config');
 
 console.log(
-    productionMode ?
-        'Contest server is starting with production mode...'
+    developmentMode ?
+        'Contest server is starting with development mode...'
         :
-        'Contest server is starting with development mode...');
+        'Contest server is starting with production mode...');

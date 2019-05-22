@@ -3,7 +3,7 @@ import { UserSchema } from '../schemas'
 
 export const User = mongoose.model('User', UserSchema, 'users')
 
-export const getUserById = async (userId) => {
+export const getUserById = (userId) => {
     return User.findOne({ _id: userId }).exec();
 };
 

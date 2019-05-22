@@ -9,6 +9,7 @@
     "react-hot-loader/babel",
     ["babel-plugin-styled-components", { "ssr": true }],
     "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-proposal-class-properties"
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-runtime"
   ]
 }

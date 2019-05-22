@@ -5,7 +5,7 @@ import { getProblemById } from '../mongoose/api/problem'
 import { addTestResult } from '../mongoose/api/testResult'
 import { addSolution, getSolutionByOptions, updateSolution } from '../mongoose/api/solution'
 import { convertTests } from '../utils/convertTest'
-import auth from './auth'
+import auth from '../config/auth'
 
 const router = express.Router();
 

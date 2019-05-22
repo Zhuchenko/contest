@@ -41,7 +41,7 @@ class Problem extends Component {
 
     handleUploadFile = (files) => {
         if (files && files[0]) {
-            this.setState({attachedFile: files[0]});
+            this.setState({attachedFile: files[0], results: ''});
         }
     };
 
