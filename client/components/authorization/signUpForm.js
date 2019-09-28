@@ -9,11 +9,6 @@ import './css/signForm.css'
 import './css/appbar__button.css'
 
 class SignUpForm extends Component {
-    handleChangedUsername = (event) => {
-        const username = event.target.value;
-        this.props.enterUsername({username});
-    };
-
     handleChangedPassword = (event) => {
         const password = event.target.value;
         this.props.enterPassword({password});
@@ -40,11 +35,11 @@ class SignUpForm extends Component {
     };
 
     check = async () =>{
-        const {username, password, repeatPassword, email, name, lastName} = this.props;
+        const {email, password, repeatPassword, name, lastName} = this.props;
 
-        const usernameErrorMessage = validateInput(username.value);
-        if(usernameErrorMessage){
-            await this.props.usernameIsNotValid({errorMessage:usernameErrorMessage})
+        const emailErrorMessage = validateEmail(email.value);
+        if(emailErrorMessage){
+            await this.props.emailIsNotValid({errorMessage: emailErrorMessage})
         }
 
         const passwordErrorMessage = validatePassword(password.value);
@@ -55,11 +50,6 @@ class SignUpForm extends Component {
         const repeatPasswordErrorMessage = validateRepeatPassword(password.value, repeatPassword.value);
         if(repeatPasswordErrorMessage){
             await this.props.repeatPasswordIsNotValid({errorMessage: repeatPasswordErrorMessage})
-        }
-
-        const emailErrorMessage = validateEmail(email.value);
-        if(emailErrorMessage){
-            await this.props.emailIsNotValid({errorMessage: emailErrorMessage})
         }
 
         const nameErrorMessage = validateInput(name.value);
@@ -75,27 +65,21 @@ class SignUpForm extends Component {
 
     signUp = async () => {
         await this.check();
-        const {username, password, repeatPassword, email, name, lastName} = this.props;
-        if (username.isValid && password.isValid && repeatPassword.isValid && email.isValid && name.isValid && lastName.isValid) {
+        const {email, password, repeatPassword, name, lastName} = this.props;
+        if (email.isValid && password.isValid && repeatPassword.isValid && name.isValid && lastName.isValid) {
             this.props.signUp({
-                username: username.value,
-                password: password.value,
                 email: email.value,
+                password: password.value,
                 name: name.value,
                 lastName: lastName.value
             });
         }
-    }
+    };
 
     render() {
-        const {username, password, repeatPassword, email, name, lastName, hideForm} = this.props;
+        const {email, password, repeatPassword, name, lastName, hideForm} = this.props;
 
         const inputs = [
-            {
-                placeholder: 'username',
-                ...username,
-                onChange:this.handleChangedUsername
-            },
             {
                 placeholder: 'email',
                 ...email,
@@ -150,31 +134,27 @@ class SignUpForm extends Component {
 SignUpForm.propTypes = {
     signUp: PropTypes.func.isRequired,
     hideForm: PropTypes.func.isRequired,
-    enterUsername: PropTypes.func.isRequired,
+    enterEmail: PropTypes.func.isRequired,
     enterPassword: PropTypes.func.isRequired,
     enterRepeatPassword: PropTypes.func.isRequired,
-    enterEmail: PropTypes.func.isRequired,
     enterName: PropTypes.func.isRequired,
     enterLastName: PropTypes.func.isRequired,
-    username: PropTypes.object.isRequired,
+    email: PropTypes.object.isRequired,
     password: PropTypes.object.isRequired,
     repeatPassword: PropTypes.object.isRequired,
-    email: PropTypes.object.isRequired,
     name: PropTypes.object.isRequired,
     lastName: PropTypes.object.isRequired,
-    usernameIsNotValid: PropTypes.func.isRequired,
+    emailIsNotValid: PropTypes.func.isRequired,
     passwordIsNotValid: PropTypes.func.isRequired,
     repeatPasswordIsNotValid: PropTypes.func.isRequired,
-    emailIsNotValid: PropTypes.func.isRequired,
     nameIsNotValid: PropTypes.func.isRequired,
     lastNameIsNotValid: PropTypes.func.isRequired,
 };
 
 export default connect(state => ({
-    username: state.authorization.username,
+    email: state.authorization.email,
     password: state.authorization.password,
     repeatPassword: state.authorization.repeatPassword,
-    email: state.authorization.email,
     name: state.authorization.name,
     lastName: state.authorization.lastName,
 }), actions)(SignUpForm)

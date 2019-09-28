@@ -11,6 +11,7 @@ import contestRouter from './routes/contest'
 import groupRouter from './routes/groupOfUsers'
 import setRouter from './routes/setOfProblems'
 import parcelRouter from './routes/parcel'
+import userRouter from './routes/user'
 
 import template from './template'
 
@@ -29,6 +30,7 @@ app.use('/api/contests', contestRouter);
 app.use('/api/groups', groupRouter);
 app.use('/api/sets', setRouter);
 app.use('/api/parcels', parcelRouter);
+app.use('/api/users', userRouter);
 
 app.get('/*', (req, res) => {
   res.send(template({

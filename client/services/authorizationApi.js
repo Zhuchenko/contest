@@ -1,6 +1,6 @@
 import {saveToken, clear, setAuthToken} from '../utilities/sessionStorage';
 
-export const getUsername = () => {
+export const init = () => {
     const headers = setAuthToken({ });
 
     return fetch('/api/signin', {
@@ -10,24 +10,21 @@ export const getUsername = () => {
     })
         .then(response => {
             if (response.status === 200) {
-                return response.json()
-                    .then(user =>{
-                        return user.username;
-                    })
+                return response.json();
             } else {
                 throw response.status
             }
         })
 };
 
-export const signIn = (username, password) => {
+export const signIn = (email, password) => {
     return fetch('/api/signin', {
         method: 'POST',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ email, password })
     })
         .then(response => {
             if (response.status === 200) {
@@ -45,14 +42,14 @@ export const signIn = (username, password) => {
         }).catch(error => ({ error }))
 };
 
-export const signUp = (username, password, email, name, lastName) => {
+export const signUp = (email, password, name, lastName) => {
     return fetch('/api/signup', {
         method: 'POST',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password, email, name, lastName})
+        body: JSON.stringify({ email, password, name, lastName})
     })
         .then(response => {
             if (response.status === 200) {

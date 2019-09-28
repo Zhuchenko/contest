@@ -1,6 +1,6 @@
 import { all, takeLatest, call, put } from 'redux-saga/es/effects'
 import * as actions from './actions'
-import { getUsername } from '../../services/authorizationApi'
+import { init } from '../../services/authorizationApi'
 
 export default  function* authorizationSaga() {
     yield all([
@@ -14,13 +14,14 @@ function* watchInit() {
 
 function* initSaga() {
     try {
-        const user = yield call(getUsername);
+        const user = yield call(init);
 
         if(user) {
-            yield put(actions.authorized({user}));
+            console.log(JSON.stringify(user))
+            yield put(actions.initSuccessAuthorized({user}));
         }
         else{
-            yield put(actions.notAuthorized())
+            yield put(actions.initSuccessNotAuthorized())
         }
     }
     catch (error) {

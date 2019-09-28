@@ -17,10 +17,9 @@ const reducer = handleActions(
             ...state,
             isShown: initialState.isShown,
 
-            username: initialValueOfInput(),
+            email: initialValueOfInput(),
             password: initialValueOfInput(),
             repeatPassword: initialValueOfInput(),
-            email: initialValueOfInput(),
             name: initialValueOfInput(),
             lastName: initialValueOfInput()
         }),
@@ -29,29 +28,24 @@ const reducer = handleActions(
             ...state,
             isShown: false,
 
-            username: initialValueOfInput(),
+            email: initialValueOfInput(),
             password: initialValueOfInput(),
             repeatPassword: initialValueOfInput(),
-            email: initialValueOfInput(),
             name: initialValueOfInput(),
             lastName: initialValueOfInput()
         }),
 
-        [actions.signInFailureUsername]: (state, {payload}) => ({    //validation
+        [actions.signInFailureEmail]: (state, {payload}) => ({
             ...state,
             isShown: true,
 
-            username: {
+            email: {
                 value: '',
                 isValid: payload.isValid,
                 errorMessage: payload.errorMessage
             },
-
             password: initialValueOfInput(),
             repeatPassword: initialValueOfInput(),
-            email: initialValueOfInput(),
-            name: initialValueOfInput(),
-            lastName: initialValueOfInput()
         }),
 
         [actions.signInFailurePassword]: (state, {payload}) => ({
@@ -74,38 +68,11 @@ const reducer = handleActions(
             ...state,
             isShown: false,
 
-            username: initialValueOfInput(),
             password: initialValueOfInput(),
             repeatPassword: initialValueOfInput(),
             email: initialValueOfInput(),
             name: initialValueOfInput(),
             lastName: initialValueOfInput()
-        }),
-
-        [actions.signUpFailureEmail]: (state, {payload}) => ({
-            ...state,
-            isShown: true,
-
-            email: {
-                value: '',
-                isValid: payload.isValid,
-                errorMessage: payload.errorMessage
-            },
-            password: initialValueOfInput(),
-            repeatPassword: initialValueOfInput(),
-        }),
-
-        [actions.signUpFailureUsername]: (state, {payload}) => ({
-            ...state,
-            isShown: true,
-
-            username: {
-                value: '',
-                isValid: payload.isValid,
-                errorMessage: payload.errorMessage
-            },
-            password: initialValueOfInput(),
-            repeatPassword: initialValueOfInput(),
         }),
 
         [actions.signUpFailureEmail]: (state, {payload}) => ({
@@ -125,7 +92,6 @@ const reducer = handleActions(
             ...state,
             isShown: false,
 
-            username: initialValueOfInput(),
             password: initialValueOfInput(),
             repeatPassword: initialValueOfInput(),
             email: initialValueOfInput(),
@@ -141,7 +107,6 @@ const reducer = handleActions(
             ...state,
             isShown: true,
 
-            username: initialValueOfInput(),
             password: initialValueOfInput(),
             repeatPassword: initialValueOfInput(),
             email: initialValueOfInput(),
@@ -153,21 +118,11 @@ const reducer = handleActions(
             ...state,
             isShown: false,
 
-            username: initialValueOfInput(),
             password: initialValueOfInput(),
             repeatPassword: initialValueOfInput(),
             email: initialValueOfInput(),
             name: initialValueOfInput(),
             lastName: initialValueOfInput()
-        }),
-
-        [actions.enterUsername]: (state, {payload}) => ({
-            ...state,
-            username: {
-                value: payload.username,
-                isValid: true,
-                errorMessage: ''
-            }
         }),
 
         [actions.enterPassword]: (state, {payload}) => ({
@@ -215,10 +170,10 @@ const reducer = handleActions(
             }
         }),
 
-        [actions.usernameIsNotValid]: (state, {payload}) => ({
+        [actions.emailIsNotValid]: (state, {payload}) => ({
             ...state,
-            username: {
-                value: state.username.value,
+            email: {
+                value: state.email.value,
                 isValid: false,
                 errorMessage: payload.errorMessage
             }
@@ -242,15 +197,6 @@ const reducer = handleActions(
             ...state,
             repeatPassword: {
                 value: '',
-                isValid: false,
-                errorMessage: payload.errorMessage
-            }
-        }),
-
-        [actions.emailIsNotValid]: (state, {payload}) => ({
-            ...state,
-            email: {
-                value: state.email.value,
                 isValid: false,
                 errorMessage: payload.errorMessage
             }

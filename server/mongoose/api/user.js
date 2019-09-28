@@ -3,12 +3,12 @@ import { UserSchema } from '../schemas'
 
 export const User = mongoose.model('User', UserSchema, 'users')
 
-export const getUserById = (userId) => {
-    return User.findOne({ _id: userId }).exec();
+export const getAll = (userId) => {
+    return User.find();
 };
 
-export const getUserByUsername = (username) => {
-    return User.findOne({ username: username }).exec();
+export const getUserById = (userId) => {
+    return User.findOne({ _id: userId }).exec();
 };
 
 export const getUserByEmail = (email) => {

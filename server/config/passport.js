@@ -3,13 +3,16 @@ import LocalStrategy from 'passport-local';
 import { User } from '../mongoose/api/user'
 
 passport.use(new LocalStrategy({
-    usernameField: 'username',
+    usernameField: 'email',
     passwordField: 'password',
-}, (username, password, done) => {
-    User.findOne({ username })
+}, (email, password, done) => {
+    User.findOne({ email })
         .then((user) => {
-            if(!user || !user.validatePassword(password)) {
-                return done(null, false, { errors: { 'username or password': 'is invalid' } });
+            if(!user) {
+                return done(null, false, { errors: { 'email': 'is invalid' } });
+            }
+            if(!user.validatePassword(password)) {
+                return done(null, false, { errors: { 'password': 'is invalid' } });
             }
             return done(null, user);
         }).catch(done);

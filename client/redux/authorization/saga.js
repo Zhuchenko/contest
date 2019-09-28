@@ -23,14 +23,14 @@ function* watchSignOut() {
 }
 
 function* signInSaga(action) {
-    const {username, password} = action.payload;
-    const {user, error} = yield call(signIn, username, password);
+    const {email, password} = action.payload;
+    const {user, error} = yield call(signIn, email, password);
 
     if (user) {
         yield put(actions.signInSuccess(user));
     } else{
-        if(error.username){
-            yield put(actions.signInFailureUsername({...error.username, isValid:false}));
+        if(error.email){
+            yield put(actions.signInFailureEmail({...error.email, isValid:false}));
         }
         if(error.password){
             yield put(actions.signInFailurePassword({...error.password, isValid:false}));
@@ -39,17 +39,14 @@ function* signInSaga(action) {
 }
 
 function* signUpSaga(action) {
-    const {username, password, email, name, lastName} = action.payload;
-    const {user, error} = yield call(signUp, username, password, email, name, lastName);
+    const {email, password, name, lastName} = action.payload;
+    const {user, error} = yield call(signUp, email, password, name, lastName);
 
     if (user) {
         yield put(actions.signUpSuccess(user));
     } else {
         if (error.email) {
             yield put(actions.signUpFailureEmail({...error.email, isValid: false}));
-        }
-        if (error.username) {
-            yield put(actions.signUpFailureUsername({...error.username, isValid: false}));
         }
     }
 }

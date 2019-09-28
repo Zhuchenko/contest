@@ -6,7 +6,7 @@ export const signIn = createAction('SIGN_IN');
 
 export const signInSuccess = createAction('SIGN_IN_SUCCESS');
 
-export const signInFailureUsername = createAction('SIGN_IN_FAILURE_USERNAME');
+export const signInFailureEmail = createAction('SIGN_IN_FAILURE_EMAIL');
 
 export const signInFailurePassword = createAction('SIGN_IN_FAILURE_PASSWORD');
 
@@ -15,8 +15,6 @@ export const signUp = createAction('SIGN_UP');
 export const signUpSuccess = createAction('SIGN_UP_SUCCESS');
 
 export const signUpFailureEmail = createAction('SIGN_UP_FAILURE_EMAIL');
-
-export const signUpFailureUsername = createAction('SIGN_UP_FAILURE_USERNAME');
 
 export const signOut = createAction('SIGN_OUT');
 
@@ -28,8 +26,6 @@ export const showForm = createAction('SHOW_FORM');
 
 export const hideForm = createAction('HIDE_FORM');
 
-export const enterUsername = createAction('ENTER_USERNAME');
-
 export const enterPassword = createAction('ENTER_PASSWORD');
 
 export const enterRepeatPassword = createAction('ENTER_REPEAT_PASSWORD');
@@ -39,8 +35,6 @@ export const enterEmail = createAction('ENTER_EMAIL');
 export const enterName = createAction('ENTER_NAME');
 
 export const enterLastName = createAction('ENTER_LAST_NAME');
-
-export const usernameIsNotValid = createAction('USERNAME_IS_NOT_VALID');
 
 export const passwordIsNotValid = createAction('PASSWORD_IS_NOT_VALID');
 

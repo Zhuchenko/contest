@@ -4,54 +4,54 @@ import pbkdf2 from '../utils/pbkdf2'
 import pbkdf2Config from '../config/pbkdf2Config'
 import jwt from 'jsonwebtoken'
 import fs from 'fs'
-import path from "path"
+import path from 'path'
 import {serverConfig} from '../config/serverConfig'
 
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 export const UserSchema = new Schema({
-    username: {
+    email: {
         type: String,
         unique: true,
         required: true
     },
-    email: {
-        type: String,
-        unique: true
-    },
     name: String,
     lastName: String,
+    roles: {
+        type: [String],
+        required: true
+    },
     _hash: String,
     _salt: String
 });
 
-UserSchema.methods.generateHash = function(password) {
+UserSchema.methods.generateHash = function (password) {
     this._salt = crypto.lib.WordArray.random(16);
     this._hash = pbkdf2(password, this._salt, serverConfig.authorization.salt, pbkdf2Config);
 };
 
-UserSchema.methods.validatePassword = function(password) {
+UserSchema.methods.validatePassword = function (password) {
     const hash = pbkdf2(password, this._salt, serverConfig.authorization.salt, pbkdf2Config);
     return this._hash === hash;
 };
 
-UserSchema.methods.generateJWT = function() {
+UserSchema.methods.generateJWT = function () {
     const today = new Date();
     const expirationDate = new Date(today);
     expirationDate.setDate(today.getDate() + 60);
 
     return jwt.sign({
-        username: this.username,
+        email: this.email,
         id: this._id,
         exp: parseInt(expirationDate.getTime() / 1000, 10),
-    }, fs.readFileSync(path.join(__dirname, '../..', serverConfig.session.privateKeyPath)), { algorithm: 'RS256'});
+    }, fs.readFileSync(path.join(__dirname, '../..', serverConfig.session.privateKeyPath)), {algorithm: 'RS256'});
 };
 
-UserSchema.methods.toAuthJSON = function() {
+UserSchema.methods.toAuthJSON = function () {
     return {
         _id: this._id,
-        username: this.username,
+        email: this.email,
         token: this.generateJWT(),
     };
 };
@@ -79,21 +79,21 @@ export const ProblemSchema = new Schema({
         type: ObjectId,
         required: true
     },
-    checker:{
+    checker: {
         type: Buffer,
         required: true
     },
     limitation: {
-        time:{
+        time: {
             type: Number,
             required: true
         },
-        memory:{
+        memory: {
             type: Number,
             required: true
         }
     },
-    tests:[{
+    tests: [{
         input: {
             type: Buffer,
             required: true
@@ -108,12 +108,12 @@ export const ProblemSchema = new Schema({
         },
         description: String
     }],
-    numberOfTests:{
+    numberOfTests: {
         type: Number,
         required: true
     },
-    options:[{
-        language:{
+    options: [{
+        language: {
             type: String,
             required: true
         },
@@ -163,11 +163,11 @@ export const ContestSchema = new Schema({
         type: Boolean,
         required: true
     },
-    startingDate:{
+    startingDate: {
         type: Date,
         //required: true
     },
-    endingDate:{
+    endingDate: {
         type: Date,
         //required: true
     },
@@ -186,8 +186,8 @@ export const ParcelSchema = new Schema({
         type: ObjectId,
         required: true
     },
-    options:{
-        language:{
+    options: {
+        language: {
             type: String,
             required: true
         },
@@ -220,7 +220,7 @@ export const SolutionSchema = new Schema({
         type: ObjectId,
         required: true
     },
-    attemptNumber:{
+    attemptNumber: {
         type: Number,
         required: true
     },
@@ -236,25 +236,78 @@ export const TestResultSchema = new Schema({
         type: ObjectId,
         required: true
     },
-    tests:[{
-        number:{
+    tests: [{
+        number: {
             type: Number,
             required: true
         },
-        result:{
+        result: {
             shortening: {
                 type: String,
                 required: true
             },
             message: String
         },
-        time:{
+        time: {
             type: Number,
             //required: true
         },
-        memory:{
+        memory: {
             type: Number,
             //required: true
         }
     }]
+});
+
+export const RoleSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    rights: {
+        user: {
+            view: Boolean,
+            edit: Boolean,
+            delete: Boolean,
+            changeRole: Boolean
+        },
+        groupOfUsers: {
+            create: Boolean,
+            view: Boolean,
+            delete: Boolean,
+        },
+        problem: {
+            create: Boolean,
+            view: Boolean,
+            delete: Boolean,
+        },
+        setOfProblems: {
+            create: Boolean,
+            view: Boolean,
+            delete: Boolean,
+        },
+        contest: {
+            create: Boolean,
+            view: Boolean,
+            delete: Boolean,
+        }
+    }
+});
+
+export const Code = new Schema({
+    email: {
+        type: String,
+        required: true
+    },
+    code: {
+        view: Boolean,
+        edit: Boolean,
+        delete: Boolean,
+        changeRole: Boolean
+    },
+    date: {
+        create: Boolean,
+        view: Boolean,
+        delete: Boolean,
+    }
 });

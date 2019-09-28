@@ -9,9 +9,9 @@ import './css/signForm.css'
 import './css/appbar__button.css'
 
 class SignInForm extends Component {
-    handleChangedUsername = (event) => {
-        const username = event.target.value;
-        this.props.enterUsername({username});
+    handleChangedEmail = (event) => {
+        const email = event.target.value;
+        this.props.enterEmail({email});
     };
 
     handleChangedPassword = (event) => {
@@ -20,11 +20,11 @@ class SignInForm extends Component {
     };
 
     check = async () =>{
-        const {username, password, usernameIsNotValid, passwordIsNotValid} = this.props;
+        const {email, password, emailIsNotValid, passwordIsNotValid} = this.props;
 
-        const usernameErrorMessage = validateInput(username.value);
-        if(usernameErrorMessage){
-            await usernameIsNotValid({errorMessage: usernameErrorMessage})
+        const emailErrorMessage = validateInput(email.value);
+        if(emailErrorMessage){
+            await emailIsNotValid({errorMessage: emailErrorMessage})
         }
 
         const passwordErrorMessage = validateInput(password.value);
@@ -35,20 +35,20 @@ class SignInForm extends Component {
 
     signIn = async () => {
         await this.check();
-        const {username, password} = this.props;
+        const {email, password} = this.props;
 
-        if(username.isValid && password.isValid) {
-            this.props.signIn({username: username.value, password: password.value});
+        if(email.isValid && password.isValid) {
+            this.props.signIn({email: email.value, password: password.value});
         }
     };
 
     render() {
-        const {username, password, hideForm} = this.props;
+        const {email, password, hideForm} = this.props;
         const inputs = [
             {
-                placeholder: 'username',
-                ...username,
-                onChange:this.handleChangedUsername
+                placeholder: 'email',
+                ...email,
+                onChange:this.handleChangedEmail
             },
             {
                 placeholder: 'password',
@@ -83,15 +83,15 @@ class SignInForm extends Component {
 SignInForm.propTypes = {
     signIn: PropTypes.func.isRequired,
     hideForm: PropTypes.func.isRequired,
-    enterUsername: PropTypes.func.isRequired,
+    enterEmail: PropTypes.func.isRequired,
     enterPassword: PropTypes.func.isRequired,
-    username: PropTypes.object.isRequired,
+    email: PropTypes.object.isRequired,
     password: PropTypes.object.isRequired,
-    usernameIsNotValid: PropTypes.func.isRequired,
+    emailIsNotValid: PropTypes.func.isRequired,
     passwordIsNotValid: PropTypes.func.isRequired
 };
 
 export default connect(state => ({
-    username: state.authorization.username,
+    email: state.authorization.email,
     password: state.authorization.password
 }), actions)(SignInForm)
