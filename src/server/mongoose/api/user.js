@@ -3,7 +3,7 @@ import { UserSchema } from '../schemas'
 
 export const User = mongoose.model('User', UserSchema, 'users')
 
-export const getAll = (userId) => {
+export const getAll = () => {
     return User.find();
 };
 
@@ -16,7 +16,6 @@ export const getUserByEmail = (email) => {
 };
 
 export const addUser = async (newUser) => {
-
     return User.create(newUser)
         .then(user => {
             return user._id.toString();

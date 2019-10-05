@@ -7,7 +7,7 @@
     "build": "webpack --progress --config .\\webpack\\production.config.js & babel .\\server --out-dir .\\dist\\server",
     "prod": "npm run build & node .\\dist\\index.js --mode=production",
     "start:client": "webpack-dev-server --progress --config .\\webpack\\development.config.js --watch --hotOnly",
-    "start:server": "nodemon --exec \"babel-node .\\server\\index.js --mode=development\" -w .\\server"
+    "start:server": "nodemon --exec \"babel-node .\\src\\server\\index.js --mode=development\" -w .\\src\\server"
   },
   "author": "",
   "license": "ISC",

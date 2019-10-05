@@ -10,6 +10,37 @@ import {serverConfig} from '../config/serverConfig'
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
+export const ExpectedUserSchema = new Schema({
+    email: {
+        type: String,
+        unique: true
+    },
+    authKey: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    role: {
+        type: String,
+        required: true
+    },
+    _hash: String,
+    _salt: String
+});
+
+ExpectedUserSchema.methods.generateHash = function (password) {
+    this._salt = crypto.lib.WordArray.random(16);
+    this._hash = pbkdf2(password, this._salt, serverConfig.authorization.salt, pbkdf2Config);
+};
+
 export const UserSchema = new Schema({
     email: {
         type: String,
@@ -18,18 +49,13 @@ export const UserSchema = new Schema({
     },
     name: String,
     lastName: String,
-    roles: {
-        type: [String],
+    role: {
+        type: String,
         required: true
     },
     _hash: String,
     _salt: String
 });
-
-UserSchema.methods.generateHash = function (password) {
-    this._salt = crypto.lib.WordArray.random(16);
-    this._hash = pbkdf2(password, this._salt, serverConfig.authorization.salt, pbkdf2Config);
-};
 
 UserSchema.methods.validatePassword = function (password) {
     const hash = pbkdf2(password, this._salt, serverConfig.authorization.salt, pbkdf2Config);
@@ -294,20 +320,15 @@ export const RoleSchema = new Schema({
     }
 });
 
-export const Code = new Schema({
+export const CodeSchema = new Schema({
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     code: {
-        view: Boolean,
-        edit: Boolean,
-        delete: Boolean,
-        changeRole: Boolean
-    },
-    date: {
-        create: Boolean,
-        view: Boolean,
-        delete: Boolean,
+        type: String,
+        required: true,
+        unique: true
     }
 });

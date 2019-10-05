@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const serverConfig = require('../server/config/production.server.config');
+const serverConfig = require('../src/server/config/production.server.config');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const root = path.join(__dirname, '..');
@@ -11,7 +11,7 @@ module.exports = {
   entry: {
     main: [
       '@babel/polyfill',
-      path.join(root, 'client', 'main.js')
+      path.join(root, 'src', 'client', 'main.js')
     ]
   },
 
@@ -25,7 +25,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        include: path.join(root, 'client'),
+        include: path.join(root, 'src', 'client'),
         loader: 'babel-loader'
       },
       {

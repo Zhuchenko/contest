@@ -1,5 +1,6 @@
 import express from 'express'
 import { getAll, getUserById, updateUser, deleteUser } from '../mongoose/api/user'
+import { addExpectedUser } from '../mongoose/api/expectedUser'
 import auth from '../config/auth'
 
 const router = express.Router();
@@ -26,8 +27,8 @@ router.post('/:userId', auth.required, (req, res) => {
     const { body: {user}, params: { userId }} = req;
 
     return getUserById(userId)
-        .then(foundSet => {
-            if(foundSet) {
+        .then(newUser => {
+            if(newUser) {
                 updateUser(userId, user)
                     .then(newUser => {
                         return res.json({ user: newUser })
@@ -37,6 +38,24 @@ router.post('/:userId', auth.required, (req, res) => {
                 return res.status(500).end();
             }
         });
+});
+
+router.post('/add', auth.required, (req, res) => {
+    const { body: {user}} = req;
+
+    addExpectedUser(user);
+
+    return res.status(200).end();
+
+});
+
+router.post('/add', auth.required, (req, res) => {
+    const { body: {user}} = req;
+
+    addExpectedUser(user)
+
+    return res.status(200).end();
+
 });
 
 router.delete('/:userId', auth.required, (req, res) => {

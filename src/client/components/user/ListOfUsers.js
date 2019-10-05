@@ -3,7 +3,7 @@ import UserItem from './UserItem'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import * as actions from '../../redux/user/actions'
-import getList from '../common/list'
+import getList from '../common/List'
 
 //import './css/list.css'
 
