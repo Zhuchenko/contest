@@ -1,6 +1,6 @@
-import sendmail from 'sendmail'
+const sendmail = require('sendmail')();
 
-const from = 'contest@math.com';
+const from = "contest@math.com";
 const verifyEmailUrl = 'https://localhost:3000/verify-email';
 
 export const VerifyEmail = (email, code) => {

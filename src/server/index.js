@@ -15,6 +15,7 @@ import userRouter from './routes/user'
 import expectedUser from './routes/expectedUser'
 
 import template from './template'
+import {VerifyEmail} from "./sendmailService";
 
 const app = express();
 
