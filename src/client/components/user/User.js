@@ -7,26 +7,37 @@ class User extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            name: '',
+            lastName: '',
+            email: '',
+            roleIndex: '',
+        }
     }
 
     componentDidMount() {
         getUser(this.props.match.params.userId)
             .then(user => {
-                this.setState({
-                    user: user
-                })
+                const {name, lastName, email, role} = user;
+                this.setState({...user})
             })
     }
 
     render() {
-        const {user} = this.state;
-        console.log(user)
+        const {name, lastName, email, role} = this.state;
         return (
             <div className={'user'}>
-                {
-                    JSON.stringify(user)
-                }
+                <span>Name: </span>
+                <span>{name}</span>
+                <br/>
+                <span>Last Name: </span>
+                <span>{lastName}</span>
+                <br/>
+                <span>email: </span>
+                <span>{email}</span>
+                <br/>
+                <span>Role: </span>
+                <span>{role}</span>
             </div>
         )
     }

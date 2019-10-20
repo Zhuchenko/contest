@@ -19,9 +19,7 @@ function* watchDeleteUser() {
 
 function* getUsersSaga() {
     try {
-        console.log('**************************************************')
         const users = yield call(getUsers);
-        console.log(users)
         yield put(actions.getUsersSuccess(users));
     }
     catch (error) {

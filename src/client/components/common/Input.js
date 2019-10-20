@@ -5,31 +5,31 @@ import getClassNames from '../../utilities/getClassnames'
 import './css/input.css'
 
 const Input = (props) => {
-    const {placeholder, onChange, value, type, isValid, errorMessage} = props;
+    const {placeholder, onChange, value, type = 'text', isValid = true, errorMessage} = props;
     const classes = getClassNames({['sign__input']: true, ['sign__input--error']: !isValid});
 
     return (
         <div>
             <input
-                type={type ? type : 'text'}
+                type={type}
                 placeholder={placeholder}
                 onChange={onChange}
                 value={value}
                 className={classes}/>
             {
-                !isValid &&
+                !isValid && errorMessage &&
                 <div className='sign__error_message'>{errorMessage}</div>
             }
         </div>
     )
-}
+};
 
 Input.propTypes = {
     placeholder: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
     type: PropTypes.string,
-    isValid: PropTypes.bool.isRequired,
+    isValid: PropTypes.bool,
     errorMessage: PropTypes.string
 };
 

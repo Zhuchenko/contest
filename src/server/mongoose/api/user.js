@@ -4,15 +4,7 @@ import { UserSchema } from '../schemas'
 export const User = mongoose.model('User', UserSchema, 'users')
 
 export const getAll = () => {
-    return User.find();
-};
-
-export const getUserById = (userId) => {
-    return User.findOne({ _id: userId }).exec();
-};
-
-export const getUserByEmail = (email) => {
-    return User.findOne({ email: email }).exec();
+    return User.find().select('_id email name lastName role');
 };
 
 export const addUser = async (newUser) => {
@@ -20,6 +12,14 @@ export const addUser = async (newUser) => {
         .then(user => {
             return user._id.toString();
         });
+};
+
+export const getUserById = (userId) => {
+    return User.findOne({ _id: userId }).select('_id email name lastName role');
+};
+
+export const getUserByEmail = (email) => {
+    return User.findOne({ email: email }).exec();
 };
 
 export const updateUser = async (userId, userNewState) => {

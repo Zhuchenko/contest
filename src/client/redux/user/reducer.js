@@ -16,7 +16,6 @@ const userReducer = handleActions(
             ...state,
             users: payload.users
         }),
-
     },
     initialState
 );

@@ -2,7 +2,7 @@ import express from 'express'
 import passport from 'passport'
 import auth from '../config/auth'
 import {addUser, getUserByEmail, getUserById} from '../mongoose/api/user'
-import {getExpectedUserByParams, getExpectedUserByEmail, deleteExpectedUser} from '../mongoose/api/expectedUser'
+import {getUnverifiedUserByParams, getUnverifiedUserByEmail, deleteUnverifiedUser} from '../mongoose/api/unverifiedUser'
 import {addCode, getCode} from '../mongoose/api/code'
 import {getRightsByName} from '../mongoose/api/role'
 import generateCode from '../utils/generateCode'
@@ -16,7 +16,7 @@ router.post('/signup', auth.optional, (req, res) => {
     const {body: {email, password, name, lastName, authKey}} = req;
 
     (async () => {
-        const expUser = await getExpectedUserByParams({authKey, name, lastName});
+        const expUser = await getUnverifiedUserByParams({authKey, name, lastName});
         expUser.email = email;
         expUser.generateHash(password);
         await expUser.save();
@@ -39,8 +39,8 @@ router.get('/verify-email/:code', auth.optional, (req, res) => {
             return res.status(422).end();
         }
 
-        const {_id, email, name, lastName, role, _hash, _salt} = await getExpectedUserByEmail(rightCode.email); //getAndDelete
-        deleteExpectedUser(_id);
+        const {_id, email, name, lastName, role, _hash, _salt} = await getUnverifiedUserByEmail(rightCode.email); //getAndDelete
+        deleteUnverifiedUser(_id);
         addUser({email, name, lastName, role, _hash, _salt});
 
         res.status(200).end();

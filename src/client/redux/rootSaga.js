@@ -8,7 +8,7 @@ const creator = ({ history }) => {
         yield all([
             authorizationSaga(),
             applicationSaga(),
-            userSaga
+            userSaga()
         ])
     }
 

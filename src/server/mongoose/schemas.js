@@ -10,15 +10,12 @@ import {serverConfig} from '../config/serverConfig'
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-export const ExpectedUserSchema = new Schema({
+export const UnverifiedUserSchema = new Schema({
     email: {
-        type: String,
-        unique: true
+        type: String
     },
     authKey: {
-        type: String,
-        unique: true,
-        required: true
+        type: String
     },
     name: {
         type: String,
@@ -36,7 +33,7 @@ export const ExpectedUserSchema = new Schema({
     _salt: String
 });
 
-ExpectedUserSchema.methods.generateHash = function (password) {
+UnverifiedUserSchema.methods.generateHash = function (password) {
     this._salt = crypto.lib.WordArray.random(16);
     this._hash = pbkdf2(password, this._salt, serverConfig.authorization.salt, pbkdf2Config);
 };

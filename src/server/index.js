@@ -12,10 +12,8 @@ import groupRouter from './routes/groupOfUsers'
 import setRouter from './routes/setOfProblems'
 import parcelRouter from './routes/parcel'
 import userRouter from './routes/user'
-import expectedUser from './routes/expectedUser'
 
 import template from './template'
-import {VerifyEmail} from "./sendmailService";
 
 const app = express();
 
@@ -33,7 +31,6 @@ app.use('/api/groups', groupRouter);
 app.use('/api/sets', setRouter);
 app.use('/api/parcels', parcelRouter);
 app.use('/api/users', userRouter);
-app.use('/api/expected', expectedUser);
 
 app.get('/*', (req, res) => {
   res.send(template({

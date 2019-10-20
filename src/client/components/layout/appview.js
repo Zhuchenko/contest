@@ -12,11 +12,13 @@ const AppView = () => {
     return (
         <div className={'appview'}>
             <AppBar/>
-            <Switch>
-                <PrivateRoute exact path='/problems/:problemId' component={Problem}/>
-                <PrivateRoute exact path='/users/' component={ListOfUsers}/>
-                <PrivateRoute exact path='/users/:userId' component={User}/>
-            </Switch>
+            <div className={'content'}>
+                <Switch>
+                    <PrivateRoute exact path='/problems/:problemId' component={Problem}/>
+                    <PrivateRoute exact path='/users/' component={ListOfUsers}/>
+                    <PrivateRoute exact path='/users/:userId' component={User}/>
+                </Switch>
+            </div>
         </div>
     )
 };
