@@ -10,7 +10,7 @@ import AddingForm from "./AddingForm";
 //import './css/list.css'
 
 class UserList extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             isFormOpened: false
@@ -30,12 +30,15 @@ class UserList extends Component {
     };
 
     render() {
-        const {users} = this.props;
+        const {users, canAddUser} = this.props;
         const {isFormOpened} = this.state;
         const List = getList(UserItem, users);
         return (
             <>
-                <button onClick={this.open}>Add</button>
+                {
+                    canAddUser &&
+                    <button onClick={this.open}>Add</button>
+                }
                 <List/>
                 {
                     isFormOpened &&
@@ -51,8 +54,10 @@ class UserList extends Component {
 UserList.propTypes = {
     users: PropTypes.array.isRequired,
     getUsers: PropTypes.func.isRequired,
+    canAddUser: PropTypes.bool.isRequired,
 };
 
 export default connect(state => ({
-    users: state.user.users
+    users: state.user.users,
+    canAddUser: state.application.rights.user.edit
 }), actions)(UserList)

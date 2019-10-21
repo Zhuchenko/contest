@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as actions from '../../redux/authorization/actions';
@@ -33,28 +33,37 @@ class SignDialog extends Component {
         showForm();
     };
 
-    showSignInForm = () => {this.handleChanged(signIn.id)};
+    showSignInForm = () => {
+        this.handleChanged(signIn.id)
+    };
 
-    showSignUpForm = () => {this.handleChanged(signUp.id)};
+    showSignUpForm = () => {
+        this.handleChanged(signUp.id)
+    };
 
     render() {
-        const {isShown} = this.props;
+        const {isShown, errorMessage} = this.props;
 
         return (
             <React.Fragment>
                 <div className={'appbar__button-panel'}>
-                <button onClick={this.showSignInForm} className={'appbar__button'}>
-                    {signIn.text}
-                </button>
-                <button onClick={this.showSignUpForm} className={'appbar__button'}>
-                    {signUp.text}
-                </button>
+                    <button onClick={this.showSignInForm} className={'appbar__button'}>
+                        {signIn.text}
+                    </button>
+                    <button onClick={this.showSignUpForm} className={'appbar__button'}>
+                        {signUp.text}
+                    </button>
                 </div>
                 {
                     isShown &&
                     <Popup>
                         <div className={'sign__dialog'}>
-                            <TabBar handleChanged={this.handleChanged} tabs={this.tabs} selectedId={this.state.selectedId}/>
+                            <TabBar handleChanged={this.handleChanged} tabs={this.tabs}
+                                    selectedId={this.state.selectedId}/>
+                            {
+                                errorMessage &&
+                                <div>{errorMessage}</div>
+                            }
                             {
                                 (this.state.selectedId === signIn.id) &&
                                 <SignInForm/>
@@ -63,7 +72,7 @@ class SignDialog extends Component {
                                 (this.state.selectedId === signUp.id) &&
                                 <SignUpForm/>
                             }
-                                </div>
+                        </div>
                     </Popup>
                 }
             </React.Fragment>
@@ -74,8 +83,10 @@ class SignDialog extends Component {
 SignDialog.propTypes = {
     isShown: PropTypes.bool.isRequired,
     showForm: PropTypes.func.isRequired,
+    errorMessage: PropTypes.string
 };
 
 export default connect(state => ({
-    isShown: state.authorization.isShown
+    isShown: state.authorization.isShown,
+    errorMessage: state.authorization.errorMessage
 }), actions)(SignDialog)

@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import PropTypes from "prop-types";
-import {addUser} from "../../services/userApi";
 import Input from "../common/input";
 import roles from './roles'
+import {connect} from "react-redux";
+import * as actions from "../../redux/user/actions";
 
 //import './css/user.css';
 
@@ -20,11 +21,9 @@ class AddingForm extends Component {
     add = () => {
         const {name, lastName, roleIndex, authKey} = this.state;
         const role = roles[roleIndex].name;
-        addUser({name, lastName, role, authKey})
-            .then(() => {
-                    this.props.close()
-                }
-            )
+        const {addUser, close} = this.props;
+        addUser({name, lastName, role, authKey});
+        close();
     };
 
     handleChangedName = ({target: {value}}) => {
@@ -74,7 +73,8 @@ class AddingForm extends Component {
 }
 
 AddingForm.propTypes = {
-    close: PropTypes.func.isRequired
+    close: PropTypes.func.isRequired,
+    addUser: PropTypes.func.isRequired
 };
 
-export default AddingForm
+export default connect(null, actions)(AddingForm)

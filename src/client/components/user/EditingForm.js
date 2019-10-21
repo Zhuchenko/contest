@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
 import PropTypes from "prop-types";
 import pickBy from 'lodash/pickBy';
-import {editUnverifiedUser, getUnverifiedUser, editUser, getUser} from '../../services/userApi'
+import {getUnverifiedUser, getUser} from '../../services/userApi'
 import roles from "./roles";
 import Input from "../common/Input";
+import {connect} from "react-redux";
+import * as actions from "../../redux/user/actions";
 
 //import './css/user.css';
 
@@ -47,50 +49,39 @@ class EditingForm extends Component {
                         authKey: {value: authKey, touched: false},
                     })
                 })
-        }
-        else{
+        } else {
             getUser(this.props.id)
                 .then(user => {
                     const {name, lastName, role, email, authKey} = user;
-                        this.setState({
-                            name: {value: name, touched: false},
-                            lastName: {value: lastName, touched: false},
-                            roleIndex: {value: role === 'participant' ? 0 : 1, touched: false},
-                            email: {value: email, touched: false},
-                        })
+                    this.setState({
+                        name: {value: name, touched: false},
+                        lastName: {value: lastName, touched: false},
+                        roleIndex: {value: role === 'participant' ? 0 : 1, touched: false},
+                        email: {value: email, touched: false},
+                    })
                 })
         }
     }
 
     edit = () => {
         const {name, lastName, email, roleIndex, authKey} = this.state;
+        const {id, unverified, editUser, close} = this.props;
 
-        if (this.props.unverified) {
-            const query = {
-                name: name.touched ? name.value : null,
-                lastName: lastName.touched ? lastName.value : null,
-                email: email.touched ? email.value : null,
-                role: roleIndex.touched ? roles[roleIndex.value].name : null,
-                authKey: authKey.touched ? authKey.value : null
-            };
-            editUnverifiedUser(this.props.id, pickBy(query))
-                .then(() => {
-                        this.props.close()
-                    }
-                )
-        } else {
-            const query = {
-                name: name.touched ? name.value : null,
-                lastName: lastName.touched ? lastName.value : null,
-                email: email.touched ? email.value : null,
-                role: roleIndex.touched ? roles[roleIndex.value].name : null,
-            };
-            editUser(this.props.id, pickBy(query))
-                .then(() => {
-                        this.props.close()
-                    }
-                )
-        }
+        let newState = unverified ? pickBy({
+            name: name.touched ? name.value : null,
+            lastName: lastName.touched ? lastName.value : null,
+            email: email.touched ? email.value : null,
+            role: roleIndex.touched ? roles[roleIndex.value].name : null,
+            authKey: authKey.touched ? authKey.value : null
+        }) : pickBy({
+            name: name.touched ? name.value : null,
+            lastName: lastName.touched ? lastName.value : null,
+            email: email.touched ? email.value : null,
+            role: roleIndex.touched ? roles[roleIndex.value].name : null,
+        });
+
+        editUser({id, newState, unverified});
+        close();
     };
 
     handleChangedName = ({target: {value}}) => {
@@ -115,6 +106,7 @@ class EditingForm extends Component {
 
     render() {
         const {name, lastName, email, roleIndex, unverified, authKey} = this.state;
+        const {canChangeRole} = this.props;
         return (
             <div>
                 <Input key='name'
@@ -132,13 +124,16 @@ class EditingForm extends Component {
                            value={email.value}
                            onChange={this.handleChangedEmail}/>
                 }
-                <select onChange={this.onChange} value={roleIndex.value}>
-                    {
-                        roles.map((role, i) => (
-                            <option key={i} value={i} label={role.name}/>
-                        ))
-                    }
-                </select>
+                {
+                    canChangeRole &&
+                    <select onChange={this.onChange} value={roleIndex.value}>
+                        {
+                            roles.map((role, i) => (
+                                <option key={i} value={i} label={role.name}/>
+                            ))
+                        }
+                    </select>
+                }
                 {
                     this.props.unverified &&
                     <Input key='authKey'
@@ -156,7 +151,11 @@ class EditingForm extends Component {
 EditingForm.propTypes = {
     id: PropTypes.string.isRequired,
     unverified: PropTypes.bool.isRequired,
-    close: PropTypes.func.isRequired
+    close: PropTypes.func.isRequired,
+    editUser: PropTypes.func.isRequired,
+    canChangeRole: PropTypes.bool.isRequired
 };
 
-export default EditingForm
+export default connect(state => ({
+    canChangeRole: state.application.rights.user.changeRole
+}), actions)(EditingForm)

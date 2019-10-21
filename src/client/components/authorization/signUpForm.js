@@ -1,111 +1,130 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Input from '../common/input'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/authorization/actions'
-import {validateEmail, validatePassword, validateRepeatPassword, validateInput} from '../../utilities/checks'
+import {validateEmail, validateInput, validatePassword, validateRepeatPassword} from '../../utilities/checks'
 
 import './css/signForm.css'
 import './css/appbar__button.css'
 
 class SignUpForm extends Component {
-    handleChangedPassword = (event) => {
-        const password = event.target.value;
-        this.props.enterPassword({password});
-    };
-
-    handleChangedRepeatPassword = (event) => {
-        const repeatPassword = event.target.value;
-        this.props.enterRepeatPassword({repeatPassword});
-    };
-
-    handleChangedEmail = (event) => {
-        const email = event.target.value;
-        this.props.enterEmail({email});
-    };
-
-    handleChangedName = (event) => {
-        const name = event.target.value;
-        this.props.enterName({name});
-    };
-
-    handleChangedLastName = (event) => {
-        const lastName = event.target.value;
-        this.props.enterLastName({lastName});
-    };
-
-    check = async () =>{
-        const {email, password, repeatPassword, name, lastName} = this.props;
-
-        const emailErrorMessage = validateEmail(email.value);
-        if(emailErrorMessage){
-            await this.props.emailIsNotValid({errorMessage: emailErrorMessage})
+    constructor(props) {
+        super(props);
+        this.state = {
+            email: '',
+            name: '',
+            lastName: '',
+            authKey: '',
+            password: '',
+            repeatPassword: '',
+            invalidFields: []
         }
+    }
 
-        const passwordErrorMessage = validatePassword(password.value);
-        if(passwordErrorMessage){
-            await this.props.passwordIsNotValid({errorMessage: passwordErrorMessage})
-        }
-
-        const repeatPasswordErrorMessage = validateRepeatPassword(password.value, repeatPassword.value);
-        if(repeatPasswordErrorMessage){
-            await this.props.repeatPasswordIsNotValid({errorMessage: repeatPasswordErrorMessage})
-        }
-
-        const nameErrorMessage = validateInput(name.value);
-        if(nameErrorMessage){
-            await this.props.nameIsNotValid({errorMessage:nameErrorMessage})
-        }
-
-        const lastNameErrorMessage = validateInput(lastName.value);
-        if(lastNameErrorMessage) {
-            await this.props.lastNameIsNotValid({errorMessage: lastNameErrorMessage})
-        }
+    handleChangedPassword = ({target: {value}}) => {
+        this.setState({password: value});
     };
 
-    signUp = async () => {
-        await this.check();
-        const {email, password, repeatPassword, name, lastName} = this.props;
-        if (email.isValid && password.isValid && repeatPassword.isValid && name.isValid && lastName.isValid) {
+    handleChangedRepeatPassword = ({target: {value}}) => {
+        this.setState({repeatPassword: value});
+    };
+
+    handleChangedEmail = ({target: {value}}) => {
+        this.setState({email: value});
+    };
+
+    handleChangedName = ({target: {value}}) => {
+        this.setState({name: value});
+    };
+
+    handleChangedLastName = ({target: {value}}) => {
+        this.setState({lastName: value});
+    };
+
+    handleChangedAuthKey = ({target: {value}}) => {
+        this.setState({authKey: value});
+    };
+
+    checkFields = () => {
+        const {email, password, repeatPassword, name, lastName, authKey} = this.state;
+        const invalidFields = [];
+        if (!validateEmail(email)) {
+            invalidFields.push('email')
+        }
+        if (!validatePassword(password)) {
+            invalidFields.push('password')
+        }
+        if (!validateRepeatPassword(password, repeatPassword)) {
+            invalidFields.push('repeat password')
+        }
+        if (!validateInput(name)) {
+            invalidFields.push('name')
+        }
+        if (!validateInput(lastName)) {
+            invalidFields.push('last name')
+        }
+        if (!validateInput(authKey)) {
+            invalidFields.push('auth key')
+        }
+        return invalidFields;
+    };
+
+    signUp = () => {
+        this.setState({invalidFields: this.checkFields()}, () => {
+            const {email, password, name, lastName, authKey, invalidFields} = this.state;
+            if (invalidFields.length > 0) {
+                return;
+            }
             this.props.signUp({
-                email: email.value,
-                password: password.value,
-                name: name.value,
-                lastName: lastName.value
+                email,
+                password,
+                name,
+                lastName,
+                authKey
             });
-        }
+        })
     };
 
     render() {
-        const {email, password, repeatPassword, name, lastName, hideForm} = this.props;
+        const {email, password, repeatPassword, name, lastName, authKey, invalidFields} = this.state;
+        const {hideForm} = this.props;
 
         const inputs = [
             {
-                placeholder: 'email',
-                ...email,
-                onChange:this.handleChangedEmail
+                name: 'email',
+                value: email,
+                errorMessage: 'it is not valid',
+                onChange: this.handleChangedEmail
             },
             {
-                placeholder: 'name',
-                ...name,
-                onChange:this.handleChangedName
+                name: 'name',
+                value: name,
+                onChange: this.handleChangedName
             },
             {
-                placeholder: 'last name',
-                ...lastName,
-                onChange:this.handleChangedLastName
+                name: 'last name',
+                value: lastName,
+                onChange: this.handleChangedLastName
             },
             {
-                placeholder: 'password',
+                name: 'auth key',
+                value: authKey,
+                onChange: this.handleChangedAuthKey
+            },
+            {
+                name: 'password',
                 type: 'password',
-                ...password,
-                onChange:this.handleChangedPassword
+                value: password,
+                errorMessage: 'it is not equal to the requirements',
+                onChange: this.handleChangedPassword
             },
             {
-                placeholder: 'repeat password',
+                name: 'repeat password',
                 type: 'password',
-                ...repeatPassword,
-                onChange:this.handleChangedRepeatPassword
+                value: repeatPassword,
+                errorMessage: 'it does not match',
+                onChange: this.handleChangedRepeatPassword
             }
         ];
 
@@ -113,13 +132,13 @@ class SignUpForm extends Component {
             <div className={'sign__form'}>
                 {
                     inputs.map(item =>
-                        <Input key={item.placeholder}
-                               placeholder={item.placeholder}
+                        <Input key={item.name}
+                               placeholder={item.name}
                                value={item.value}
                                type={item.type}
-                               isValid={item.isValid}
-                               errorMessage={item.errorMessage}
-                               onChange={item.onChange} />
+                               isValid={!invalidFields.includes(item.name)}
+                               errorMessage={item.errorMessage ?? 'it is required'}
+                               onChange={item.onChange}/>
                     )
                 }
                 <div className={'sign__button-panel'}>
@@ -134,27 +153,6 @@ class SignUpForm extends Component {
 SignUpForm.propTypes = {
     signUp: PropTypes.func.isRequired,
     hideForm: PropTypes.func.isRequired,
-    enterEmail: PropTypes.func.isRequired,
-    enterPassword: PropTypes.func.isRequired,
-    enterRepeatPassword: PropTypes.func.isRequired,
-    enterName: PropTypes.func.isRequired,
-    enterLastName: PropTypes.func.isRequired,
-    email: PropTypes.object.isRequired,
-    password: PropTypes.object.isRequired,
-    repeatPassword: PropTypes.object.isRequired,
-    name: PropTypes.object.isRequired,
-    lastName: PropTypes.object.isRequired,
-    emailIsNotValid: PropTypes.func.isRequired,
-    passwordIsNotValid: PropTypes.func.isRequired,
-    repeatPasswordIsNotValid: PropTypes.func.isRequired,
-    nameIsNotValid: PropTypes.func.isRequired,
-    lastNameIsNotValid: PropTypes.func.isRequired,
 };
 
-export default connect(state => ({
-    email: state.authorization.email,
-    password: state.authorization.password,
-    repeatPassword: state.authorization.repeatPassword,
-    name: state.authorization.name,
-    lastName: state.authorization.lastName,
-}), actions)(SignUpForm)
+export default connect(null, actions)(SignUpForm)

@@ -8,6 +8,12 @@ export const getUsersSuccess = createAction('GET_USERS_SUCCESS');
 
 export const getUsersFailure = createAction('GET_USERS_FAILURE');
 
+export const addUser = createAction('ADD_USER');
+
+export const addUserSuccess = createAction('ADD_USER_SUCCESS');
+
+export const addUserFailure = createAction('ADD_USER_FAILURE');
+
 export const editUser = createAction('EDIT_USER');
 
 export const editUserSuccess = createAction('EDIT_USER_SUCCESS');

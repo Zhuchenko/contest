@@ -17,7 +17,7 @@ function* initSaga() {
         const user = yield call(init);
 
         if(user) {
-            yield put(actions.initSuccessAuthorized({user}));
+            yield put(actions.initSuccessAuthorized(user));
         }
         else{
             yield put(actions.initSuccessNotAuthorized())

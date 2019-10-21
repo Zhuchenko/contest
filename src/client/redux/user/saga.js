@@ -1,41 +1,63 @@
-import { all, takeLatest, call, put } from 'redux-saga/effects'
+import {all, call, put, takeLatest} from 'redux-saga/effects'
 import * as actions from './actions'
-import { getUsers, deleteUser } from '../../services/userApi'
+import {getUsers, addUser, editUser, editUnverifiedUser, deleteUser, deleteUnverifiedUser} from '../../services/userApi'
 
-export default  function* authorizationSaga() {
+export default function* authorizationSaga() {
     yield all([
-        watchGetUsers(),
-        watchDeleteUser()
+        yield takeLatest(actions.getUsers, getUsersSaga),
+        yield takeLatest(actions.addUser, addUserSaga),
+        yield takeLatest(actions.editUser, editUserSaga),
+        yield takeLatest(actions.deleteUser, deleteUserSaga),
     ])
-}
-
-function* watchGetUsers() {
-    yield takeLatest(actions.getUsers, getUsersSaga)
-}
-
-function* watchDeleteUser() {
-    yield takeLatest(actions.deleteUser, deleteUserSaga)
 }
 
 function* getUsersSaga() {
     try {
         const users = yield call(getUsers);
         yield put(actions.getUsersSuccess(users));
-    }
-    catch (error) {
+    } catch (error) {
         yield put(actions.getUsersFailure(error))
+    }
+}
+
+function* addUserSaga(action) {
+    try {
+        const {name, lastName, role, authKey} = action.payload;
+        yield call(addUser, {name, lastName, role, authKey});
+
+        yield put(actions.getUsers());
+        yield put(actions.addUserSuccess());
+    } catch (error) {
+        yield put(actions.addUserFailure(error))
+    }
+}
+
+function* editUserSaga(action) {
+    try {
+        const {newState, id, unverified} = action.payload;
+        if (unverified)
+            yield call(editUnverifiedUser, id, newState);
+        else
+            yield call(editUser, id, newState);
+
+        yield put(actions.getUsers());
+        yield put(actions.editUserSuccess());
+    } catch (error) {
+        yield put(actions.editUserFailure(error))
     }
 }
 
 function* deleteUserSaga(action) {
     try {
-        const {id} = action.payload;
-        yield call(deleteUser, id);
+        const {id, unverified} = action.payload;
+        if (unverified)
+            yield call(deleteUnverifiedUser, id);
+        else
+            yield call(deleteUser, id);
 
         yield put(actions.getUsers());
         yield put(actions.deleteUserSuccess());
-    }
-    catch (error) {
+    } catch (error) {
         yield put(actions.deleteUserFailure(error))
     }
 }

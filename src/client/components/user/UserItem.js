@@ -18,19 +18,19 @@ class UserItem extends Component {
 
     open = () => {
         this.setState({isFormOpened: true})
-    }
+    };
 
     close = () => {
         this.setState({isFormOpened: false})
-    }
+    };
 
     deleteUser = () => {
-        const {id, deleteUser} = this.props;
-        deleteUser({id});
+        const {id, deleteUser, unverified} = this.props;
+        deleteUser({id, unverified});
     };
 
     render() {
-        const {id, name, lastName, unverified, canDeleteUser} = this.props;
+        const {id, name, lastName, unverified, canEditUser, canDeleteUser} = this.props;
         const {isFormOpened} = this.state;
 
         return (
@@ -41,17 +41,19 @@ class UserItem extends Component {
                         :
                         <Link to={'/users/' + id}>{lastName + ' ' + name}</Link>
                 }
-                <Link to={'/users/' + id}>{unverified}</Link>
-                <button onClick={this.open}>edit</button>
+                {
+                    canEditUser &&
+                    <button onClick={this.open}>edit</button>
+                }
+                {
+                    canDeleteUser &&
+                    <button onClick={this.deleteUser}>X</button>
+                }
                 {
                     isFormOpened &&
                     <Popup>
                         <EditingForm id={id} unverified={unverified} close={this.close}/>
                     </Popup>
-                }
-                {
-                    //canDeleteUser &&
-                    <button onClick={this.deleteUser}>X</button>
                 }
             </div>
         )
@@ -61,11 +63,13 @@ class UserItem extends Component {
 UserItem.propTypes = {
     name: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
-    //canDeleteUser: PropTypes.bool.isRequired,
+    canEditUser: PropTypes.bool.isRequired,
+    canDeleteUser: PropTypes.bool.isRequired,
     deleteUser: PropTypes.func.isRequired,
     unverified: PropTypes.bool
 };
 
 export default connect((state) => ({
-    //canDeleteUser: state.application.rights.user.delete
+    canEditUser: state.application.rights.user.edit,
+    canDeleteUser: state.application.rights.user.delete
 }), actions)(UserItem);

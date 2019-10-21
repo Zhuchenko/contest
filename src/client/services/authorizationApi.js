@@ -42,22 +42,18 @@ export const signIn = (email, password) => {
         }).catch(error => ({ error }))
 };
 
-export const signUp = (email, password, name, lastName) => {
+export const signUp = (personalData) => {
     return fetch('/api/signup', {
         method: 'POST',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password, name, lastName})
+        body: JSON.stringify(personalData)
     })
         .then(response => {
             if (response.status === 200) {
-                return response.json()
-                    .then(user =>{
-                        saveToken(user.token);
-                        return { user };
-                    })
+                return response.json();
             } else {
                 return response.json()
                     .then(error => {

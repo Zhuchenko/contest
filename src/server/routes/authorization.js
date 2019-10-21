@@ -2,7 +2,7 @@ import express from 'express'
 import passport from 'passport'
 import auth from '../config/auth'
 import {addUser, getUserByEmail, getUserById} from '../mongoose/api/user'
-import {getUnverifiedUserByParams, getUnverifiedUserByEmail, deleteUnverifiedUser} from '../mongoose/api/unverifiedUser'
+import {deleteUnverifiedUser, getUnverifiedUserByEmail, getUnverifiedUserByParams} from '../mongoose/api/unverifiedUser'
 import {addCode, getCode} from '../mongoose/api/code'
 import {getRightsByName} from '../mongoose/api/role'
 import generateCode from '../utils/generateCode'
@@ -16,10 +16,13 @@ router.post('/signup', auth.optional, (req, res) => {
     const {body: {email, password, name, lastName, authKey}} = req;
 
     (async () => {
-        const expUser = await getUnverifiedUserByParams({authKey, name, lastName});
-        expUser.email = email;
-        expUser.generateHash(password);
-        await expUser.save();
+        const unverifiedUser = await getUnverifiedUserByParams({authKey, name, lastName});
+        if (!unverifiedUser) {
+            return res.json({errorMessage: "it does not match"});
+        }
+        unverifiedUser.email = email;
+        unverifiedUser.generateHash(password);
+        await unverifiedUser.save();
 
         const code = generateCode(8);
         addCode({email, code});
@@ -35,7 +38,7 @@ router.get('/verify-email/:code', auth.optional, (req, res) => {
 
     return (async () => {
         const rightCode = await getCode(code);
-        if(!rightCode){
+        if (!rightCode) {
             return res.status(422).end();
         }
 
@@ -56,27 +59,22 @@ router.get('/signin', auth.required, (req, res) => {
             return res.status(400).end();
         }
 
-        const rights = await getRightsByName(user.role);
-        return res.json({...user.toAuthJSON(), rights});
+        const role = await getRightsByName(user.role);
+        return res.json({...user.toAuthJSON(), rights: role.rights});
     })()
 });
 
 router.post('/signin', auth.optional, (req, res, next) => {
-    const {body: {email, password}} = req;
+    const {body: {email}} = req;
 
-    if (!email) {
-        return res.status(422).json({email: {errorMessage: 'it is required'}});
-    }
-    if (!password) {
-        return res.status(422).json({password: {errorMessage: 'it is required'}});
-    }
     (async () => {
         const user = await getUserByEmail(email);
+
         if (!user) {
-            return res.status(422).json({email: {errorMessage: 'it is wrong'}});
+            return res.status(422).json({errorMessage: 'email is not valid'});
         }
 
-        return passport.authenticate('local', {session: false}, async (err, passportUser, info) => {
+        return passport.authenticate('local', {session: false}, async (err, passportUser) => {
             if (err) {
                 return res.status(500).json({err});
             }
@@ -85,10 +83,10 @@ router.post('/signin', auth.optional, (req, res, next) => {
                 const finalUser = passportUser;
                 finalUser.token = passportUser.generateJWT();
 
-                const rights = await getRightsByName(user.role);
-                return res.json({...finalUser.toAuthJSON(), rights});
+                const role = await getRightsByName(user.role);
+                return res.json({...finalUser.toAuthJSON(), rights: role.rights});
             }
-            return res.status(422).json({password: {errorMessage: 'it is wrong'}});
+            return res.status(422).json({errorMessage: 'password is wrong'});
         })(req, res, next);
     })()
 });

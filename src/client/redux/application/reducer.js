@@ -10,82 +10,39 @@ const initialState = {
 
 const reducer = handleActions(
     {
-        [application.init]: (state) => ({
-            ...state,
-            authorized: initialState.authorized,
-            isFetching: initialState.isFetching,
-            rights: initialState.rights
-        }),
+        [application.init]: () => initialState,
 
         [application.initSuccessAuthorized]: (state, {payload}) => ({
-            ...state,
             authorized: true,
             isFetching: false,
             rights: payload.rights
         }),
 
-        [application.initSuccessNotAuthorized]: (state) => ({
-            ...state,
-            authorized: false,
-            isFetching: false,
-        }),
+        [application.initSuccessNotAuthorized]: () => initialState,
 
-        [application.initFailure]: (state) => ({
-            ...state,
-            authorized: false,
-            isFetching: false,
-        }),
+        [application.initFailure]: () => initialState,
 
-        [authorization.signIn]: (state) => ({
-            ...state,
-            isFetching: true
-        }),
+        [authorization.signIn]: () => initialState,
 
         [authorization.signInSuccess]: (state, {payload}) => ({
-            ...state,
             authorized: true,
             isFetching: false,
             rights: payload.rights
         }),
 
-        [authorization.signInFailurePassword]: (state) => ({
-            ...state,
+        [authorization.signInFailure]: () => ({
+            authorized: false,
             isFetching: false,
             rights: null
         }),
 
-        [authorization.signInFailureEmail]: (state) => ({
-            ...state,
-            isFetching: false,
-            rights: null
-        }),
-
-        [authorization.signUp]: (state) => ({
-            ...state,
-            isFetching: true
-        }),
-
-        [authorization.signUpSuccess]: (state, {payload}) => ({
-            ...state,
-            authorized: true,
-            isFetching: false,
-            rights: payload.rights
-        }),
-
-        [authorization.signUpFailureEmail]: (state) => ({
-            ...state,
-            isFetching: false,
-            rights: null
-        }),
-
-        [authorization.signOutSuccess]: (state) => ({
-            ...state,
+        [authorization.signOutSuccess]: () => ({
             authorized: false,
             isFetching: false,
             rights: null
         })
     },
     initialState
-)
+);
 
 export default reducer

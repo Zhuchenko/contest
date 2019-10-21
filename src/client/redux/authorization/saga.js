@@ -1,8 +1,8 @@
-import { all, takeLatest, call, put } from 'redux-saga/es/effects'
+import {all, call, put, takeLatest} from 'redux-saga/es/effects'
 import * as actions from './actions'
-import { signIn, signUp, signOut } from '../../services/authorizationApi'
+import {signIn, signOut, signUp} from '../../services/authorizationApi'
 
-export default  function* authorizationSaga() {
+export default function* authorizationSaga() {
     yield all([
         watchSignIn(),
         watchSignUp(),
@@ -24,39 +24,27 @@ function* watchSignOut() {
 
 function* signInSaga(action) {
     const {email, password} = action.payload;
-    const {user, error} = yield call(signIn, email, password);
+    const {user, error}  = yield call(signIn, email, password);
 
     if (user) {
         yield put(actions.signInSuccess(user));
-    } else{
-        if(error.email){
-            yield put(actions.signInFailureEmail({...error.email, isValid:false}));
-        }
-        if(error.password){
-            yield put(actions.signInFailurePassword({...error.password, isValid:false}));
-        }
+    } else {
+        yield put(actions.signInFailure({errorMessage: error.errorMessage}));
     }
 }
 
 function* signUpSaga(action) {
-    const {email, password, name, lastName} = action.payload;
-    const {user, error} = yield call(signUp, email, password, name, lastName);
+    const {email, password, name, lastName, authKey} = action.payload;
+    const {error} = yield call(signUp, {email, password, name, lastName, authKey});
 
-    if (user) {
-        yield put(actions.signUpSuccess(user));
+    if (!error) {
+        yield put(actions.signUpSuccess());
     } else {
-        if (error.email) {
-            yield put(actions.signUpFailureEmail({...error.email, isValid: false}));
-        }
+        yield put(actions.signUpFailure({errorMessage: error.errorMessage}));
     }
 }
 
 function* signOutSaga() {
-    try {
-        yield call(signOut);
-        yield put(actions.signOutSuccess())
-    }
-    catch (error) {
-        yield put(actions.signOutFailure(error))
-    }
+    yield call(signOut);
+    yield put(actions.signOutSuccess())
 }
