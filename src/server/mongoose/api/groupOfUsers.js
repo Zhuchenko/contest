@@ -1,7 +1,12 @@
 import mongoose from 'mongoose'
 import { GroupOfUsersSchema } from '../schemas'
+import {User} from "./user";
 
 export const GroupOfUsers = mongoose.model('GroupOfUsers', GroupOfUsersSchema, 'groupsOfUsers')
+
+export const getAllGroupsOfUsers = async () => {
+    return GroupOfUsers.find();
+};
 
 export const getGroupOfUsersById = async (groupId) => {
     return GroupOfUsers.findOne({ _id: groupId }).exec();

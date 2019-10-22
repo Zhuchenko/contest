@@ -1,12 +1,12 @@
 import express from 'express'
-import { getAll, getUserById, updateUser, deleteUser } from '../mongoose/api/user'
+import { getAllUsers, getUserById, updateUser, deleteUser } from '../mongoose/api/user'
 import { getAllUnverifiedUsers, addUnverifiedUser, getUnverifiedUserById, updateUnverifiedUser, deleteUnverifiedUser } from '../mongoose/api/unverifiedUser'
 import auth from '../config/auth'
 
 const router = express.Router();
 
 router.get('/', auth.required, async (req, res) => {
-    const users = (await getAll()).filter(user => {return user.role != "administrator"});
+    const users = (await getAllUsers()).filter(user => {return user.role != "administrator"});
     const unverifiedUsers = (await getAllUnverifiedUsers()).map(user => ({...user._doc, unverified: true}));
     return res.json({users: [...unverifiedUsers, ...users]});
 });

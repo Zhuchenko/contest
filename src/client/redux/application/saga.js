@@ -4,12 +4,8 @@ import { init } from '../../services/authorizationApi'
 
 export default  function* authorizationSaga() {
     yield all([
-        watchInit()
+        yield takeLatest(actions.init, initSaga)
     ])
-}
-
-function* watchInit() {
-    yield takeLatest(actions.init, initSaga)
 }
 
 function* initSaga() {

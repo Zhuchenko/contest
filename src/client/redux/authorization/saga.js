@@ -4,22 +4,10 @@ import {signIn, signOut, signUp} from '../../services/authorizationApi'
 
 export default function* authorizationSaga() {
     yield all([
-        watchSignIn(),
-        watchSignUp(),
-        watchSignOut()
+        yield takeLatest(actions.signIn, signInSaga),
+        yield takeLatest(actions.signUp, signUpSaga),
+        yield takeLatest(actions.signOut, signOutSaga)
     ])
-}
-
-function* watchSignIn() {
-    yield takeLatest(actions.signIn, signInSaga)
-}
-
-function* watchSignUp() {
-    yield takeLatest(actions.signUp, signUpSaga)
-}
-
-function* watchSignOut() {
-    yield takeLatest(actions.signOut, signOutSaga)
 }
 
 function* signInSaga(action) {

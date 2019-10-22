@@ -5,6 +5,8 @@ import PrivateRoute from '../common/PrivateRoute'
 import Problem from '../problem/Problem'
 import User from '../user/User'
 import ListOfUsers from '../user/ListOfUsers'
+import Group from '../groupOfUsers/Group'
+import ListOfGroups from '../groupOfUsers/ListOfGroups'
 
 import './css/appview.css';
 
@@ -17,6 +19,8 @@ const AppView = () => {
                     <PrivateRoute exact path='/problems/:problemId' component={Problem}/>
                     <PrivateRoute exact path='/users/' component={ListOfUsers}/>
                     <PrivateRoute exact path='/users/:userId' component={User}/>
+                    <PrivateRoute exact path='/groups/' component={ListOfGroups}/>
+                    <PrivateRoute exact path='/groups/:groupId' component={Group}/>
                 </Switch>
             </div>
         </div>

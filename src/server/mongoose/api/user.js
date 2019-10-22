@@ -3,8 +3,12 @@ import { UserSchema } from '../schemas'
 
 export const User = mongoose.model('User', UserSchema, 'users')
 
-export const getAll = () => {
+export const getAllUsers = () => {
     return User.find().select('_id email name lastName role');
+};
+
+export const getAllParticipants = () => {
+    return User.find({role: 'participant'}).select('_id name lastName');
 };
 
 export const addUser = async (newUser) => {

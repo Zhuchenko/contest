@@ -19,7 +19,7 @@ class User extends Component {
         getUser(this.props.match.params.userId)
             .then(user => {
                 const {name, lastName, email, role} = user;
-                this.setState({...user})
+                this.setState({name, lastName, email, roleIndex: role === 'participant' ? 0 : 1})
             })
     }
 

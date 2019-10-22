@@ -2,16 +2,16 @@ import {handleActions} from 'redux-actions'
 import * as actions from './actions'
 
 const initialState = {
-    users: []
+    groups: []
 };
 
-const userReducer = handleActions(
+const groupReducer = handleActions(
     {
         [actions.init]: () => initialState,
 
-        [actions.getUsersSuccess]: (state, {payload}) => ({ users: payload.users }),
+        [actions.getGroupsSuccess]: (state, {payload}) => ({ groups: payload.groups }),
     },
     initialState
 );
 
-export default userReducer
+export default groupReducer

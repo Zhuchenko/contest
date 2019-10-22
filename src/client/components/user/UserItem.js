@@ -62,6 +62,7 @@ class UserItem extends Component {
 
 UserItem.propTypes = {
     name: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     canEditUser: PropTypes.bool.isRequired,
     canDeleteUser: PropTypes.bool.isRequired,
