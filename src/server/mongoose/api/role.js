@@ -3,6 +3,6 @@ import { RoleSchema } from '../schemas'
 
 export const Role = mongoose.model('Role', RoleSchema, 'roles')
 
-export const getRightsByName = async (role) => {
-    return Role.findOne({ name: role }).exec();
+export const getRightsByName = async (name) => {
+    return Role.findOne({ name }, null, {lean: true}).exec();
 };

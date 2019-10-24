@@ -98,9 +98,8 @@ export const getUnverifiedUser = (userId) => {
                     .then(response => {
                         return response.user;
                     })
-            } else {
-                throw response.status
             }
+            throw response.status;
         })
 };
 
@@ -115,9 +114,8 @@ export const editUnverifiedUser = (userId, user) => {
         .then(response => {
             if (response.status === 200) {
                 return true;
-            } else {
-                throw response.status
             }
+            throw response.status;
         })
 };
 
@@ -131,8 +129,7 @@ export const deleteUnverifiedUser = (userId) => {
         .then(response => {
             if (response.status === 200) {
                 return response;
-            } else {
-                throw response.status
             }
+            throw response.status;
         })
 };

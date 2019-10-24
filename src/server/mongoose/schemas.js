@@ -85,7 +85,11 @@ export const GroupOfUsersSchema = new Schema({
         unique: true,
         required: true
     },
-    users: [ObjectId]
+    users: [String],
+    authorId: {
+        type: String,
+        required: true
+    }
 });
 
 export const ProblemSchema = new Schema({
@@ -99,7 +103,7 @@ export const ProblemSchema = new Schema({
         required: true
     },
     authorId: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     checker: {
@@ -154,10 +158,10 @@ export const SetOfProblemsSchema = new Schema({
         required: true
     },
     authorId: {
-        type: ObjectId,
+        type: String,
         required: true
     },
-    problems: [ObjectId]
+    problems: [String]
 });
 
 export const ContestSchema = new Schema({
@@ -167,15 +171,15 @@ export const ContestSchema = new Schema({
         required: true
     },
     setOfProblems: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     groupOfUsers: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     authorId: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     isActive: {
@@ -198,15 +202,15 @@ export const ContestSchema = new Schema({
 
 export const ParcelSchema = new Schema({
     user: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     problem: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     contest: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     options: {
@@ -232,15 +236,15 @@ export const ParcelSchema = new Schema({
 
 export const SolutionSchema = new Schema({
     user: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     problem: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     contest: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     attemptNumber: {
@@ -256,7 +260,7 @@ export const SolutionSchema = new Schema({
 
 export const TestResultSchema = new Schema({
     parcel: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     tests: [{

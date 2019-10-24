@@ -15,8 +15,8 @@ export const getUnverifiedUserById = (userId) => {
     return UnverifiedUser.findOne({ _id: userId }).select('_id email authKey name lastName role');
 };
 
-export const getUnverifiedUserByEmail = (email) => {
-    return UnverifiedUser.findOne({ email }).exec();
+export const getUnverifiedUserByEmail = async (email) => {
+    return UnverifiedUser.findOne({ email });
 };
 
 export const getUnverifiedUserByParams = async (params) => {

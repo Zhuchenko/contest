@@ -12,23 +12,23 @@ export default function* authorizationSaga() {
 
 function* signInSaga(action) {
     const {email, password} = action.payload;
-    const {user, error}  = yield call(signIn, email, password);
+    const {user, errorMessage}  = yield call(signIn, email, password);
 
     if (user) {
         yield put(actions.signInSuccess(user));
     } else {
-        yield put(actions.signInFailure({errorMessage: error.errorMessage}));
+        yield put(actions.signInFailure({errorMessage}));
     }
 }
 
 function* signUpSaga(action) {
     const {email, password, name, lastName, authKey} = action.payload;
-    const {error} = yield call(signUp, {email, password, name, lastName, authKey});
+    const {errorMessage} = yield call(signUp, {email, password, name, lastName, authKey});
 
-    if (!error) {
+    if (!errorMessage) {
         yield put(actions.signUpSuccess());
     } else {
-        yield put(actions.signUpFailure({errorMessage: error.errorMessage}));
+        yield put(actions.signUpFailure({errorMessage}));
     }
 }
 

@@ -1,7 +1,7 @@
-import {saveToken, clear, setAuthToken} from '../utilities/sessionStorage';
+import {clear, saveToken, setAuthToken} from '../utilities/sessionStorage';
 
 export const init = () => {
-    const headers = setAuthToken({ });
+    const headers = setAuthToken({});
 
     return fetch('/api/signin', {
         method: 'GET',
@@ -11,9 +11,8 @@ export const init = () => {
         .then(response => {
             if (response.status === 200) {
                 return response.json();
-            } else {
-                throw response.status
             }
+            throw response.status;
         })
 };
 
@@ -24,22 +23,18 @@ export const signIn = (email, password) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({email, password})
     })
         .then(response => {
             if (response.status === 200) {
                 return response.json()
-                    .then(user =>{
+                    .then(user => {
                         saveToken(user.token);
-                        return { user };
-                    })
-            } else {
-                return response.json()
-                    .then(error => {
-                        throw error
+                        return {user};
                     })
             }
-        }).catch(error => ({ error }))
+            throw response.json();
+        })
 };
 
 export const signUp = (personalData) => {
@@ -54,13 +49,9 @@ export const signUp = (personalData) => {
         .then(response => {
             if (response.status === 200) {
                 return response.json();
-            } else {
-                return response.json()
-                    .then(error => {
-                        throw error
-                    })
             }
-        }).catch(error => ({ error }))
+            throw response.json();
+        })
 };
 
 export const signOut = () => {

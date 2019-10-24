@@ -8,8 +8,16 @@ export const getAllGroupsOfUsers = async () => {
     return GroupOfUsers.find();
 };
 
+export const getGroupsOfUsersByAuthorId = async (authorId) => {
+    return GroupOfUsers.find({authorId});
+};
+
 export const getGroupOfUsersById = async (groupId) => {
-    return GroupOfUsers.findOne({ _id: groupId }).exec();
+    return GroupOfUsers.findOne({ _id: groupId }, null, {lean: true});
+};
+
+export const getGroupsOfUsersByParticipant = async (participantId) => {
+    return GroupOfUsers.find({users:/* {$elemMatch:*/ participantId}/*}*/);
 };
 
 export const addGroupOfUsers = async (newGroup) => {

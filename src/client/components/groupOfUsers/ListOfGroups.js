@@ -59,5 +59,5 @@ GroupList.propTypes = {
 
 export default connect(state => ({
     groups: state.groupOfUsers.groups,
-    canAddGroup: state.application.rights.groupOfUsers.create
+    canAddGroup: state.application.rights.groupOfUsers.add
 }), actions)(GroupList)

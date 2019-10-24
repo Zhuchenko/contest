@@ -26,6 +26,10 @@ export const getUserByEmail = (email) => {
     return User.findOne({ email: email }).exec();
 };
 
+export const getUserRoleById = (userId) => {
+    return User.findOne({ _id: userId }).select('role');
+};
+
 export const updateUser = async (userId, userNewState) => {
     await User.updateOne({_id: userId}, {
         $set: {

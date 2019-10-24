@@ -30,18 +30,18 @@ class GroupItem extends Component {
     };
 
     render() {
-        const {id, name, canEditGroup, canDeleteGroup} = this.props;
+        const {id, name, canEdit, canDelete} = this.props;
         const {isFormOpened} = this.state;
 
         return (
             <div>
                 <Link to={'/groups/' + id}>{name}</Link>
                 {
-                    canEditGroup &&
+                    canEdit &&
                     <button onClick={this.open}>edit</button>
                 }
                 {
-                    canDeleteGroup &&
+                    canDelete &&
                     <button onClick={this.deleteGroup}>X</button>
                 }
                 {
@@ -58,12 +58,9 @@ class GroupItem extends Component {
 GroupItem.propTypes = {
     name: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
-    canEditGroup: PropTypes.bool.isRequired,
-    canDeleteGroup: PropTypes.bool.isRequired,
+    canEdit: PropTypes.bool.isRequired,
+    canDelete: PropTypes.bool.isRequired,
     deleteGroup: PropTypes.func.isRequired
 };
 
-export default connect((state) => ({
-    canEditGroup: state.application.rights.groupOfUsers.create,
-    canDeleteGroup: state.application.rights.groupOfUsers.delete
-}), actions)(GroupItem);
+export default connect(null, actions)(GroupItem);
