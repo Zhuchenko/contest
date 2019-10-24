@@ -3,42 +3,26 @@ import { UserSchema } from '../schemas'
 
 export const User = mongoose.model('User', UserSchema, 'users')
 
-export const getAllUsers = () => {
-    return User.find().select('_id email name lastName role');
+export const find = (query) => {
+    return User.find(query, null, {lean: true});
 };
 
-export const getAllParticipants = () => {
-    return User.find({role: 'participant'}).select('_id name lastName');
+export const findOne = (query) => {
+    return User.findOne(query, null, {lean: true});
 };
 
-export const addUser = async (newUser) => {
-    return User.create(newUser)
-        .then(user => {
-            return user._id.toString();
-        });
+export const add = async (newInstance) => {
+    User.create(newInstance)
 };
 
-export const getUserById = (userId) => {
-    return User.findOne({ _id: userId }).select('_id email name lastName role');
-};
-
-export const getUserByEmail = (email) => {
-    return User.findOne({ email: email }).exec();
-};
-
-export const getUserRoleById = (userId) => {
-    return User.findOne({ _id: userId }).select('role');
-};
-
-export const updateUser = async (userId, userNewState) => {
-    await User.updateOne({_id: userId}, {
+export const update = async (id, newState) => {
+    User.updateOne({_id: id}, {
         $set: {
-            ...userNewState
+            ...newState
         }
-    }).exec();
-    return userId;
+    });
 };
 
-export const deleteUser = async (userId) => {
-    return User.findByIdAndRemove(userId).exec();
+export const remove = async (id) => {
+    return User.findByIdAndRemove(id).exec();
 };

@@ -1,29 +1,18 @@
 import express from 'express'
-import {
-    addGroupOfUsers,
-    deleteGroupOfUsers,
-    getAllGroupsOfUsers,
-    getGroupOfUsersById,
-    getGroupsOfUsersByAuthorId,
-    getGroupsOfUsersByParticipant,
-    updateGroupOfUsers
-} from '../mongoose/api/groupOfUsers'
-import {getUserById, getUserRoleById} from '../mongoose/api/user'
-import {getRightsByName} from '../mongoose/api/role'
+import * as db from '../mongoose/DatabaseHandler'
 import auth from '../config/auth'
 
 const router = express.Router();
 
 router.get('/', auth.required, async (req, res) => {
     const {payload: {id}} = req;
-    const {role} = await getUserRoleById(id);
-    const {rights} = await getRightsByName(role);
+    const rights = await db.getUserRights(id);
     let groups = [];
     if (rights.groupOfUsers.view) {
-        groups = (await getAllGroupsOfUsers()).map(group => ({...group._doc, canEdit: true, canDelete: true}));
+        groups = (await db.getAllGroups()).map(group => ({...group._doc, canEdit: true, canDelete: true}));
     } else {
         if (rights.groupOfUsers.add) {
-            groups = (await getGroupsOfUsersByAuthorId(id)).map(group => ({
+            groups = (await  db.getGroupsByAuthor(id)).map(group => ({
                 ...group._doc,
                 canEdit: true,
                 canDelete: true
@@ -31,7 +20,7 @@ router.get('/', auth.required, async (req, res) => {
             //TODO: union with can read {canEdit: false, canDelete: false}
             //TODO: union with can write {canEdit: true, canDelete: false}
         } else {
-            groups = (await getGroupsOfUsersByParticipant(id)).map(group => ({
+            groups = (await  db.getGroupsByParticipant(id)).map(group => ({
                 ...group._doc,
                 canEdit: false,
                 canDelete: false
@@ -43,17 +32,16 @@ router.get('/', auth.required, async (req, res) => {
 
 router.get('/:groupId', auth.required, async (req, res) => {
     const {payload: {id}} = req;
-    const {role} = await getUserRoleById(id);
-    const {rights} = await getRightsByName(role);
+    const rights = await db.getUserRights(id);
 
-    const group = await getGroupOfUsersById(req.params.groupId);
+    const group = await  db.getGroupById(req.params.groupId);
     if (!group) return res.status(404).end();   // TODO: check for converting to ObjectId
 
     const canView = rights.groupOfUsers.view || id === group.authorId || group.users.includes(id);
     if (canView) {
         const usersFullInfo = await Promise.all(
             group.users.map(async userId => {
-                return await getUserById(userId);
+                return await  db.getUserById(userId);
             })
         );
         return res.json({group: {id: group._id, name: group.name, users: usersFullInfo}})
@@ -64,12 +52,11 @@ router.get('/:groupId', auth.required, async (req, res) => {
 
 router.post('/', auth.required, async (req, res) => {
     const {body: {group}, payload: {id}} = req;
-    const {role} = await getUserRoleById(id);
-    const {rights} = await getRightsByName(role);
+    const rights = await db.getUserRights(id);
 
     if (rights.groupOfUsers.add) {
         group.authorId = id;
-        await addGroupOfUsers(group);
+        await  db.addGroup(group);
         return res.status(200).end();
     } else {
         return res.status(403).end();
@@ -78,14 +65,13 @@ router.post('/', auth.required, async (req, res) => {
 
 router.post('/:groupId', auth.required, async (req, res) => {
     const {body: {group}, params: {groupId}, payload: {id}} = req;
-    const {role} = await getUserRoleById(id);
-    const {rights} = await getRightsByName(role);
+    const rights = await db.getUserRights(id);
 
-    const oldGroup = await getGroupOfUsersById(groupId);
+    const oldGroup = await  db.getGroupById(groupId);
     if (!oldGroup) return res.status(404).end();
 
     if (rights.groupOfUsers.edit || oldGroup.authorId === id) { // TODO: || can write
-        await updateGroupOfUsers(groupId, group);
+        await  db.updateGroup(groupId, group);
         return res.status(200).end();
     } else {
         return res.status(403).end();
@@ -94,14 +80,13 @@ router.post('/:groupId', auth.required, async (req, res) => {
 
 router.delete('/:groupId', auth.required, async (req, res) => {
     const {params: {groupId}, payload: {id}} = req;
-    const {role} = await getUserRoleById(id);
-    const {rights} = await getRightsByName(role);
+    const rights = await db.getUserRights(id);
 
-    const group = await getGroupOfUsersById(groupId);
+    const group = await  db.getGroupById(groupId);
     if (!group) return res.status(404).end();
 
     if (rights.groupOfUsers.delete || group.authorId === id) {
-        await deleteGroupOfUsers(groupId);
+        await  db.deleteGroup(groupId);
         return res.status(200).end();
     } else {
         return res.status(403).end();

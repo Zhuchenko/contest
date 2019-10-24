@@ -3,35 +3,26 @@ import { UnverifiedUserSchema } from '../schemas'
 
 export const UnverifiedUser = mongoose.model('UnverifiedUser', UnverifiedUserSchema, 'unverifiedUsers');
 
-export const getAllUnverifiedUsers = () => {
-    return UnverifiedUser.find().select('_id email authKey name lastName role');
+export const find = (query) => {
+    return UnverifiedUser.find(query, null, {lean: true});
 };
 
-export const addUnverifiedUser = async (newUser) => {
-    return await UnverifiedUser.create(newUser);
+export const findOne = (query) => {
+    return UnverifiedUser.findOne(query, null, {lean: true});
 };
 
-export const getUnverifiedUserById = (userId) => {
-    return UnverifiedUser.findOne({ _id: userId }).select('_id email authKey name lastName role');
+export const add = async (newInstance) => {
+    UnverifiedUser.create(newInstance);
 };
 
-export const getUnverifiedUserByEmail = async (email) => {
-    return UnverifiedUser.findOne({ email });
-};
-
-export const getUnverifiedUserByParams = async (params) => {
-    return UnverifiedUser.findOne(params).exec();
-};
-
-export const updateUnverifiedUser = async (userId, userNewState) => {
-    await UnverifiedUser.updateOne({_id: userId}, {
+export const update = async (id, newState) => {
+    UnverifiedUser.updateOne({_id: id}, {
         $set: {
-            ...userNewState
+            ...newState
         }
-    }).exec();
-    return userId;
+    });
 };
 
-export const deleteUnverifiedUser = async (userId) => {
-    return UnverifiedUser.findByIdAndRemove(userId).exec();
+export const remove = async (id) => {
+    return UnverifiedUser.findByIdAndRemove(id);
 };

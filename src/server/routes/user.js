@@ -17,6 +17,7 @@ import {
 import {getRightsByName} from '../mongoose/api/role'
 import auth from '../config/auth'
 import pickBy from 'lodash/pickBy'
+import * as db from "../mongoose/DatabaseHandler";
 
 const isRole = (value, key) => key !== 'role';
 
@@ -25,8 +26,7 @@ const ADMIN = "administrator";
 
 router.get('/', auth.required, async (req, res) => {    // TODO: separated api point for unverified users
     const {payload: {id}} = req;
-    const {role} = await getUserRoleById(id);
-    const {rights} = await getRightsByName(role);
+    const rights = await db.getUserRights(id);
     if (rights.user.view) {
         const users = (await getAllUsers()).filter(user => {
             return user.role !== ADMIN
@@ -41,8 +41,7 @@ router.get('/', auth.required, async (req, res) => {    // TODO: separated api p
 router.get('/:userId', auth.required, async (req, res) => { // TODO: coordinators can view only students
     // TODO: info about groups, contests
     const {params: {userId}, payload: {id}} = req;
-    const {role} = await getUserRoleById(id);
-    const {rights} = await getRightsByName(role);
+    const rights = await db.getUserRights(id);
     console.log()
     if (rights.user.view) {
         const user = await getUserById(userId);
@@ -54,8 +53,7 @@ router.get('/:userId', auth.required, async (req, res) => { // TODO: coordinator
 
 router.get('/group-creating/participants', auth.required, async (req, res) => {
     const {payload: {id}} = req;
-    const {role} = await getUserRoleById(id);
-    const {rights} = await getRightsByName(role);
+    const rights = await db.getUserRights(id);
 
     if (rights.groupOfUsers.add) {
         const users = await getAllParticipants();
@@ -67,8 +65,7 @@ router.get('/group-creating/participants', auth.required, async (req, res) => {
 
 router.post('/:userId', auth.required, async (req, res) => {
     const {body: {user}, params: {userId}, payload: {id}} = req;
-    const {role} = await getUserRoleById(id);
-    const {rights} = await getRightsByName(role);
+    const rights = await db.getUserRights(id);
 
     const oldUser = await getUserById(userId);
     if (!oldUser) return res.status(404).end();
@@ -87,8 +84,7 @@ router.post('/:userId', auth.required, async (req, res) => {
 
 router.delete('/:userId', auth.required, async (req, res) => {
     const {params: {userId}, payload: {id}} = req;
-    const {role} = await getUserRoleById(id);
-    const {rights} = await getRightsByName(role);
+    const rights = await db.getUserRights(id);
 
     const user = await getUserById(userId);
     if (!user) return res.status(404).end();
@@ -103,8 +99,7 @@ router.delete('/:userId', auth.required, async (req, res) => {
 
 router.post('/', auth.required, async (req, res) => {
     const {body: {user}, payload: {id}} = req;
-    const {role} = await getUserRoleById(id);
-    const {rights} = await getRightsByName(role);
+    const rights = await db.getUserRights(id);
 
     if (rights.user.add) {
         await addUnverifiedUser(user);
@@ -117,8 +112,7 @@ router.post('/', auth.required, async (req, res) => {
 
 router.get('/unverified/:userId', auth.required, async (req, res) => {
     const {params: {userId}, payload: {id}} = req;
-    const {role} = await getUserRoleById(id);
-    const {rights} = await getRightsByName(role);
+    const rights = await db.getUserRights(id);
 
     if (rights.user.add) {
         const user = await getUnverifiedUserById(userId);
@@ -134,8 +128,7 @@ router.get('/unverified/:userId', auth.required, async (req, res) => {
 
 router.post('/unverified/:userId', auth.required, async (req, res) => {
     const {body: {user}, params: {userId}, payload: {id}} = req;
-    const {role} = await getUserRoleById(id);
-    const {rights} = await getRightsByName(role);
+    const rights = await db.getUserRights(id);
 
     const oldUser = await getUnverifiedUserById(userId);
     if (!oldUser) return res.status(404).end();
@@ -150,8 +143,7 @@ router.post('/unverified/:userId', auth.required, async (req, res) => {
 
 router.delete('/unverified/:userId', auth.required, async (req, res) => {
     const {params: {userId}, payload: {id}} = req;
-    const {role} = await getUserRoleById(id);
-    const {rights} = await getRightsByName(role);
+    const rights = await db.getUserRights(id);
 
     const user = await getUnverifiedUserById(userId);
     if (!user) return res.status(404).end();
