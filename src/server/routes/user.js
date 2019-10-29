@@ -28,10 +28,10 @@ router.get('/', auth.required, async (req, res) => {    // TODO: separated api p
     const {payload: {id}} = req;
     const rights = await db.getUserRights(id);
     if (rights.user.view) {
-        const users = (await getAllUsers()).filter(user => {
+        const users = (await db.getAllUsers()).filter(user => {
             return user.role !== ADMIN
         });
-        const unverifiedUsers = (await getAllUnverifiedUsers()).map(user => ({...user._doc, unverified: true}));
+        const unverifiedUsers = (await db.getAllUnverifiedUsers()).map(user => ({...user, unverified: true}));
         return res.json({users: [...unverifiedUsers, ...users]});
     } else {
         return res.status(403).end();
@@ -42,7 +42,7 @@ router.get('/:userId', auth.required, async (req, res) => { // TODO: coordinator
     // TODO: info about groups, contests
     const {params: {userId}, payload: {id}} = req;
     const rights = await db.getUserRights(id);
-    console.log()
+
     if (rights.user.view) {
         const user = await getUserById(userId);
         return res.json({user})
@@ -56,7 +56,7 @@ router.get('/group-creating/participants', auth.required, async (req, res) => {
     const rights = await db.getUserRights(id);
 
     if (rights.groupOfUsers.add) {
-        const users = await getAllParticipants();
+        const users = await db.getAllParticipants();
         return res.json({users});
     } else {
         return res.status(403).end();

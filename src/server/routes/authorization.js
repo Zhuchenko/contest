@@ -4,6 +4,7 @@ import auth from '../config/auth'
 import * as db from '../mongoose/DatabaseHandler'
 import generateCode from '../utils/generateCode'
 import {VerifyEmail} from "../sendmailService";
+import {getUserById} from '../mongoose/api/user'
 
 import '../config/passport'
 
@@ -52,7 +53,7 @@ router.get('/signin', auth.required, (req, res) => {
     const {payload: {id}} = req;
 
     return (async () => {
-        const user = await db.getUserById(id);
+        const user = await getUserById(id);
         if (!user) {
             return res.status(400).end();
         }

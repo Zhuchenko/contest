@@ -3,6 +3,6 @@ import { RoleSchema } from '../schemas'
 
 export const Role = mongoose.model('Role', RoleSchema, 'roles')
 
-export const findOne = async (query) => {
-    return Role.findOne(query, null, {lean: true});
+export const findOne = async (query, select) => {
+    return Role.findOne(query, null, {lean: true}).select(select);
 };

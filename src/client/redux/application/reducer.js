@@ -20,9 +20,19 @@ const reducer = handleActions(
             rights: payload.rights
         }),
 
-        [application.initSuccessNotAuthorized]: () => initialState,
+        [application.initSuccessNotAuthorized]: () => ({
+            authorized: false,
+            isFetching: false,
+            rights: null,
+            errorCode: null
+        }),
 
-        [application.initFailure]: () => initialState,
+        [application.initFailure]: () => ({
+            authorized: false,
+            isFetching: false,
+            rights: null,
+            errorCode: null
+        }),
 
         [authorization.signIn]: () => initialState,
 

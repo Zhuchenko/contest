@@ -9,11 +9,11 @@ router.get('/', auth.required, async (req, res) => {
     const rights = await db.getUserRights(id);
     let groups = [];
     if (rights.groupOfUsers.view) {
-        groups = (await db.getAllGroups()).map(group => ({...group._doc, canEdit: true, canDelete: true}));
+        groups = (await db.getAllGroups()).map(group => ({...group, canEdit: true, canDelete: true}));
     } else {
         if (rights.groupOfUsers.add) {
             groups = (await  db.getGroupsByAuthor(id)).map(group => ({
-                ...group._doc,
+                ...group,
                 canEdit: true,
                 canDelete: true
             }));
@@ -21,7 +21,7 @@ router.get('/', auth.required, async (req, res) => {
             //TODO: union with can write {canEdit: true, canDelete: false}
         } else {
             groups = (await  db.getGroupsByParticipant(id)).map(group => ({
-                ...group._doc,
+                ...group,
                 canEdit: false,
                 canDelete: false
             }));

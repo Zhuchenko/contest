@@ -1,5 +1,8 @@
 import React, {Component} from 'react'
 import {getUser} from '../../services/userApi'
+import * as actions from '../../redux/application/actions'
+import {connect} from "react-redux";
+
 
 //import './css/user.css';
 
@@ -20,7 +23,9 @@ class User extends Component {
             .then(user => {
                 const {name, lastName, email, role} = user;
                 this.setState({name, lastName, email, roleIndex: role === 'participant' ? 0 : 1})
-            })
+            }).catch((errorCode) => {
+            this.props.setError({errorCode});
+        })
     }
 
     render() {
@@ -43,4 +48,4 @@ class User extends Component {
     }
 }
 
-export default User
+export default connect(null, actions)(User);

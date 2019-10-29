@@ -1,9 +1,8 @@
 import {all, call, put, takeLatest} from 'redux-saga/effects'
 import * as actions from './actions'
 import {getUsers, addUser, editUser, editUnverifiedUser, deleteUser, deleteUnverifiedUser} from '../../services/userApi'
-import {forbid} from "../application/actions";
+import {setError} from "../application/actions";
 
-const FORBIDDEN = 403;
 
 export default function* authorizationSaga() {
     yield all([
@@ -19,9 +18,7 @@ function* getUsersSaga() {
         const users = yield call(getUsers);
         yield put(actions.getUsersSuccess(users));
     } catch (error) {
-        if (error === FORBIDDEN) {
-            yield put(forbid())
-        }
+        yield put(setError({errorCode:error}));
         yield put(actions.getUsersFailure(error))
     }
 }

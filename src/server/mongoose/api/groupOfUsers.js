@@ -4,7 +4,7 @@ import {GroupOfUsersSchema} from '../schemas'
 export const GroupOfUsers = mongoose.model('GroupOfUsers', GroupOfUsersSchema, 'groupsOfUsers')
 
 export const find = async (query) => {
-    return GroupOfUsers.find(query, null, {lean: true});
+    return GroupOfUsers.find(query, null, {lean: true}).exec();
 };
 
 export const findOne = async (query) => {
@@ -24,5 +24,5 @@ export const update = async (id, newState) => {
 };
 
 export const remove = async (id) => {
-    GroupOfUsers.findByIdAndRemove(id);
+    GroupOfUsers.findByIdAndRemove(id).exec();
 };

@@ -3,12 +3,12 @@ import { UnverifiedUserSchema } from '../schemas'
 
 export const UnverifiedUser = mongoose.model('UnverifiedUser', UnverifiedUserSchema, 'unverifiedUsers');
 
-export const find = (query) => {
-    return UnverifiedUser.find(query, null, {lean: true});
+export const find = (query, select) => {
+    return UnverifiedUser.find(query, null, {lean: true}).select(select);
 };
 
-export const findOne = (query) => {
-    return UnverifiedUser.findOne(query, null, {lean: true});
+export const findOne = (query, select) => {
+    return UnverifiedUser.findOne(query, null, {lean: true}).select(select);
 };
 
 export const add = async (newInstance) => {

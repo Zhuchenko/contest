@@ -56,26 +56,26 @@ export const deleteGroup = async (id) => {
 
 // role
 
-export const getRoleByName = async (name) => {
-    return role.findOne({name}).select('rights');
+export const getRightsByName = async (name) => {
+    return (await role.findOne({name}, 'rights')).rights;
 };
 
 // unverified users
 
 export const getUnverifiedUser = async (query) => {
-    return unverifiedUser.findOne(query).select('_id email authKey name lastName role');
+    return unverifiedUser.findOne(query, '_id email authKey name lastName role');
 };
 
 export const getUnverifiedUserById = async (id) => {
-    return unverifiedUser.findOne({_id: id}).select('_id email authKey name lastName role');
+    return unverifiedUser.findOne({_id: id}, '_id email authKey name lastName role');
 };
 
 export const getUnverifiedUserByEmail = async (email) => {
-    return unverifiedUser.findOne({email}).select('_id email authKey name lastName role');
+    return unverifiedUser.findOne({email}, '_id email authKey name lastName role');
 };
 
 export const getAllUnverifiedUsers = async () => {
-    return unverifiedUser.find().select('_id email authKey name lastName role');
+    return unverifiedUser.find({}, '_id email authKey name lastName role');
 };
 
 export const addUnverifiedUser = async (newInstance) => {
@@ -93,24 +93,24 @@ export const deleteUnverifiedUser = async (id) => {
 // users
 
 export const getUserById = async (id) => {
-    return user.findOne({_id: id}).select('_id email name lastName role');
+    return user.findOne({_id: id}, '_id email name lastName role');
 };
 
 export const getUserByEmail = async (email) => {
-    return user.findOne({email}).select('_id email name lastName role');
+    return user.findOne({email}, '_id email name lastName role');
 };
 
 export const getUserRights = async (id) => {
-    const userRole =  (await getUserById(id).select('role')).role;
-    return (await getRoleByName(userRole)).rights;
+    const userRole =  (await getUserById(id)).role;
+    return getRightsByName(userRole);
 };
 
 export const getAllUsers = async () => {
-    return user.find().select('_id email name lastName role');
+    return user.find({}, '_id email name lastName role');
 };
 
 export const getAllParticipants = async () => {
-    return user.find({role: "participant"}).select('_id email name lastName role');
+    return user.find({role: "participant"}, '_id email name lastName role');
 };
 
 export const updateUser = async (id, newState) => {
