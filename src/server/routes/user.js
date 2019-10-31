@@ -102,7 +102,7 @@ router.post('/', auth.required, async (req, res) => {
     const rights = await db.getUserRights(id);
 
     if (rights.user.add) {
-        await addUnverifiedUser(user);
+        await db.addUnverifiedUser(user);
         return res.status(200).end();
     } else {
         return res.status(403).end();
@@ -115,7 +115,7 @@ router.get('/unverified/:userId', auth.required, async (req, res) => {
     const rights = await db.getUserRights(id);
 
     if (rights.user.add) {
-        const user = await getUnverifiedUserById(userId);
+        const user = await db.getUnverifiedUserById(userId);
         if (user) {
             return res.json({user})
         } else {
