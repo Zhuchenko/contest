@@ -3,40 +3,40 @@ import { ProblemSchema } from '../schemas'
 
 export const Problem = mongoose.model('Problem', ProblemSchema, 'problems')
 
-export const getProblemById = async (problemId) => {
-    return Problem.findOne({ _id: problemId }).exec();
+export const find = (query, select) => {
+    return Problem.find(query, null, {lean: true}).select(select);
 };
 
-export const addProblem = async (newProblem) => {
-    newProblem.numberOfTests = newProblem.tests.length;
+export const findOne = (query, select) => {
+    return Problem.findOne(query, null, {lean: true}).select(select);
+};
 
-    for (let i = 0, l = newProblem.tests.length; i < l; i++){
-        newProblem.tests[i].number = i+1;
+export const add = async (newInstance) => {
+    newInstance.numberOfTests = newInstance.tests.length;
+
+    for (let i = 0, l = newInstance.tests.length; i < l; i++){
+        newInstance.tests[i].number = i+1;
     }
 
-    return Problem.create(newProblem)
-        .then(problem => {
-            return problem;
-        });
+    return Problem.create(newInstance)
 };
 
-export const updateProblem = async (problemId, problemNewState) => {
-    if(problemNewState.tests){
-        problemNewState.numberOfTests = problemNewState.tests.length;
+export const update = async (id, newState) => {
+    if(newState.tests){
+        newState.numberOfTests = newState.tests.length;
 
-        for (let i = 0, l = problemNewState.tests.length; i < l; i++){
-            problemNewState.tests[i].number = i+1;
+        for (let i = 0, l = newState.tests.length; i < l; i++){
+            newState.tests[i].number = i+1;
         }
     }
 
-    await Problem.updateOne({_id: problemId}, {
+    await Problem.updateOne({_id: id}, {
         $set: {
-            ...problemNewState
+            ...newState
         }
-    }).exec();
-    return getProblemById(problemId);
+    });
 };
 
-export const deleteProblem = (problemId) => {
-    return Problem.findByIdAndRemove(problemId).exec();
+export const remove = async (id) => {
+    return Problem.findByIdAndRemove(id).exec();
 };

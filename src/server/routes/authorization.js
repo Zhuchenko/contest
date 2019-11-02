@@ -40,10 +40,10 @@ router.get('/verify-email/:code', auth.optional, (req, res) => {
             return res.status(422).end();
         }
 
-        const {_id, email, name, lastName, role, _hash, _salt} = await db.getUnverifiedUserByEmail(rightCode.email); //getAndDelete
-        db.deleteUnverifiedUser(_id);
+        const {id, email, name, lastName, role, _hash, _salt} = await db.getUnverifiedUserByEmail(rightCode.email); //getAndDelete
+        db.deleteUnverifiedUser(id);
         db.addUser({email, name, lastName, role, _hash, _salt});
-        db.deleteCode(rightCode._id);
+        db.deleteCode(rightCode.id);
 
         res.status(200).end();
     })();
@@ -82,7 +82,7 @@ router.post('/signin', auth.optional, (req, res, next) => {
                 const finalUser = passportUser;
                 finalUser.token = passportUser.generateJWT();
 
-                const rights = await db.getUserRights(user._id);
+                const rights = await db.getUserRights(user.id);
                 return res.json({...finalUser.toAuthJSON(), rights});
             }
             return res.status(422).json({errorMessage: 'password is wrong'});

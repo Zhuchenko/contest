@@ -26,7 +26,7 @@ class EditingForm extends Component {
                         const {name, users} = group;
                         const usersWithSelecting = allUsers.map(user => ({
                             ...user,
-                            isSelected: users.find(u => u._id === user._id)
+                            isSelected: users.find(u => u.id === user.id)
                         }));
                         this.setState({
                             name,
@@ -42,7 +42,7 @@ class EditingForm extends Component {
 
     handleChecked = (id) => {
         const {users} = this.state;
-        const index = users.findIndex(user => user._id === id);
+        const index = users.findIndex(user => user.id === id);
         users[index].isSelected = !users[index].isSelected;
         this.setState({users});
     };
@@ -50,7 +50,7 @@ class EditingForm extends Component {
     edit = () => {
         const {id, editGroup, close} = this.props;
         const {name, users} = this.state;
-        const selectedUsers = users.filter(user => user.isSelected).map(user => user._id);
+        const selectedUsers = users.filter(user => user.isSelected).map(user => user.id);
         editGroup({id, newState: {name, users: selectedUsers}});
         close();
     };

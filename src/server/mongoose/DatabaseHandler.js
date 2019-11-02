@@ -1,3 +1,5 @@
+import pickBy from 'lodash/pickBy'
+
 import * as code from './api/code'
 import * as contest from './api/contest'
 import * as group from './api/groupOfUsers'
@@ -10,10 +12,20 @@ import * as testResult from './api/testResult'
 import * as unverifiedUser from './api/unverifiedUser'
 import * as user from './api/user'
 
+const isNotUnderscoredId = (value, key) => key !== '_id';
+
+const removeUnderscore  = (item) => {
+    return {id: item._id, ...pickBy(item, isNotUnderscoredId)};
+};
+
+const removeUnderscoreFromArray  = (array) => {
+    return array.map(item => (removeUnderscore(item)));
+};
+
 // codes
 
 export const getCode = async (code) => {
-    return code.findOne({code});
+    return removeUnderscore(await code.findOne({code}));
 };
 
 export const addCode = async (newInstance) => {
@@ -24,22 +36,26 @@ export const deleteCode = async (id) => {
     code.remove(id);
 };
 
+//contests
+
+
+
 // groups of users
 
 export const getGroupById = async (id) => {
-    return group.findOne({_id: id});
+    return removeUnderscore(await group.findOne({_id: id}));
 };
 
 export const getAllGroups = async () => {
-    return group.find();
+    return removeUnderscoreFromArray(await group.find());
 };
 
 export const getGroupsByAuthor = async (id) => {
-    return group.find({authorId: id});
+    return removeUnderscoreFromArray(await group.find({authorId: id}));
 };
 
 export const getGroupsByParticipant = async (id) => {
-    return group.find({users: id});
+    return removeUnderscoreFromArray(await group.find({users: id}));
 };
 
 export const addGroup = async (newInstance) => {
@@ -63,19 +79,19 @@ export const getRightsByName = async (name) => {
 // unverified users
 
 export const getUnverifiedUser = async (query) => {
-    return unverifiedUser.findOne(query, '_id email authKey name lastName role');
+    return removeUnderscore(await unverifiedUser.findOne(query, '_id email authKey name lastName role'));
 };
 
 export const getUnverifiedUserById = async (id) => {
-    return unverifiedUser.findOne({_id: id}, '_id email authKey name lastName role');
+    return removeUnderscore(await unverifiedUser.findOne({_id: id}, '_id email authKey name lastName role'));
 };
 
 export const getUnverifiedUserByEmail = async (email) => {
-    return unverifiedUser.findOne({email}, '_id email authKey name lastName role');
+    return removeUnderscore(await unverifiedUser.findOne({email}, '_id email authKey name lastName role'));
 };
 
 export const getAllUnverifiedUsers = async () => {
-    return unverifiedUser.find({}, '_id email authKey name lastName role');
+    return removeUnderscoreFromArray(await unverifiedUser.find({}, '_id email authKey name lastName role'));
 };
 
 export const addUnverifiedUser = async (newInstance) => {
@@ -93,11 +109,11 @@ export const deleteUnverifiedUser = async (id) => {
 // users
 
 export const getUserById = async (id) => {
-    return user.findOne({_id: id}, '_id email name lastName role');
+    return removeUnderscore(await user.findOne({_id: id}, '_id email name lastName role'));
 };
 
 export const getUserByEmail = async (email) => {
-    return user.findOne({email}, '_id email name lastName role');
+    return removeUnderscore(await user.findOne({email}, '_id email name lastName role'));
 };
 
 export const getUserRights = async (id) => {
@@ -106,11 +122,11 @@ export const getUserRights = async (id) => {
 };
 
 export const getAllUsers = async () => {
-    return user.find({}, '_id email name lastName role');
+    return removeUnderscoreFromArray(await user.find({}, '_id email name lastName role'));
 };
 
 export const getAllParticipants = async () => {
-    return user.find({role: "participant"}, '_id email name lastName role');
+    return removeUnderscoreFromArray(await user.find({role: "participant"}, '_id email name lastName role'));
 };
 
 export const updateUser = async (id, newState) => {

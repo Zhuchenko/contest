@@ -19,7 +19,7 @@ import auth from '../config/auth'
 import pickBy from 'lodash/pickBy'
 import * as db from "../mongoose/DatabaseHandler";
 
-const isRole = (value, key) => key !== 'role';
+const isNotRole = (value, key) => key !== 'role';
 
 const router = express.Router();
 const ADMIN = "administrator";
@@ -72,7 +72,7 @@ router.post('/:userId', auth.required, async (req, res) => {
 
     if (rights.users.edit || oldUser.id === id) {
         if (!rights.user.changeRole) {
-            await updateUser(userId, pickBy(user, isRole));
+            await updateUser(userId, pickBy(user, isNotRole));
         } else {
             await updateUser(userId, user);
         }

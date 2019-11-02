@@ -3,26 +3,26 @@ import { SetOfProblemsSchema } from '../schemas'
 
 export const SetOfProblems = mongoose.model('SetOfProblems', SetOfProblemsSchema, 'setsOfProblems')
 
-export const getSetOfProblemsById = async (setId) => {
-    return SetOfProblems.findOne({ _id: setId }).exec();
+export const find = (query, select) => {
+    return SetOfProblems.find(query, null, {lean: true}).select(select);
 };
 
-export const addSetOfProblems = async (newSet) => {
-    return SetOfProblems.create(newSet)
-        .then(set => {
-            return set;
-        });
+export const findOne = (query, select) => {
+    return SetOfProblems.findOne(query, null, {lean: true}).select(select);
 };
 
-export const updateSetOfProblems = async (setId, setNewState) => {
-    await SetOfProblems.updateOne({_id: setId}, {
+export const add = async (newInstance) => {
+    SetOfProblems.create(newInstance)
+};
+
+export const update = async (id, newState) => {
+    SetOfProblems.updateOne({_id: id}, {
         $set: {
-            ...setNewState
+            ...newState
         }
-    }).exec();
-    return getSetOfProblemsById(setId);
+    });
 };
 
-export const deleteSetOfProblems = async (setId) => {
-    return SetOfProblems.findByIdAndRemove(setId).exec();
+export const remove = async (id) => {
+    return SetOfProblems.findByIdAndRemove(id).exec();
 };

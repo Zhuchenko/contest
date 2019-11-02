@@ -45,7 +45,7 @@ router.post('/', auth.required, (req, res) => {
         const solution = await getSolutionByOptions(options);
 
         if (solution) {
-            await updateSolution(solution._id, {
+            await updateSolution(solution.id, {
                 attemptNumber: solution.attemptNumber + 1,
                 code: parcel.code
             })

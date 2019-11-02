@@ -44,7 +44,7 @@ router.get('/:groupId', auth.required, async (req, res) => {
                 return await  db.getUserById(userId);
             })
         );
-        return res.json({group: {id: group._id, name: group.name, users: usersFullInfo}})
+        return res.json({group: {id: group.id, name: group.name, users: usersFullInfo}})
     } else {
         return res.status(403).end();
     }

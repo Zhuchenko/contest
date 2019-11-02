@@ -34,7 +34,7 @@ class AddingForm extends Component {
 
     add = () => {
         const {name, users} = this.state;
-        const selectedUsers = users.filter(user => user.isSelected).map(user => user._id);
+        const selectedUsers = users.filter(user => user.isSelected).map(user => user.id);
         const {addGroup, close} = this.props;
         addGroup({name, users: selectedUsers});
         close();
@@ -46,7 +46,7 @@ class AddingForm extends Component {
 
     handleChecked = (id) => {
         const {users} = this.state;
-        const index = users.findIndex(user => user._id === id);
+        const index = users.findIndex(user => user.id === id);
         users[index].isSelected = !users[index].isSelected;
         this.setState({users})
     };
