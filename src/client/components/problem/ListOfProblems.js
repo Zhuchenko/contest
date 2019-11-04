@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 import * as actions from '../../redux/groupOfUsers/actions'
 import getList from '../common/List'
 import Popup from "../common/Popup";
-import GroupAddingForm from "./GroupAddingForm";
-import GroupItem from "./GroupItem";
+import ProblemAddingForm from "./ProblemAddingForm";
+import ProblemItem from "./ProblemItem";
 
 //import './css/list.css'
 
-class GroupList extends Component {
+class ProblemList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -30,20 +30,20 @@ class GroupList extends Component {
     };
 
     render() {
-        const {groups, canAddGroup} = this.props;
+        const {problems, canAddProblem} = this.props;
         const {isFormOpened} = this.state;
-        const List = getList(GroupItem, groups);
+        const List = getList(ProblemItem, problems);
         return (
             <>
                 {
-                    canAddGroup &&
+                    canAddProblem &&
                     <button onClick={this.open}>Add</button>
                 }
                 <List/>
                 {
                     isFormOpened &&
                     <Popup>
-                        <GroupAddingForm close={this.close}/>
+                        <ProblemAddingForm close={this.close}/>
                     </Popup>
                 }
             </>
@@ -51,13 +51,13 @@ class GroupList extends Component {
     }
 }
 
-GroupList.propTypes = {
-    groups: PropTypes.array.isRequired,
-    getGroups: PropTypes.func.isRequired,
-    canAddGroup: PropTypes.bool.isRequired,
+ProblemList.propTypes = {
+    problems: PropTypes.array.isRequired,
+    getProblems: PropTypes.func.isRequired,
+    canAddProblem: PropTypes.bool.isRequired,
 };
 
 export default connect(state => ({
-    groups: state.groupOfUsers.groups,
-    canAddGroup: state.application.rights.groupOfUsers.add
-}), actions)(GroupList)
+    problems: state.problem.problems,
+    canAddProblem: state.application.rights.problem.add
+}), actions)(ProblemList)

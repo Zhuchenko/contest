@@ -48,3 +48,8 @@ html, body, #root {
 .problem__limitations div {
     margin-left: 16px;
 }
+
+.line {
+    display: flex;
+    flex-direction: row;
+}

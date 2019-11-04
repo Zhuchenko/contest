@@ -12,8 +12,8 @@ class Problem extends Component {
             name: '',
             text: '',
             limitation: {
-                time: 120,
-                memory: 5
+                time: 0,
+                memory: 0
             },
             options: [],
             selectedId: 0,
@@ -25,11 +25,12 @@ class Problem extends Component {
     componentDidMount() {
         getProblem(this.props.match.params.problemId)
             .then(problem => {
+                const {name, text, limitation, options} = problem;
                 this.setState({
-                    name: problem.name,
-                    text: problem.text,
-                    limitation: problem.limitation,
-                    options: problem.options
+                    name: name,
+                    text: text,
+                    limitation: limitation,
+                    options: options
                 });
             })
     }

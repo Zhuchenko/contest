@@ -70,7 +70,13 @@ export const deleteGroup = async (id) => {
     group.remove(id);
 };
 
-// role
+//problems
+
+export const addProblem = async (newInstance) => {
+    problem.add(newInstance);
+}
+
+// roles
 
 export const getRightsByName = async (name) => {
     return (await role.findOne({name}, 'rights')).rights;

@@ -2,10 +2,10 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as actions from '../../redux/authorization/actions';
-import Popup from '../common/popup';
-import SignInForm from './signInForm';
-import SignUpForm from './signUpForm';
-import TabBar from '../common/tabBar';
+import Popup from '../common/Popup';
+import SignInForm from './SignInForm';
+import SignUpForm from './SignUpForm';
+import TabBar from '../common/TabBar';
 
 import './css/signDialog.css'
 import './css/appbar__button.css'

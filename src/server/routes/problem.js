@@ -1,5 +1,5 @@
 import express from 'express'
-import { getProblemById, addProblem, updateProblem, deleteProblem } from '../mongoose/api/problem'
+import * as db from '../mongoose/DatabaseHandler'
 import auth from '../config/auth'
 
 const router = express.Router();
@@ -13,14 +13,21 @@ router.get('/:problemId', auth.required, (req, res) => {
     })
 });
 
-router.post('/', auth.required, (req, res) => {
-    let { body: {problem}, payload: { id }} = req;
-    problem.authorId = id;
+router.post('/', auth.required, async (req, res) => {
+    const { body, files, payload: { id }} = req;
+    let problem = JSON.parse(body.problem);
+    const descriptions = JSON.parse(body.descriptions);
 
-    addProblem(problem)
-        .then(addedProblem => {
-            return res.json({ problem: addedProblem})
-        });
+    let tests = [];
+    for (let i = 0, l = descriptions.length; i < l; i++){
+        tests.push({input: files['input'+i].data, output: files['output'+i].data, description: descriptions[i]})
+    }
+    problem.tests = tests;
+    problem.authorId = id;
+    problem.checker = files.checker.data;
+
+    await db.addProblem(problem);
+    return res.status(200).end();
 });
 
 router.post('/:problemId', auth.required, (req, res) => {

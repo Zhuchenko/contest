@@ -4,8 +4,8 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import * as actions from '../../redux/user/actions'
 import getList from '../common/List'
-import Popup from "../common/popup";
-import AddingForm from "./AddingForm";
+import Popup from "../common/Popup";
+import UserAddingForm from "./UserAddingForm";
 
 //import './css/list.css'
 
@@ -43,7 +43,7 @@ class UserList extends Component {
                 {
                     isFormOpened &&
                     <Popup>
-                        <AddingForm close={this.close}/>
+                        <UserAddingForm close={this.close}/>
                     </Popup>
                 }
             </>

@@ -4,7 +4,7 @@ import {getUsers, addUser, editUser, editUnverifiedUser, deleteUser, deleteUnver
 import {setError} from "../application/actions";
 
 
-export default function* authorizationSaga() {
+export default function* userSaga() {
     yield all([
         yield takeLatest(actions.getUsers, getUsersSaga),
         yield takeLatest(actions.addUser, addUserSaga),

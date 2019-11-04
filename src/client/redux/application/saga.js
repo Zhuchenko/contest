@@ -2,7 +2,7 @@ import { all, takeLatest, call, put } from 'redux-saga/es/effects'
 import * as actions from './actions'
 import { init } from '../../services/authorizationApi'
 
-export default  function* authorizationSaga() {
+export default  function* applicationSaga() {
     yield all([
         yield takeLatest(actions.init, initSaga)
     ])

@@ -7,7 +7,7 @@ import Input from '../common/input';
 import './css/signForm.css'
 import './css/appbar__button.css'
 
-class SignInForm extends Component {
+class SIgnInForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -67,9 +67,9 @@ class SignInForm extends Component {
     }
 }
 
-SignInForm.propTypes = {
+SIgnInForm.propTypes = {
     signIn: PropTypes.func.isRequired,
     hideForm: PropTypes.func.isRequired,
 };
 
-export default connect(null, actions)(SignInForm)
+export default connect(null, actions)(SIgnInForm)

@@ -7,7 +7,7 @@ import * as actions from "../../redux/user/actions";
 
 //import './css/user.css';
 
-class AddingForm extends Component {
+class UserAddingForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -72,9 +72,9 @@ class AddingForm extends Component {
     }
 }
 
-AddingForm.propTypes = {
+UserAddingForm.propTypes = {
     close: PropTypes.func.isRequired,
     addUser: PropTypes.func.isRequired
 };
 
-export default connect(null, actions)(AddingForm)
+export default connect(null, actions)(UserAddingForm)

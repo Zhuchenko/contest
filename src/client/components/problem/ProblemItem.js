@@ -3,12 +3,12 @@ import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/groupOfUsers/actions'
-import GroupEditingForm from "./GroupEditingForm";
+//import ProblemEditingForm from "./ProblemEditingForm";
 import Popup from "../common/Popup";
 
 //import './css/item.css'
 
-class GroupItem extends Component {
+class ProblemItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,9 +24,9 @@ class GroupItem extends Component {
         this.setState({isFormOpened: false})
     };
 
-    deleteGroup = () => {
-        const {id, deleteGroup} = this.props;
-        deleteGroup({id});
+    deleteProblem = () => {
+        const {id, deleteProblem} = this.props;
+        deleteProblem({id});
     };
 
     render() {
@@ -42,25 +42,25 @@ class GroupItem extends Component {
                 }
                 {
                     canDelete &&
-                    <button onClick={this.deleteGroup}>X</button>
+                    <button onClick={this.deleteProblem}>X</button>
                 }
                 {
-                    isFormOpened &&
-                    <Popup>
-                        <GroupEditingForm id={id} close={this.close}/>
-                    </Popup>
+                    // isFormOpened &&
+                    // <Popup>
+                    //     <ProblemEditingForm id={id} close={this.close}/>
+                    // </Popup>
                 }
             </div>
         )
     }
 }
 
-GroupItem.propTypes = {
+ProblemItem.propTypes = {
     name: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     canEdit: PropTypes.bool.isRequired,
     canDelete: PropTypes.bool.isRequired,
-    deleteGroup: PropTypes.func.isRequired
+    deleteProblem: PropTypes.func.isRequired
 };
 
-export default connect(null, actions)(GroupItem);
+export default connect(null, actions)(ProblemItem);

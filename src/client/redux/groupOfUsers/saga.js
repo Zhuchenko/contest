@@ -2,7 +2,7 @@ import {all, call, put, takeLatest} from 'redux-saga/effects'
 import * as actions from './actions'
 import {addGroup, deleteGroup, editGroup, getGroups} from '../../services/groupOfUsersApi'
 
-export default function* authorizationSaga() {
+export default function* groupOfUsersSaga() {
     yield all([
         yield takeLatest(actions.getGroups, getGroupsSaga),
         yield takeLatest(actions.addGroup, addGroupSaga),

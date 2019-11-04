@@ -3,6 +3,7 @@ import AppBar from './appbar';
 import {Switch} from 'react-router-dom'
 import PrivateRoute from '../common/PrivateRoute'
 import Problem from '../problem/Problem'
+import ListOfProblems from '../problem/ListOfProblems'
 import User from '../user/User'
 import ListOfUsers from '../user/ListOfUsers'
 import Group from '../groupOfUsers/Group'
@@ -16,6 +17,7 @@ const AppView = () => {
             <AppBar/>
             <div className={'content'}>
                 <Switch>
+                    <PrivateRoute exact path='/problems/' component={ListOfProblems}/>
                     <PrivateRoute exact path='/problems/:problemId' component={Problem}/>
                     <PrivateRoute exact path='/users/' component={ListOfUsers}/>
                     <PrivateRoute exact path='/users/:userId' component={User}/>

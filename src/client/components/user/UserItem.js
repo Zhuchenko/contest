@@ -3,8 +3,8 @@ import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/user/actions'
-import EditingForm from "./EditingForm";
-import Popup from "../common/popup";
+import UserEditingForm from './UserEditingForm'
+import Popup from "../common/Popup";
 
 //import './css/item.css'
 
@@ -33,30 +33,28 @@ class UserItem extends Component {
         const {id, name, lastName, unverified, canEditUser, canDeleteUser} = this.props;
         const {isFormOpened} = this.state;
 
-        return (
-            <div>
-                {
-                    unverified ?
-                        <span>{lastName + ' ' + name}</span>
-                        :
-                        <Link to={'/users/' + id}>{lastName + ' ' + name}</Link>
-                }
-                {
-                    canEditUser &&
-                    <button onClick={this.open}>edit</button>
-                }
-                {
-                    canDeleteUser &&
-                    <button onClick={this.deleteUser}>X</button>
-                }
-                {
-                    isFormOpened &&
-                    <Popup>
-                        <EditingForm id={id} unverified={unverified} close={this.close}/>
-                    </Popup>
-                }
-            </div>
-        )
+        return <div>
+            {
+                unverified ?
+                    <span>{lastName + ' ' + name}</span>
+                    :
+                    <Link to={'/users/' + id}>{lastName + ' ' + name}</Link>
+            }
+            {
+                canEditUser &&
+                <button onClick={this.open}>edit</button>
+            }
+            {
+                canDeleteUser &&
+                <button onClick={this.deleteUser}>X</button>
+            }
+            {
+                isFormOpened &&
+                <Popup>
+                    <UserEditingForm id={id} unverified={unverified} close={this.close}/>
+                </Popup>
+            }
+        </div>
     }
 }
 

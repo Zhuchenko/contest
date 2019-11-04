@@ -9,7 +9,7 @@ import {getUsersForGroupCreating} from "../../services/groupOfUsersApi";
 
 //import './css/user.css';
 
-class AddingForm extends Component {
+class GroupAddingForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -68,9 +68,9 @@ class AddingForm extends Component {
     }
 }
 
-AddingForm.propTypes = {
+GroupAddingForm.propTypes = {
     close: PropTypes.func.isRequired,
     addGroup: PropTypes.func.isRequired
 };
 
-export default connect(null, actions)(AddingForm)
+export default connect(null, actions)(GroupAddingForm)

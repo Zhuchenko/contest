@@ -1,5 +1,5 @@
 import React from 'react'
-import UserControls from '../authorization/userControls'
+import UserControls from '../authorization/UserControls'
 
 import './css/appbar.css';
 

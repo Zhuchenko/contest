@@ -9,7 +9,7 @@ import * as actions from "../../redux/user/actions";
 
 //import './css/user.css';
 
-class EditingForm extends Component {
+class UserEditingForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -148,7 +148,7 @@ class EditingForm extends Component {
     }
 }
 
-EditingForm.propTypes = {
+UserEditingForm.propTypes = {
     id: PropTypes.string.isRequired,
     unverified: PropTypes.bool.isRequired,
     close: PropTypes.func.isRequired,
@@ -158,4 +158,4 @@ EditingForm.propTypes = {
 
 export default connect(state => ({
     canChangeRole: state.application.rights.user.changeRole
-}), actions)(EditingForm)
+}), actions)(UserEditingForm)

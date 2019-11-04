@@ -40,6 +40,9 @@ app.get('/*', (req, res) => {
 
 connect();
 
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
 app.listen(app.get('port'), () => {
   console.log('Contest server is listening on port', app.get('port'))
 });
