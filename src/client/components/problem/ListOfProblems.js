@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
-import * as actions from '../../redux/groupOfUsers/actions'
+import * as actions from '../../redux/problem/actions'
 import getList from '../common/List'
 import Popup from "../common/Popup";
 import ProblemAddingForm from "./ProblemAddingForm";
@@ -18,7 +18,7 @@ class ProblemList extends Component {
     }
 
     componentDidMount() {
-        this.props.getGroups();
+        this.props.getProblems();
     }
 
     open = () => {

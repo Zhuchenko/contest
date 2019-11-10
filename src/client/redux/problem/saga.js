@@ -14,7 +14,6 @@ export default function* problemSaga() {
 function* getProblemsSaga() {
     try {
         const problems = yield call(getProblems);
-
         yield put(actions.getProblemsSuccess(problems));
     } catch (error) {
         yield put(actions.getProblemsFailure(error))

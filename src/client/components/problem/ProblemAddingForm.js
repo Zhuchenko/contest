@@ -131,7 +131,7 @@ class ProblemAddingForm extends Component {
                    value={name}
                    onChange={this.handleChangedName}/>
             <div>Text</div>
-            <textarea onChange={this.handleChangedText} rows="10" cols="75">{text}</textarea>
+            <textarea onChange={this.handleChangedText} value={text} rows="10" cols="75"/>
             <div>Options:</div>
             {
                 options.length > 0 &&

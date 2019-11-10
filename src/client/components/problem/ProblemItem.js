@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import * as actions from '../../redux/groupOfUsers/actions'
-//import ProblemEditingForm from "./ProblemEditingForm";
+import * as actions from '../../redux/problem/actions'
+import ProblemEditingForm from "./ProblemEditingForm";
 import Popup from "../common/Popup";
 
 //import './css/item.css'
@@ -35,7 +35,7 @@ class ProblemItem extends Component {
 
         return (
             <div>
-                <Link to={'/groups/' + id}>{name}</Link>
+                <Link to={'/problems/' + id}>{name}</Link>
                 {
                     canEdit &&
                     <button onClick={this.open}>edit</button>
@@ -45,10 +45,10 @@ class ProblemItem extends Component {
                     <button onClick={this.deleteProblem}>X</button>
                 }
                 {
-                    // isFormOpened &&
-                    // <Popup>
-                    //     <ProblemEditingForm id={id} close={this.close}/>
-                    // </Popup>
+                    isFormOpened &&
+                    <Popup>
+                        <ProblemEditingForm id={id} close={this.close}/>
+                    </Popup>
                 }
             </div>
         )

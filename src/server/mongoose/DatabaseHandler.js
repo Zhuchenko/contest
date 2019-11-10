@@ -74,7 +74,27 @@ export const deleteGroup = async (id) => {
 
 export const addProblem = async (newInstance) => {
     problem.add(newInstance);
-}
+};
+
+export const getAllProblems = async () => {
+    return removeUnderscoreFromArray(await problem.find());
+};
+
+export const getProblemById = async (id) => {
+    return removeUnderscore(await problem.findOne({_id: id}));
+};
+
+export const getProblemsByAuthor = async (authorId) => {
+    return removeUnderscore(await problem.find({authorId}));
+};
+
+export const updateProblem = async (id, newState) => {
+    problem.update(id, newState);
+};
+
+export const deleteProblem = async (id) => {
+    problem.remove(id);
+};
 
 // roles
 

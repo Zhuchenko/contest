@@ -71,7 +71,7 @@ router.post('/:groupId', auth.required, async (req, res) => {
     if (!oldGroup) return res.status(404).end();
 
     if (rights.groupOfUsers.edit || oldGroup.authorId === id) { // TODO: || can write
-        await  db.updateGroup(groupId, group);
+        await db.updateGroup(groupId, group);
         return res.status(200).end();
     } else {
         return res.status(403).end();

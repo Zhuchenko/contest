@@ -1,5 +1,21 @@
 import {setAuthToken} from "../utilities/sessionStorage";
 
+export const getProblems = () => {
+    const headers = setAuthToken({});
+
+    return fetch('/api/problems/', {
+        method: 'GET',
+        headers
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                throw response.status
+            }
+        })
+};
+
 export const getProblem = (problemId) => {
     const headers = setAuthToken({});
 
@@ -13,6 +29,23 @@ export const getProblem = (problemId) => {
                     .then(response => {
                         return response.problem;
                     })
+            } else {
+                throw response.status
+            }
+        })
+};
+
+export const editProblem = (id, problem) => {
+    const headers = setAuthToken({'Content-Type': 'application/json'});
+
+    return fetch('/api/problems/' + id, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({problem})
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response;
             } else {
                 throw response.status
             }
@@ -72,4 +105,19 @@ export const sendParcel = (parcel, code) => {
                     })
             }
         }).catch(error => ({error}))
+};
+
+export const deleteProblem = (id) => {
+    const headers = setAuthToken({});
+
+    return fetch('/api/problems/' + id, {
+        method: 'DELETE',
+        headers
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response;
+            }
+            throw response.status
+        })
 };
