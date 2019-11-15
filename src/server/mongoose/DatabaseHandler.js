@@ -102,6 +102,32 @@ export const getRightsByName = async (name) => {
     return (await role.findOne({name}, 'rights')).rights;
 };
 
+// sets of problems
+
+export const getSetById = async (id) => {
+    return removeUnderscore(await set.findOne({_id: id}));
+};
+
+export const getAllSets = async () => {
+    return removeUnderscoreFromArray(await set.find());
+};
+
+export const getSetsByAuthor = async (id) => {
+    return removeUnderscoreFromArray(await set.find({authorId: id}));
+};
+
+export const addSet = async (newInstance) => {
+    set.add(newInstance);
+};
+
+export const updateSet = async (id, newState) => {
+    set.update(id, newState);
+};
+
+export const deleteSet = async (id) => {
+    set.remove(id);
+};
+
 // unverified users
 
 export const getUnverifiedUser = async (query) => {

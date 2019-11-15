@@ -2,8 +2,6 @@ import React, {Component} from 'react'
 import {getGroup} from '../../services/groupOfUsersApi'
 import getList from "../common/List";
 import {Link} from "react-router-dom";
-import * as actions from '../../redux/application/actions'
-import {connect} from "react-redux";
 
 //import './css/user.css';
 
@@ -41,4 +39,4 @@ class Group extends Component {
     }
 }
 
-export default connect(null, actions)(Group);
+export default Group;

@@ -1,20 +1,5 @@
 import express from 'express'
-import {
-    deleteUser,
-    getAllParticipants,
-    getAllUsers,
-    getUserById,
-    getUserRoleById,
-    updateUser
-} from '../mongoose/api/user'
-import {
-    addUnverifiedUser,
-    deleteUnverifiedUser,
-    getAllUnverifiedUsers,
-    getUnverifiedUserById,
-    updateUnverifiedUser
-} from '../mongoose/api/unverifiedUser'
-import {getRightsByName} from '../mongoose/api/role'
+import {getUserById} from '../mongoose/api/user'
 import auth from '../config/auth'
 import pickBy from 'lodash/pickBy'
 import * as db from "../mongoose/DatabaseHandler";
@@ -72,9 +57,9 @@ router.post('/:userId', auth.required, async (req, res) => {
 
     if (rights.users.edit || oldUser.id === id) {
         if (!rights.user.changeRole) {
-            await updateUser(userId, pickBy(user, isNotRole));
+            await db.updateUser(userId, pickBy(user, isNotRole));
         } else {
-            await updateUser(userId, user);
+            await db.updateUser(userId, user);
         }
         return res.status(200).end();
     } else {
@@ -86,11 +71,11 @@ router.delete('/:userId', auth.required, async (req, res) => {
     const {params: {userId}, payload: {id}} = req;
     const rights = await db.getUserRights(id);
 
-    const user = await getUserById(userId);
+    const user = await db.getUserById(userId);
     if (!user) return res.status(404).end();
 
     if (rights.user.delete) {
-        await deleteUser(userId);
+        await db.deleteUser(userId);
         return res.status(200).end();
     } else {
         return res.status(403).end();
@@ -130,11 +115,11 @@ router.post('/unverified/:userId', auth.required, async (req, res) => {
     const {body: {user}, params: {userId}, payload: {id}} = req;
     const rights = await db.getUserRights(id);
 
-    const oldUser = await getUnverifiedUserById(userId);
+    const oldUser = await db.getUnverifiedUserById(userId);
     if (!oldUser) return res.status(404).end();
 
     if (rights.user.add) {
-        await updateUnverifiedUser(userId, user);
+        await db.updateUnverifiedUser(userId, user);
         return res.status(200).end()
     } else {
         return res.status(403).end();
@@ -145,11 +130,11 @@ router.delete('/unverified/:userId', auth.required, async (req, res) => {
     const {params: {userId}, payload: {id}} = req;
     const rights = await db.getUserRights(id);
 
-    const user = await getUnverifiedUserById(userId);
+    const user = await db.getUnverifiedUserById(userId);
     if (!user) return res.status(404).end();
 
     if (rights.user.add) {
-        await deleteUnverifiedUser(userId);
+        await db.deleteUnverifiedUser(userId);
         return res.status(200).end()
     } else {
         return res.status(403).end();

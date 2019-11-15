@@ -31,10 +31,10 @@ router.get('/', auth.required, async (req, res) => {
 });
 
 router.get('/:groupId', auth.required, async (req, res) => {
-    const {payload: {id}} = req;
+    const {params: {groupId}, payload: {id}} = req;
     const rights = await db.getUserRights(id);
 
-    const group = await  db.getGroupById(req.params.groupId);
+    const group = await  db.getGroupById(groupId);
     if (!group) return res.status(404).end();   // TODO: check for converting to ObjectId
 
     const canView = rights.groupOfUsers.view || id === group.authorId || group.users.includes(id);

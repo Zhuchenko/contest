@@ -8,6 +8,8 @@ import User from '../user/User'
 import ListOfUsers from '../user/ListOfUsers'
 import Group from '../groupOfUsers/Group'
 import ListOfGroups from '../groupOfUsers/ListOfGroups'
+import Set from '../setOfProblems/Set'
+import ListOfSets from '../setOfProblems/ListOfSets'
 
 import './css/appview.css';
 
@@ -19,6 +21,8 @@ const AppView = () => {
                 <Switch>
                     <PrivateRoute exact path='/problems/' component={ListOfProblems}/>
                     <PrivateRoute exact path='/problems/:problemId' component={Problem}/>
+                    <PrivateRoute exact path='/sets/' component={ListOfSets}/>
+                    <PrivateRoute exact path='/sets/:setId' component={Set}/>
                     <PrivateRoute exact path='/users/' component={ListOfUsers}/>
                     <PrivateRoute exact path='/users/:userId' component={User}/>
                     <PrivateRoute exact path='/groups/' component={ListOfGroups}/>

@@ -31,21 +31,19 @@ class ProblemEditingForm extends Component {
         getProblem(this.props.id)
             .then(problem => {
                 const {name, text, options, limitation: {time, memory}} = problem;
-                console.log(JSON.stringify(problem));
                 this.setState({
                     name,
                     text,
                     time,
                     memory,
                     options
-                }, ()=>{console.log(this.state.text)})
+                })
             })
     }
 
     edit = () => {
         const { name, text, options, time, memory} = this.state;
         const {editProblem, close, id} = this.props;
-        console.log(id)
         editProblem({id, newState: {name, text, options, limitation: {time, memory}}});
         close();
     };

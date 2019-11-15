@@ -16,7 +16,7 @@ export const add = async (newInstance) => {
 };
 
 export const update = async (id, newState) => {
-    SetOfProblems.updateOne({_id: id}, {
+    await SetOfProblems.updateOne({_id: id}, {
         $set: {
             ...newState
         }

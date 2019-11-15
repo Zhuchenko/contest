@@ -4,6 +4,7 @@ import applicationSaga from './application/saga'
 import userSaga from './user/saga'
 import groupOfUsersSaga from './groupOfUsers/saga'
 import problemSaga from './problem/saga'
+import setOfProblemsSaga from './setOfProblems/saga'
 
 const creator = ({ history }) => {
     function* rootSaga() {
@@ -12,7 +13,8 @@ const creator = ({ history }) => {
             applicationSaga(),
             userSaga(),
             groupOfUsersSaga(),
-            problemSaga()
+            problemSaga(),
+            setOfProblemsSaga()
         ])
     }
 
