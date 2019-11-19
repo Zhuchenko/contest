@@ -7,7 +7,7 @@ import Input from '../common/input';
 import './css/signForm.css'
 import './css/appbar__button.css'
 
-class SIgnInForm extends Component {
+class SignInForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -27,6 +27,17 @@ class SIgnInForm extends Component {
     signIn = () => {
         const {email, password} = this.state;
         this.props.signIn({email, password});
+    };
+
+    handleKeyPress = e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.signIn();
+        }
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            this.props.hideForm();
+        }
     };
 
     render() {
@@ -50,12 +61,11 @@ class SIgnInForm extends Component {
         return (
             <div className={'sign__form'}>
                 {
-                    inputs.map(item =>
+                    inputs.map((item) =>
                         <Input key={item.placeholder}
-                               placeholder={item.placeholder}
-                               value={item.value}
-                               type={item.type}
-                               onChange={item.onChange}/>
+                               {...item}
+                               handleKeyPress={this.handleKeyPress}
+                        />
                     )
                 }
                 <div className={'sign__button-panel'}>
@@ -67,9 +77,9 @@ class SIgnInForm extends Component {
     }
 }
 
-SIgnInForm.propTypes = {
+SignInForm.propTypes = {
     signIn: PropTypes.func.isRequired,
     hideForm: PropTypes.func.isRequired,
 };
 
-export default connect(null, actions)(SIgnInForm)
+export default connect(null, actions)(SignInForm)

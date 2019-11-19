@@ -55,6 +55,17 @@ class GroupEditingForm extends Component {
         close();
     };
 
+    handleKeyPress = e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.edit();
+        }
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            this.props.close();
+        }
+    };
+
     render() {
         const {name, users} = this.state;
         const List = getList(UserItemWithCheckBox, users);
@@ -63,7 +74,9 @@ class GroupEditingForm extends Component {
                 <Input key='name'
                        placeholder="Name"
                        value={name}
-                       onChange={this.handleChangedName}/>
+                       onChange={this.handleChangedName}
+                       handleKeyPress={this.handleKeyPress}
+                />
                 <List handleChecked={this.handleChecked}/>
                 <button onClick={this.edit}>Save</button>
                 <button onClick={this.props.close}>Cancel</button>

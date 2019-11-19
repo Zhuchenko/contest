@@ -31,7 +31,7 @@
     "passport": "0.4.0",
     "passport-local": "1.0.0",
     "prop-types": "15.6.2",
-    "react": "16.5.1",
+    "react": "^16.5.1",
     "react-dom": "16.5.1",
     "react-dom-factories": "1.0.2",
     "react-input-files": "1.2.0",

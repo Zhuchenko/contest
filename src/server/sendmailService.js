@@ -1,5 +1,10 @@
 //import nodemailer from 'nodemailer'
-const sendmail = require('sendmail')({});
+const sendmail = require('sendmail')({
+    devPort: 1025, // Default: False
+    devHost: 'localhost', // Default: localhost
+    smtpPort: 2525, // Default: 25
+    smtpHost: 'localhost'
+});
 
 const from = "contest@math.com";
 const verifyEmailUrl = 'https://localhost:3000/verify-email';

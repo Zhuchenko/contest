@@ -134,12 +134,24 @@ class ProblemEditingForm extends Component {
     //     this.setState({tests});
     // };
 
+    handleKeyPress = e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.edit();
+        }
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            this.props.close();
+        }
+    };
+
     render() {
         const {name, text, options, language, compiler, time, memory} = this.state;
         return <div>
             <Input placeholder="Name"
                    value={name}
-                   onChange={this.handleChangedName}/>
+                   onChange={this.handleChangedName}
+                   handleKeyPress={this.handleKeyPress}/>
             <div>Text</div>
             <textarea onChange={this.handleChangedText} value={text} rows="10" cols="75"/>
             <div>Options:</div>
@@ -153,18 +165,22 @@ class ProblemEditingForm extends Component {
             <div className={'line'}>
                 <Input placeholder="language"
                        value={language}
-                       onChange={this.handleChangedLanguage}/>
+                       onChange={this.handleChangedLanguage}
+                       handleKeyPress={this.handleKeyPress}/>
                 <Input placeholder="compiler"
                        value={compiler}
-                       onChange={this.handleChangedCompiler}/>
+                       onChange={this.handleChangedCompiler}
+                       handleKeyPress={this.handleKeyPress}/>
                 <button onClick={this.addOption}>+</button>
             </div>
             <span>Limitations:</span>
             <div className={'line'}>
                 <span>Time: </span>
-                <Input type="number" placeholder={'time'} onChange={this.handleChangedTime} value={time}/>
+                <Input type="number" placeholder={'time'} onChange={this.handleChangedTime} value={time}
+                       handleKeyPress={this.handleKeyPress}/>
                 <span>Memory: </span>
-                <Input type="number" placeholder={'memory'} onChange={this.handleChangedMemory} value={memory}/>
+                <Input type="number" placeholder={'memory'} onChange={this.handleChangedMemory} value={memory}
+                       handleKeyPress={this.handleKeyPress}/>
             </div>
             <button onClick={this.edit}>Save</button>
             <button onClick={this.props.close}>Cancel</button>

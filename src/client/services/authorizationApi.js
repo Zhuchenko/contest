@@ -48,9 +48,9 @@ export const signUp = (personalData) => {
     })
         .then(response => {
             if (response.status === 200) {
-                return response.json();
+                return response;
             }
-            throw response.json();
+            throw response.status;
         })
 };
 

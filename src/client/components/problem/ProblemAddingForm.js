@@ -29,7 +29,7 @@ class ProblemAddingForm extends Component {
     }
 
     add = () => {
-        const { name, text, options, time, memory, checker, tests } = this.state;
+        const {name, text, options, time, memory, checker, tests} = this.state;
         const {addProblem, close} = this.props;
         addProblem({problem: {name, text, options, limitation: {time, memory}}, checker, tests});
         close();
@@ -121,6 +121,17 @@ class ProblemAddingForm extends Component {
         this.setState({tests});
     };
 
+    handleKeyPress = e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.add();
+        }
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            this.props.close();
+        }
+    };
+
     render() {
         const {
             name, text, options, language, compiler, time, memory, checker,
@@ -129,7 +140,8 @@ class ProblemAddingForm extends Component {
         return <div>
             <Input placeholder="Name"
                    value={name}
-                   onChange={this.handleChangedName}/>
+                   onChange={this.handleChangedName}
+                   handleKeyPress={this.handleKeyPress}/>
             <div>Text</div>
             <textarea onChange={this.handleChangedText} value={text} rows="10" cols="75"/>
             <div>Options:</div>
@@ -143,18 +155,22 @@ class ProblemAddingForm extends Component {
             <div className={'line'}>
                 <Input placeholder="language"
                        value={language}
-                       onChange={this.handleChangedLanguage}/>
+                       onChange={this.handleChangedLanguage}
+                       handleKeyPress={this.handleKeyPress}/>
                 <Input placeholder="compiler"
                        value={compiler}
-                       onChange={this.handleChangedCompiler}/>
+                       onChange={this.handleChangedCompiler}
+                       handleKeyPress={this.handleKeyPress}/>
                 <button onClick={this.addOption}>+</button>
             </div>
             <span>Limitations:</span>
             <div className={'line'}>
                 <span>Time: </span>
-                <Input type="number" placeholder={'time'} onChange={this.handleChangedTime} value={time}/>
+                <Input type="number" placeholder={'time'} onChange={this.handleChangedTime} value={time}
+                       handleKeyPress={this.handleKeyPress}/>
                 <span>Memory: </span>
-                <Input type="number" placeholder={'memory'} onChange={this.handleChangedMemory} value={memory}/>
+                <Input type="number" placeholder={'memory'} onChange={this.handleChangedMemory} value={memory}
+                       handleKeyPress={this.handleKeyPress}/>
             </div>
             <div className={'line'}>
                 <span>Checker: </span>
@@ -200,7 +216,8 @@ class ProblemAddingForm extends Component {
                 }
                 <Input placeholder="test-description"
                        value={testDescription}
-                       onChange={this.handleChangedTestDescription}/>
+                       onChange={this.handleChangedTestDescription}
+                       handleKeyPress={this.handleKeyPress}/>
                 <button onClick={this.addTest}>+</button>
             </div>
             <button onClick={this.add}>Add</button>

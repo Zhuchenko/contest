@@ -104,6 +104,17 @@ class UserEditingForm extends Component {
         this.setState({roleIndex: {value, touched: true}});
     };
 
+    handleKeyPress = e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.add();
+        }
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            this.props.close();
+        }
+    };
+
     render() {
         const {name, lastName, email, roleIndex, unverified, authKey} = this.state;
         const {canChangeRole} = this.props;
@@ -112,17 +123,20 @@ class UserEditingForm extends Component {
                 <Input key='name'
                        placeholder="Name"
                        value={name.value}
-                       onChange={this.handleChangedName}/>
+                       onChange={this.handleChangedName}
+                       handleKeyPress={this.handleKeyPress}/>
                 <Input key='lastName'
                        placeholder="Last Name"
                        value={lastName.value}
-                       onChange={this.handleChangedLastName}/>
+                       onChange={this.handleChangedLastName}
+                       handleKeyPress={this.handleKeyPress}/>
                 {
                     email.value &&
                     <Input key='email'
                            placeholder="email"
                            value={email.value}
-                           onChange={this.handleChangedEmail}/>
+                           onChange={this.handleChangedEmail}
+                           handleKeyPress={this.handleKeyPress}/>
                 }
                 {
                     canChangeRole &&
@@ -139,7 +153,8 @@ class UserEditingForm extends Component {
                     <Input key='authKey'
                            placeholder="Auth Key"
                            value={authKey.value}
-                           onChange={this.handleChangedAuthKey}/>
+                           onChange={this.handleChangedAuthKey}
+                           handleKeyPress={this.handleKeyPress}/>
                 }
                 <button onClick={this.edit}>Save</button>
                 <button onClick={this.props.close}>Cancel</button>

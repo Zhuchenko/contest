@@ -86,41 +86,52 @@ class SignUpForm extends Component {
         })
     };
 
+    handleKeyPress = e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.signUp();
+        }
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            this.props.hideForm();
+        }
+    };
+
     render() {
         const {email, password, repeatPassword, name, lastName, authKey, invalidFields} = this.state;
         const {hideForm} = this.props;
 
         const inputs = [
             {
-                name: 'email',
+                placeholder: 'email',
                 value: email,
                 errorMessage: 'it is not valid',
                 onChange: this.handleChangedEmail
             },
             {
-                name: 'name',
+                placeholder: 'name',
                 value: name,
                 onChange: this.handleChangedName
             },
             {
-                name: 'last name',
+                placeholder: 'last name',
                 value: lastName,
                 onChange: this.handleChangedLastName
             },
             {
-                name: 'auth key',
+                placeholder: 'auth key',
                 value: authKey,
                 onChange: this.handleChangedAuthKey
             },
             {
-                name: 'password',
+                placeholder: 'password',
                 type: 'password',
                 value: password,
                 errorMessage: 'it is not equal to the requirements',
                 onChange: this.handleChangedPassword
             },
             {
-                name: 'repeat password',
+                placeholder: 'repeat password',
                 type: 'password',
                 value: repeatPassword,
                 errorMessage: 'it does not match',
@@ -131,14 +142,13 @@ class SignUpForm extends Component {
         return (
             <div className={'sign__form'}>
                 {
-                    inputs.map(item =>
-                        <Input key={item.name}
-                               placeholder={item.name}
-                               value={item.value}
-                               type={item.type}
-                               isValid={!invalidFields.includes(item.name)}
-                               errorMessage={item.errorMessage ?? 'it is required'}
-                               onChange={item.onChange}/>
+                    inputs.map(({placeholder, value, type, onChange, errorMessage}) =>
+                        <Input key={placeholder}
+                               {...{placeholder, value, type, onChange}}
+                               isValid={!invalidFields.includes(placeholder)}
+                               errorMessage={errorMessage ?? 'it is required'}
+                               handleKeyPress={this.handleKeyPress}
+                        />
                     )
                 }
                 <div className={'sign__button-panel'}>

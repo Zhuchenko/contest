@@ -42,6 +42,17 @@ class UserAddingForm extends Component {
         this.setState({roleIndex: value});
     };
 
+    handleKeyPress = e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.add();
+        }
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            this.props.close();
+        }
+    };
+
     render() {
         const {name, lastName, roleIndex, authKey} = this.state;
         return (
@@ -49,11 +60,13 @@ class UserAddingForm extends Component {
                 <Input key='name'
                        placeholder="Name"
                        value={name}
-                       onChange={this.handleChangedName}/>
+                       onChange={this.handleChangedName}
+                       handleKeyPress={this.handleKeyPress}/>
                 <Input key='lastName'
                        placeholder="Last Name"
                        value={lastName}
-                       onChange={this.handleChangedLastName}/>
+                       onChange={this.handleChangedLastName}
+                       handleKeyPress={this.handleKeyPress}/>
                 <select onChange={this.onChange} defaultValue={roleIndex}>
                     {
                         roles.map((role, i) => (
@@ -64,7 +77,8 @@ class UserAddingForm extends Component {
                 <Input key='authKey'
                        placeholder="Auth Key"
                        value={authKey}
-                       onChange={this.handleChangedAuthKey}/>
+                       onChange={this.handleChangedAuthKey}
+                       handleKeyPress={this.handleKeyPress}/>
                 <button onClick={this.add}>Add</button>
                 <button onClick={this.props.close}>Cancel</button>
             </div>

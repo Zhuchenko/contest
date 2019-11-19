@@ -5,6 +5,7 @@ import * as db from '../mongoose/DatabaseHandler'
 import generateCode from '../utils/generateCode'
 import {VerifyEmail} from "../sendmailService";
 import {getUserById} from '../mongoose/api/user'
+import {getUnverifiedUser} from '../mongoose/api/unverifiedUser'
 
 import '../config/passport'
 
@@ -14,7 +15,7 @@ router.post('/signup', auth.optional, (req, res) => {
     const {body: {email, password, name, lastName, authKey}} = req;
 
     (async () => {
-        const unverifiedUser = await db.getUnverifiedUser({authKey, name, lastName});
+        const unverifiedUser = await getUnverifiedUser({authKey, name, lastName});
         if (!unverifiedUser) {
             return res.json({errorMessage: "it does not match"});
         }
@@ -23,11 +24,10 @@ router.post('/signup', auth.optional, (req, res) => {
         await unverifiedUser.save();
 
         const code = generateCode(8);
-        db.addCode({email, code});
+        await db.addCode({email, code});
         VerifyEmail(email, code);
 
         res.status(200).end();
-
     })();
 });
 
