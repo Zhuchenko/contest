@@ -2,6 +2,7 @@ import React from 'react'
 import AppBar from './appbar';
 import {Switch} from 'react-router-dom'
 import PrivateRoute from '../common/PrivateRoute'
+import NavigationPanel from '../Navigation/NavigationPanel'
 import Problem from '../problem/Problem'
 import ListOfProblems from '../problem/ListOfProblems'
 import User from '../user/User'
@@ -12,6 +13,7 @@ import Set from '../setOfProblems/Set'
 import ListOfSets from '../setOfProblems/ListOfSets'
 
 import './css/appview.css';
+import {connect} from "react-redux";
 
 const AppView = () => {
     return (
@@ -33,4 +35,4 @@ const AppView = () => {
     )
 };
 
-export default AppView
+export default AppView;
