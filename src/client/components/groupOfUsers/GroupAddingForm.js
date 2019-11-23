@@ -26,7 +26,6 @@ class GroupAddingForm extends Component {
                     isSelected: false
                 }));
                 this.setState({
-                    name,
                     users: usersWithSelecting
                 })
             })

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const ForbiddenPage = () => {
+export default () => {
     return (
         <h1>403 FORBIDDEN</h1>
     )

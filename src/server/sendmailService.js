@@ -1,12 +1,12 @@
 //import nodemailer from 'nodemailer'
 const sendmail = require('sendmail')({
-    devPort: 1025, // Default: False
-    devHost: 'localhost', // Default: localhost
-    smtpPort: 2525, // Default: 25
+    // devPort: 25, // Default: False
+    // devHost: 'localhost', // Default: localhost
+    smtpPort: 25, // Default: 25
     smtpHost: 'localhost'
 });
 
-const from = "contest@math.com";
+const from = "kristina.volyakova@confirmit.com";
 const verifyEmailUrl = 'https://localhost:3000/verify-email';
 
 export const VerifyEmail = (email, code) => {

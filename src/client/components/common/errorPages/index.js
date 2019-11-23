@@ -1,6 +1,6 @@
 import React from 'react';
-import {ForbiddenPage} from "./Forbidden";
-import {NotFoundPage} from "./NotFound";
+import ForbiddenPage from "./Forbidden";
+import NotFoundPage from "./NotFound";
 
 const FORBIDDEN = 403;
 const NOT_FOUND = 404;

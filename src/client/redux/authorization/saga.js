@@ -1,5 +1,6 @@
 import {all, call, put, takeLatest} from 'redux-saga/es/effects'
 import * as actions from './actions'
+import {toastr} from 'react-redux-toastr'
 import {signIn, signOut, signUp} from '../../services/authorizationApi'
 
 export default function* authorizationSaga() {
@@ -15,6 +16,7 @@ function* signInSaga(action) {
     const {user, errorMessage}  = yield call(signIn, email, password);
 
     if (user) {
+        toastr.success('Title', 'Message')
         yield put(actions.signInSuccess(user));
     } else {
         yield put(actions.signInFailure({errorMessage}));

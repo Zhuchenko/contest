@@ -26,6 +26,34 @@ router.get('/', auth.required, async (req, res) => {
     return res.json({sets});
 });
 
+router.get('/creating/problems', auth.required, async (req, res) => {
+    const {payload: {id}} = req;
+    const rights = await db.getUserRights(id);
+
+    let problems = [];
+    if (rights.setOfProblems.add) {
+        if (rights.problem.view) {
+            problems = (await db.getAllProblems()).map(problem => ({...problem, canEdit: true, canDelete: true}));
+        } else {
+            if (rights.problem.add) {
+                problems = (await db.getProblemsByAuthor(id)).map(problem => ({
+                    ...problem,
+                    canEdit: true,
+                    canDelete: true
+                }));
+                //TODO: union with can read {canEdit: false, canDelete: false}
+                //TODO: union with can write {canEdit: true, canDelete: false}
+            } else {
+                return res.status(403).end();
+            }
+        }
+    } else {
+        return res.status(403).end();
+    }
+
+    return res.json({problems});
+});
+
 router.get('/:setId', auth.required, async (req, res) => {
     const {params: {setId}, payload: {id}} = req;
     const rights = await db.getUserRights(id);

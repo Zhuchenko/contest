@@ -2,7 +2,6 @@ import React from 'react'
 import AppBar from './appbar';
 import {Switch} from 'react-router-dom'
 import PrivateRoute from '../common/PrivateRoute'
-import NavigationPanel from '../Navigation/NavigationPanel'
 import Problem from '../problem/Problem'
 import ListOfProblems from '../problem/ListOfProblems'
 import User from '../user/User'
@@ -11,9 +10,10 @@ import Group from '../groupOfUsers/Group'
 import ListOfGroups from '../groupOfUsers/ListOfGroups'
 import Set from '../setOfProblems/Set'
 import ListOfSets from '../setOfProblems/ListOfSets'
+// import Contest from '../contest/Contest'
+import ListOfContests from '../contest/ListOfContests'
 
 import './css/appview.css';
-import {connect} from "react-redux";
 
 const AppView = () => {
     return (
@@ -29,6 +29,8 @@ const AppView = () => {
                     <PrivateRoute exact path='/users/:userId' component={User}/>
                     <PrivateRoute exact path='/groups/' component={ListOfGroups}/>
                     <PrivateRoute exact path='/groups/:groupId' component={Group}/>
+                    <PrivateRoute exact path='/contests/' component={ListOfContests}/>
+                    {/*<PrivateRoute exact path='/contests/:groupId' component={Contest}/>*/}
                 </Switch>
             </div>
         </div>

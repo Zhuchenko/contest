@@ -3,30 +3,26 @@ import { ContestSchema } from '../schemas'
 
 export const Contest = mongoose.model('Contest', ContestSchema, 'contests')
 
-export const getContestById = async (contestId) => {
-    return Contest.findOne({ _id: contestId }).exec();
+export const find = async (query) => {
+    return Contest.find(query, null, {lean: true}).exec();
 };
 
-export const getAllContests = async () => {
-    return Contest.find({});
+export const findOne = async (query) => {
+    return Contest.findOne(query, null, {lean: true});
 };
 
-export const addContest = async (newContest) => {
-    return Contest.create(newContest)
-        .then(contest => {
-            return contest;
-        });
+export const add = async (newInstance) => {
+    Contest.create(newInstance);
 };
 
-export const updateContest = async (contestId, contestNewState) => {
-    await Contest.updateOne({_id: contestId}, {
+export const update = async (id, newState) => {
+    await Contest.updateOne({_id: id}, {
         $set: {
-            ...contestNewState
+            ...newState
         }
-    }).exec();
-    return getContestById(contestId);
+    });
 };
 
-export const deleteContest = async (contestId) => {
-    return Contest.findByIdAndRemove(contestId).exec();
+export const remove = async (id) => {
+    Contest.findByIdAndRemove(id).exec();
 };

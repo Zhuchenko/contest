@@ -18,7 +18,7 @@ export const getGroups = () => {
 export const getUsersForGroupCreating = () => {
     const headers = setAuthToken({});
 
-    return fetch('/api/users/group-creating/participants', {
+    return fetch('/api/groups/creating/users', {
         method: 'GET',
         headers
     })

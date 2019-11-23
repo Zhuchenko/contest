@@ -13,6 +13,6 @@ const createStore = (reducer) => {
             :
             applyMiddleware(sagaMiddleware);
     return reduxCreateStore(reducer, middlewares)
-}
+};
 
 export { createStore, sagaMiddleware }

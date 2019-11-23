@@ -1,9 +1,9 @@
 import {setAuthToken} from "../utilities/sessionStorage";
 
-export const getSets = () => {
+export const getContests = () => {
     const headers = setAuthToken({});
 
-    return fetch('/api/sets', {
+    return fetch('/api/contests', {
         method: 'GET',
         headers
     })
@@ -15,29 +15,45 @@ export const getSets = () => {
         })
 };
 
-export const getProblemsForSetCreating = () => {
+export const getGroupsForContestCreating = () => {
     const headers = setAuthToken({});
 
-    return fetch('/api/sets/creating/problems', {
+    return fetch('/api/contests/creating/groups', {
         method: 'GET',
         headers
     })
         .then(response => {
             if (response.status === 200) {
                 return response.json()
-                    .then(response => response.problems)
+                    .then(response => response.groups)
             }
             throw response.status;
         })
 };
 
-export const addSet = (set) => {
+export const getSetsForContestCreating = () => {
+    const headers = setAuthToken({});
+
+    return fetch('/api/contests/creating/sets', {
+        method: 'GET',
+        headers
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json()
+                    .then(response => response.sets)
+            }
+            throw response.status;
+        })
+};
+
+export const addContest = (contest) => {
     const headers = setAuthToken({'Content-Type': 'application/json'});
 
-    return fetch('/api/sets/', {
+    return fetch('/api/contests/', {
         method: 'POST',
         headers,
-        body: JSON.stringify({set})
+        body: JSON.stringify({contest})
     })
         .then(response => {
             if (response.status === 200) {
@@ -47,29 +63,29 @@ export const addSet = (set) => {
         })
 };
 
-export const getSet = (setId) => {
+export const getContest = (contestId) => {
     const headers = setAuthToken({});
 
-    return fetch('/api/sets/' + setId, {
+    return fetch('/api/contests/' + contestId, {
         method: 'GET',
         headers
     })
         .then(response => {
             if (response.status === 200) {
                 return response.json()
-                    .then(response => response.set)
+                    .then(response => response.contest)
             }
             throw response.status
         })
 };
 
-export const editSet = (setId, set) => {
+export const editContest = (contestId, contest) => {
     const headers = setAuthToken({'Content-Type': 'application/json'});
 
-    return fetch('/api/sets/' + setId, {
+    return fetch('/api/contests/' + contestId, {
         method: 'POST',
         headers,
-        body: JSON.stringify({set})
+        body: JSON.stringify({contest})
     })
         .then(response => {
             if (response.status === 200) {
@@ -79,10 +95,10 @@ export const editSet = (setId, set) => {
         })
 };
 
-export const deleteSet = (setId) => {
+export const deleteContest = (contestId) => {
     const headers = setAuthToken({});
 
-    return fetch('/api/sets/' + setId, {
+    return fetch('/api/contests/' + contestId, {
         method: 'DELETE',
         headers
     })

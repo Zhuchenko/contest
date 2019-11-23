@@ -1,22 +1,28 @@
 import React from 'react'
 import UserControls from '../authorization/UserControls'
-
-import './css/appbar.css';
 import NavigationPanel from "../Navigation/NavigationPanel";
-import {connect} from "react-redux";
+import ReduxToastr from 'react-redux-toastr'
 
-const AppBar  = (props) => {
+import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
+import './css/appbar.css';
+
+const AppBar = () => {
     return (
         <div className={'appbar'}>
-            {props.isAuthorized ? <NavigationPanel/> : null}
+            <NavigationPanel/>
             <UserControls/>
+            <ReduxToastr
+                timeOut={4000}
+                newestOnTop={false}
+                preventDuplicates
+                position="top-right"
+                getState={(state) => state.toastr} // This is the default
+                transitionIn="fadeIn"
+                transitionOut="fadeOut"
+                closeOnToastrClick/>
         </div>
     )
 };
 
-const mapStateToProps = (state) => ({
-    isAuthorized: state.application.authorized,
-});
-
-export default connect(mapStateToProps)(AppBar);
+export default AppBar
 

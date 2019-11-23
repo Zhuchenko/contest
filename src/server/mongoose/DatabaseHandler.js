@@ -38,6 +38,33 @@ export const deleteCode = async (id) => {
 
 //contests
 
+export const getContestById = async (id) => {
+    return removeUnderscore(await contest.findOne({_id: id}));
+};
+
+export const getAllContests = async () => {
+    return removeUnderscoreFromArray(await contest.find());
+};
+
+export const getContestsByAuthor = async (id) => {
+    return removeUnderscoreFromArray(await contest.find({authorId: id}));
+};
+
+export const getContestsByParticipant = async (id) => {
+    return removeUnderscoreFromArray(await contest.find({participants: id})); //TODO: it depends on the way storing participants
+};
+
+export const addContest = async (newInstance) => {
+    contest.add(newInstance);
+};
+
+export const updateContest = async (id, newState) => {
+    contest.update(id, newState);
+};
+
+export const deleteContest = async (id) => {
+    contest.remove(id);
+};
 
 
 // groups of users
@@ -82,6 +109,10 @@ export const getAllProblems = async () => {
 
 export const getProblemById = async (id) => {
     return removeUnderscore(await problem.findOne({_id: id}));
+};
+
+export const getProblemByIdForContest = async (id) => {
+    return removeUnderscore(await problem.findOne({_id: id}, 'name text checker limitation tests numberOfTests options'));
 };
 
 export const getProblemsByAuthor = async (authorId) => {

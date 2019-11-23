@@ -30,6 +30,18 @@ router.get('/', auth.required, async (req, res) => {
     return res.json({groups});
 });
 
+router.get('/creating/users', auth.required, async (req, res) => {
+    const {payload: {id}} = req;
+    const rights = await db.getUserRights(id);
+
+    if (rights.groupOfUsers.add) {
+        const users = await db.getAllParticipants();
+        return res.json({users});
+    } else {
+        return res.status(403).end();
+    }
+});
+
 router.get('/:groupId', auth.required, async (req, res) => {
     const {params: {groupId}, payload: {id}} = req;
     const rights = await db.getUserRights(id);

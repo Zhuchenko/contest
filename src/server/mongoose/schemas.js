@@ -8,7 +8,7 @@ import path from 'path'
 import {serverConfig} from '../config/serverConfig'
 
 const Schema = mongoose.Schema;
-const ObjectId = mongoose.Schema.Types.ObjectId;
+const Mixed = mongoose.Schema.Types.Mixed;
 
 export const UnverifiedUserSchema = new Schema({
     email: {
@@ -170,11 +170,11 @@ export const ContestSchema = new Schema({
         unique: true,
         required: true
     },
-    setOfProblems: {
-        type: String,
+    problems: {
+        type: Mixed,
         required: true
     },
-    groupOfUsers: {
+    groups: {
         type: String,
         required: true
     },

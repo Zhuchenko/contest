@@ -36,18 +36,6 @@ router.get('/:userId', auth.required, async (req, res) => { // TODO: coordinator
     }
 });
 
-router.get('/group-creating/participants', auth.required, async (req, res) => {
-    const {payload: {id}} = req;
-    const rights = await db.getUserRights(id);
-
-    if (rights.groupOfUsers.add) {
-        const users = await db.getAllParticipants();
-        return res.json({users});
-    } else {
-        return res.status(403).end();
-    }
-});
-
 router.post('/:userId', auth.required, async (req, res) => {
     const {body: {user}, params: {userId}, payload: {id}} = req;
     const rights = await db.getUserRights(id);
