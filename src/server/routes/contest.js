@@ -21,8 +21,8 @@ router.get('/', auth.required, async (req, res) => {
             //TODO: union with can read {canEdit: false, canDelete: false}
             //TODO: union with can write {canEdit: true, canDelete: false}
         } else {
-            contests = (await db.getContestsByParticipant(id)).map(group => ({
-                ...group,
+            contests = (await db.getContestsByParticipant(id)).map(contest => ({
+                ...contest,
                 canEdit: false,
                 canDelete: false
             }));
@@ -77,21 +77,64 @@ router.get('/creating/sets', auth.required, async (req, res) => {
     return res.json({sets});
 });
 
-router.get('/:contestId', auth.required, async (req, res) => { //TODO: get
+router.get('/:contestId/participants', auth.required, async (req, res) => {
     const {params: {contestId}, payload: {id}} = req;
     const rights = await db.getUserRights(id);
 
     const contest = await db.getContestById(contestId);
     if (!contest) return res.status(404).end();   // TODO: check for converting to ObjectId
+    const isParticipant = await db.isParticipantInTheContest(id, contestId);
 
-    const canView = rights.contest.view || id === contest.authorId// || contest.participants.includes(id); //TODO: contest.participants.includes(id)
-    if (canView) { //TODO: full info
-        // const usersFullInfo = await Promise.all(
-        //     group.users.map(async userId => {
-        //         return await  db.getUserById(userId);
-        //     })
-        // );
-        return res.json({group: {id: group.id, name: group.name, /*users: usersFullInfo*/}})
+    const canView = rights.contest.view || id === contest.authorId || isParticipant;
+    if (canView) {
+        const contest = await db.getContestById(contestId);
+        const groups = await Promise.all(
+            contest.groups.map(async groupId => {
+                const {id, name, users} = await db.getGroupById(groupId);
+                const usersFullInfo =  await Promise.all(users.map(async usersId => {
+                    return await db.getUserById(usersId);
+                }));
+                return {id, name, users: usersFullInfo};
+            })
+        );
+
+        return res.json({participants: groups, isParticipant})
+    } else {
+        return res.status(403).end();
+    }
+});
+
+router.get('/:contestId/problems', auth.required, async (req, res) => {
+    const {params: {contestId}, payload: {id}} = req;
+    const rights = await db.getUserRights(id);
+
+    const contest = await db.getContestById(contestId);
+    if (!contest) return res.status(404).end();   // TODO: check for converting to ObjectId
+    const isParticipant = await db.isParticipantInTheContest(id, contestId);
+
+    const canView = rights.contest.view || id === contest.authorId || isParticipant;
+    if (canView) {
+        const {problems} = await db.getContestById(contestId);
+
+        return res.json({problems})
+    } else {
+        return res.status(403).end();
+    }
+});
+
+router.get('/:contestId/problems/:problemId', auth.required, async (req, res) => {
+    const {params: {contestId, problemId}, payload: {id}} = req;
+    const rights = await db.getUserRights(id);
+
+    const contest = await db.getContestById(contestId);
+    if (!contest) return res.status(404).end();   // TODO: check for converting to ObjectId
+    const isParticipant = await db.isParticipantInTheContest(id, contestId);
+
+    const canView = rights.contest.view || id === contest.authorId || isParticipant;
+    if (canView) {
+        const problem = await db.getProblemByIdInContest(contestId, problemId);
+
+        return res.json({problem, isParticipant})
     } else {
         return res.status(403).end();
     }
@@ -104,7 +147,7 @@ router.post('/', auth.required, async (req, res) => {
     if (rights.contest.add) {
         const problemIds = flatten(await Promise.all(
             contest.sets.map(async setId => {
-                const set =  await db.getSetById(setId);
+                const set = await db.getSetById(setId);
                 return set.problems
             })));
         const problems = await Promise.all(

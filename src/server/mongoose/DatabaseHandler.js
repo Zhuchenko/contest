@@ -3,22 +3,19 @@ import pickBy from 'lodash/pickBy'
 import * as code from './api/code'
 import * as contest from './api/contest'
 import * as group from './api/groupOfUsers'
-import * as parcel from './api/parcel'
 import * as problem from './api/problem'
 import * as role from './api/role'
 import * as set from './api/setOfProblems'
-import * as solution from './api/solution'
-import * as testResult from './api/testResult'
 import * as unverifiedUser from './api/unverifiedUser'
 import * as user from './api/user'
 
 const isNotUnderscoredId = (value, key) => key !== '_id';
 
-const removeUnderscore  = (item) => {
+const removeUnderscore = (item) => {
     return {id: item._id, ...pickBy(item, isNotUnderscoredId)};
 };
 
-const removeUnderscoreFromArray  = (array) => {
+const removeUnderscoreFromArray = (array) => {
     return array.map(item => (removeUnderscore(item)));
 };
 
@@ -50,8 +47,29 @@ export const getContestsByAuthor = async (id) => {
     return removeUnderscoreFromArray(await contest.find({authorId: id}));
 };
 
-export const getContestsByParticipant = async (id) => {
-    return removeUnderscoreFromArray(await contest.find({participants: id})); //TODO: it depends on the way storing participants
+export const getContestsByParticipant = async (participantId) => {
+    const groups = await getGroupsByParticipant(participantId);
+    let contests = [];
+    for (let i = 0, l = groups.length; i < l; i++) {
+        const contestsIncludesCurrentGroup = removeUnderscoreFromArray(await contest.find({groups: groups[i].id.toString()}));
+        contests = [...contests, ...contestsIncludesCurrentGroup];
+    }
+    return contests;
+};
+
+export const isParticipantInTheContest = async (participantId, contestId) => {
+    const groups = await getGroupsByParticipant(participantId);
+    const contest = await getContestById(contestId);
+    for (let i = 0, l = groups.length; i < l; i++) {
+        if (contest.groups.includes(groups[i].id.toString()))
+            return true;
+    }
+    return false;
+};
+
+export const getProblemByIdInContest = async (contestId, problemId) => {
+    const {problems} =  await getContestById(contestId);
+    return  problems.find(({id}) => id.toString() === problemId);
 };
 
 export const addContest = async (newInstance) => {
@@ -116,7 +134,7 @@ export const getProblemByIdForContest = async (id) => {
 };
 
 export const getProblemsByAuthor = async (authorId) => {
-    return removeUnderscore(await problem.find({authorId}));
+    return removeUnderscoreFromArray(await problem.find({authorId}));
 };
 
 export const updateProblem = async (id, newState) => {
@@ -143,8 +161,8 @@ export const getAllSets = async () => {
     return removeUnderscoreFromArray(await set.find());
 };
 
-export const getSetsByAuthor = async (id) => {
-    return removeUnderscoreFromArray(await set.find({authorId: id}));
+export const getSetsByAuthor = async (authorId) => {
+    return removeUnderscoreFromArray(await set.find({authorId}));
 };
 
 export const addSet = async (newInstance) => {
@@ -200,7 +218,7 @@ export const getUserByEmail = async (email) => {
 };
 
 export const getUserRights = async (id) => {
-    const userRole =  (await getUserById(id)).role;
+    const userRole = (await getUserById(id)).role;
     return getRightsByName(userRole);
 };
 

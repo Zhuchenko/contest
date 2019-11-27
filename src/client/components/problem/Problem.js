@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { getProblem, sendParcel } from '../../services/problemApi'
+import {getProblem, getProblemFromContest, sendParcel} from '../../services/problemApi'
 import FileUploader from 'react-input-files'
 
 import './css/problem.css';
@@ -18,21 +18,24 @@ class Problem extends Component {
             options: [],
             selectedId: 0,
             attachedFile: '',
-            results: ''
+            results: '',
+            isParticipant: false
         }
     }
 
     componentDidMount() {
-        getProblem(this.props.match.params.problemId)
-            .then(problem => {
-                const {name, text, limitation, options} = problem;
-                this.setState({
-                    name: name,
-                    text: text,
-                    limitation: limitation,
-                    options: options
-                });
-            })
+        const {contestId, problemId} = this.props.match.params;
+        if (contestId) {
+            getProblemFromContest(contestId, problemId)
+                .then(({problem: {name, text, limitation, options}, isParticipant}) => {
+                    this.setState({name, text, limitation, options, isParticipant});
+                })
+        } else {
+            getProblem(problemId)
+                .then(({name, text, limitation, options}) => {
+                    this.setState({name, text, limitation, options});
+                })
+        }
     }
 
     handleOptionsChange = (e) => {
@@ -48,11 +51,12 @@ class Problem extends Component {
 
     sendSolution = () => {
         const {attachedFile, options, selectedId} = this.state;
+        const {problemId, conestId} = this.props.match.params;
 
         if (attachedFile) {
             sendParcel({
-                problem: this.props.match.params.problemId,
-                contest: "5cd846b9d2770317bdf60cdb",
+                problem: problemId,
+                contest: conestId,
                 options: options[selectedId]
             }, attachedFile)
                 .then(results => {
@@ -63,26 +67,11 @@ class Problem extends Component {
     };
 
     render() {
-        const {name, text, limitation: {time, memory}, options, attachedFile, results} = this.state;
+        const {name, text, limitation: {time, memory}, options, attachedFile, results, isParticipant} = this.state;
 
         const languageOptions =
             options.map((option, index) =>
                 <option key={index}>{option.language} ({option.compiler})</option>);
-
-        const attachedFileName =
-            attachedFile ?
-                <div>{attachedFile.name}</div>
-                : null;
-
-        const resultsOfSendingSolution =
-            results ?
-                results.map((result, index) =>
-                    <div key={index}>
-                        number: {result.number} {result.shortening}
-                        <br/>
-                        {result.message}
-                    </div>)
-                : null;
 
         return (
             <div className={'problem'}>
@@ -96,17 +85,31 @@ class Problem extends Component {
                 <div>
                     <label>Language:</label>
                     <select className={'problem__select'} onChange={this.handleOptionsChange}>
-                        { languageOptions }
+                        {languageOptions}
                     </select>
                 </div>
-                <div>
-                    <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadFile}>
-                        <button className={'problem__button'} >Upload</button>
-                    </FileUploader>
-                    { attachedFileName }
-                </div>
-                <button className={'problem__button'} onClick={this.sendSolution}>Send</button>
-                { resultsOfSendingSolution }
+                {isParticipant ?
+                    <>
+                        <div>
+                            <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadFile}>
+                                <button className={'problem__button'}>Upload</button>
+                            </FileUploader>
+                            {attachedFile ?
+                                <div>{attachedFile.name}</div>
+                                : null}
+                        </div>
+                        <button className={'problem__button'} onClick={this.sendSolution}>Send</button>
+                        {results ?
+                            results.map((result, index) =>
+                                <div key={index}>
+                                    number: {result.number} {result.shortening}
+                                    <br/>
+                                    {result.message}
+                                </div>)
+                            : null}
+                    </>
+                    : null
+                }
             </div>
         )
     }

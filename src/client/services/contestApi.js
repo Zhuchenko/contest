@@ -15,6 +15,37 @@ export const getContests = () => {
         })
 };
 
+export const getParticipants = (contestId) => {
+    const headers = setAuthToken({});
+
+    return fetch('/api/contests/' + contestId + '/participants', {
+        method: 'GET',
+        headers
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            }
+            throw response.status;
+        })
+};
+
+export const getProblems = (contestId) => {
+    const headers = setAuthToken({});
+
+    return fetch('/api/contests/' + contestId + '/problems', {
+        method: 'GET',
+        headers
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json()
+                    .then(response => response.problems)
+            }
+            throw response.status;
+        })
+};
+
 export const getGroupsForContestCreating = () => {
     const headers = setAuthToken({});
 

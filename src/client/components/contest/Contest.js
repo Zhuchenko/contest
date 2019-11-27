@@ -1,39 +1,45 @@
 import React, {Component} from 'react'
-import {getContest} from '../../services/contestApi'
-import getList from "../common/List";
 import {Link} from "react-router-dom";
+import TabBar from "../common/TabBar";
+import ParticipantsTab from "./ParticipantsTab";
+import ProblemsTab from "./ProblemsTab";
 
-const UserInGroup = (user) => <Link to={'/users/' + user.id}>{user.lastName + ' ' + user.name}</Link>;
+const participants = {
+    id: "participants",
+    text: "participants"
+};
+
+const problems = {
+    id: "problems",
+    text: "problems"
+};
 
 class Contest extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            name: '',
-            groups: [],
-            problems:[]
-        }
+        this.state = {selectedId: participants.id};
+        this.tabs = [participants, problems];
     }
 
-    componentDidMount() {
-        getGroup(this.props.match.params.groupId)
-            .then(group => {
-                const {name, users} = group;
-                this.setState({name, users})
-            }).catch((errorCode) => {
-            this.props.setError({errorCode});
-        });
-    }
+    handleChanged = (tab) => {
+        this.setState({selectedId: tab});
+    };
 
     render() {
-        const {name, users} = this.state;
-        const List = getList(UserInGroup, users);
+
         return (
-            <div>
-                <h3>{name}</h3>
-                <span>{"Number of participants: " + users.length}</span>
-                <List/>
-            </div>
+            <>
+                <TabBar handleChanged={this.handleChanged} tabs={this.tabs}
+                        selectedId={this.state.selectedId}/>
+                {
+                    (this.state.selectedId === participants.id) &&
+                    <ParticipantsTab contestId={this.props.match.params.contestId}/>
+                }
+                {
+                    (this.state.selectedId === problems.id) &&
+                    <ProblemsTab contestId={this.props.match.params.contestId}/>
+                }
+            </>
         )
     }
 }

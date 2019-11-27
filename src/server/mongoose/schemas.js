@@ -175,7 +175,7 @@ export const ContestSchema = new Schema({
         required: true
     },
     groups: {
-        type: String,
+        type: Array,
         required: true
     },
     authorId: {

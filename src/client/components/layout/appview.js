@@ -10,7 +10,7 @@ import Group from '../groupOfUsers/Group'
 import ListOfGroups from '../groupOfUsers/ListOfGroups'
 import Set from '../setOfProblems/Set'
 import ListOfSets from '../setOfProblems/ListOfSets'
-// import Contest from '../contest/Contest'
+import Contest from '../contest/Contest'
 import ListOfContests from '../contest/ListOfContests'
 
 import './css/appview.css';
@@ -30,7 +30,8 @@ const AppView = () => {
                     <PrivateRoute exact path='/groups/' component={ListOfGroups}/>
                     <PrivateRoute exact path='/groups/:groupId' component={Group}/>
                     <PrivateRoute exact path='/contests/' component={ListOfContests}/>
-                    {/*<PrivateRoute exact path='/contests/:groupId' component={Contest}/>*/}
+                    <PrivateRoute exact path='/contests/:contestId' component={Contest}/>
+                    <PrivateRoute exact path='/contests/:contestId/problems/:problemId' component={Problem}/>
                 </Switch>
             </div>
         </div>

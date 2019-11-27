@@ -35,6 +35,22 @@ export const getProblem = (problemId) => {
         })
 };
 
+export const getProblemFromContest = (contestId, problemId) => {
+    const headers = setAuthToken({});
+
+    return fetch('/api/contests/' + contestId + '/problems/' + problemId, {
+        method: 'GET',
+        headers
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                throw response.status
+            }
+        })
+};
+
 export const editProblem = (id, problem) => {
     const headers = setAuthToken({'Content-Type': 'application/json'});
 

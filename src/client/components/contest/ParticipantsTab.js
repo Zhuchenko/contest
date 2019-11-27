@@ -1,44 +1,46 @@
 import React, {Component} from 'react'
 import {getParticipants} from '../../services/contestApi'
-import getList from "../common/List";
 import {Link} from "react-router-dom";
+import PropTypes from "prop-types";
 
-const GroupInContest = (group) => <Link to={'/groups/' + group.id}>{group.name}</Link>;
-const UserInGroup = (user) => <Link to={'/users/' + user.id}>{user.lastName + ' ' + user.name}</Link>;
+const UserInGroup = ({id, name, lastName}) => <Link key={id} to={'/users/' + id}>{lastName + ' ' + name}</Link>;
 
 class ParticipantsTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            groups: []
+            participants: [],
+            isParticipant: false
         }
     }
 
     componentDidMount() {
-        getParticipants(this.props.match.params.contestId)
-            .then(groups => {
-                this.setState({groups})
+        getParticipants(this.props.contestId)
+            .then(({participants, isParticipant}) => {
+                this.setState({participants, isParticipant})
             }).catch((errorCode) => {
             this.props.setError({errorCode});
         });
     }
 
     render() {
-        const {groups} = this.state;
+        const {participants, isParticipant} = this.state;
 
         return (
-            <>
+            participants.map(({id, name, users}) => (<>
+                <br/>
+                {!isParticipant ? <Link key={id} to={'/groups/' + id}>{name}</Link> : null}
+                <br/>
                 {
-                    groups.map(({id, name, users}) => (<>
-                        <GroupInContest {...{id, name}}/>
-                        {
-                            users.map((user) => <UserInGroup {...user}/>)
-                        }
-                    </>))
+                    users.map((user) => <UserInGroup {...user}/>)
                 }
-            </>
+            </>))
         )
     }
 }
 
-export default Contest;
+ParticipantsTab.propTypes = {
+    contestId: PropTypes.string.isRequired,
+};
+
+export default ParticipantsTab;
