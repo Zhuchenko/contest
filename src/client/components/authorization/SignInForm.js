@@ -58,6 +58,7 @@ class SignInForm extends Component {
             }
         ];
 
+        //TODO: add check for correct email and password set
         return (
             <div className={'sign__form'}>
                 {
@@ -68,9 +69,9 @@ class SignInForm extends Component {
                         />
                     )
                 }
-                <div className={'sign__button-panel'}>
-                    <button onClick={this.signIn} className={'sign__button'}>Sign in</button>
-                    <button onClick={hideForm} className={'sign__button'}>Cancel</button>
+                <div className={'dialog__button-panel'}>
+                    <button onClick={this.signIn} className={'button sign__button'}>Sign in</button>
+                    <button onClick={hideForm} className={'button sign__button'}>Cancel</button>
                 </div>
             </div>
         )

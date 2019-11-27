@@ -37,7 +37,7 @@ class UserList extends Component {
             <>
                 {
                     canAddUser &&
-                    <button onClick={this.open}>Add</button>
+                    <button className={'button'} onClick={this.open}>Add</button>
                 }
                 <List/>
                 {

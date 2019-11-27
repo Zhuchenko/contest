@@ -36,7 +36,7 @@ class ContestList extends Component {
             <>
                 {
                     canAddContest &&
-                    <button onClick={this.open}>Add</button>
+                    <button className={'button'} onClick={this.open}>Add</button>
                 }
                 <List/>
                 {

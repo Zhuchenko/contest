@@ -19,7 +19,7 @@ const AppView = () => {
     return (
         <div className={'appview'}>
             <AppBar/>
-            <div className={'content'}>
+            <div className={'appview__content'}>
                 <Switch>
                     <PrivateRoute exact path='/problems/' component={ListOfProblems}/>
                     <PrivateRoute exact path='/problems/:problemId' component={Problem}/>

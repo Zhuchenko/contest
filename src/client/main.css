@@ -1,0 +1,152 @@
+:root {
+    --background-color: #f1f0f0;
+
+    --primary-color: #4527a0;
+    --secondary-color: #ffa726;
+
+    --light-font-color: #ffffff;
+    --dark-font-color: #000000;
+
+    --error-color: red;
+
+    --appbar-height: 3em;
+}
+
+html, body, #root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+}
+
+html, body, button, input {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+}
+
+input, button, div {
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+textarea {
+    resize: none;
+}
+
+input {
+    border: none;
+    border-bottom: 1px solid grey;
+}
+
+.scrollbar::-webkit-scrollbar-track
+{
+    border-radius: 0.5em;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar
+{
+    border-radius: 0.5em;
+    width: 12px;
+    background-color: #F5F5F5;
+}
+.scrollbar::-webkit-scrollbar-thumb
+{
+    border-radius: 0.5em;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #A5A5A5;
+}
+
+.button {
+    color: var(--secondary-color);
+    background-color: transparent;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-color: var(--secondary-color);
+    border-spacing: 0.25em;
+    padding: 0.5em 1em;
+    border-radius: 3em;
+    display: inline-block;
+    transition: all 0.4s ease 0s;
+    margin: 0 1em;
+}
+
+.button:hover {
+    text-shadow: 0px 0px 6px rgba(255, 255, 255, 1);
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.4s ease 0s;
+    background-color: var(--secondary-color);
+    color: var(--light-font-color);
+}
+
+.button_inline {
+    border: none;
+    border-radius: 0;
+}
+
+.button_icon {
+    padding: 0.25em;
+    height: calc(24px + 0.5em);
+}
+.button_icon:hover .icon {
+    fill: var(--light-font-color);
+}
+
+.icon {
+    fill: var(--secondary-color);
+}
+.icon:hover {
+    fill: var(--light-font-color);
+}
+
+.dialog {
+    background: white;
+    border-width: 0;
+    border-radius: 0.5em;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 2em;
+
+    max-height: 85%;
+    overflow-y: auto;
+}
+
+.dialog__sub-header {
+    margin: 1em 0;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    background-color: var(--secondary-color);
+    width: 100%;
+    text-align: center;
+    padding: 0.5em 0;
+}
+
+.dialog__line {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialog__line__label {
+}
+
+.dialog__button-panel{
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-around;
+    margin: 2em 0 0.5em 0;
+}

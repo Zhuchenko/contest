@@ -57,7 +57,7 @@ class SignDialog extends Component {
                 {
                     isShown &&
                     <Popup>
-                        <div className={'sign__dialog'}>
+                        <div className={'dialog scrollbar sign__dialog'}>
                             <TabBar handleChanged={this.handleChanged} tabs={this.tabs}
                                     selectedId={this.state.selectedId}/>
                             {

@@ -37,7 +37,7 @@ class ProblemList extends Component {
             <>
                 {
                     canAddProblem &&
-                    <button onClick={this.open}>Add</button>
+                    <button className={'button'} onClick={this.open}>Add</button>
                 }
                 <List/>
                 {

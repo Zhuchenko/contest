@@ -7,9 +7,13 @@
 }
 
 .appbar__button {
-    height: 30px;
+    height: var(--appbar-height);
     cursor: pointer;
     border: 0;
     background-color: transparent;
-    color: white;
+    color: var(--light-font-color);
+}
+
+.appbar__button:hover {
+    color: var(--secondary-color);
 }

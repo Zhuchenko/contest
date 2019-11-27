@@ -18,7 +18,7 @@ class ContestItem extends Component {
                 <Link to={'/contests/' + id}>{name}</Link>
                 {
                     canDelete &&
-                    <button onClick={this.deleteGroup}>X</button>
+                    <button className={'button button_inline'} onClick={this.deleteGroup}>X</button>
                 }
             </div>
         )

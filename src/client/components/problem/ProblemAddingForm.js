@@ -4,6 +4,7 @@ import CustomInput from '../common/CustomInput'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/problem/actions'
 import FileUploader from 'react-input-files'
+import Icon from '../common/Icon'
 
 const getIndex = (key) => key.substring(key.indexOf("_") + 1);
 
@@ -135,91 +136,122 @@ class ProblemAddingForm extends Component {
             name, text, options, language, compiler, time, memory, checker,
             tests, testInput, testOutput, testDescription
         } = this.state;
-        return <div>
+        return <div className={'dialog scrollbar'}>
             <CustomInput placeholder="Name"
-                         value={name}
-                         onChange={this.handleChangedName}
-                         handleKeyPress={this.handleKeyPress}/>
-            <div>Text</div>
-            <textarea onChange={this.handleChangedText} value={text} rows="10" cols="75"/>
-            <div>Options:</div>
+                   value={name}
+                   onChange={this.handleChangedName}
+                   handleKeyPress={this.handleKeyPress}/>
+            <div className={'dialog__sub-header'}>Text</div>
+            <div className={'dialog__line'}>
+                <textarea onChange={this.handleChangedText} value={text} rows="10" cols="75"/>
+            </div>
+            <div className={'dialog__sub-header'}>Options:</div>
             {
                 options.length > 0 &&
-                options.map((item, id) => <div key={id}>
+                options.map((item, id) => <div className={'dialog__line'} key={id}>
                     <span>{item.language + ' - ' + item.compiler}</span>
-                    <button id={'option_' + id} onClick={this.deleteOption}>X</button>
+                    <button className={'button button_inline button_icon'} id={'option_' + id} onClick={this.deleteOption}>
+                        <Icon type={'close'} className={'icon'}/>
+                    </button>
                 </div>)
             }
-            <div className={'line'}>
+            <div className={'dialog__line'}>
                 <CustomInput placeholder="language"
-                             value={language}
-                             onChange={this.handleChangedLanguage}
-                             handleKeyPress={this.handleKeyPress}/>
+                       value={language}
+                       onChange={this.handleChangedLanguage}
+                       handleKeyPress={this.handleKeyPress}/>
                 <CustomInput placeholder="compiler"
-                             value={compiler}
-                             onChange={this.handleChangedCompiler}
-                             handleKeyPress={this.handleKeyPress}/>
-                <button onClick={this.addOption}>+</button>
+                       value={compiler}
+                       onChange={this.handleChangedCompiler}
+                       handleKeyPress={this.handleKeyPress}/>
+                <button className={'button button_inline button_icon'} onClick={this.addOption}>
+                    <Icon type={'add'} className={'icon'}/>
+                </button>
             </div>
-            <span>Limitations:</span>
-            <div className={'line'}>
-                <span>Time: </span>
+            <span className={'dialog__sub-header'}>Limitations:</span>
+            <div className={'dialog__line'}>
+                <span className={'dialog__line__label'}>Time: </span>
                 <CustomInput type="number" placeholder={'time'} onChange={this.handleChangedTime} value={time}
-                             handleKeyPress={this.handleKeyPress}/>
-                <span>Memory: </span>
+                       handleKeyPress={this.handleKeyPress}/>
+                <span className={'dialog__line__label'}>Memory: </span>
                 <CustomInput type="number" placeholder={'memory'} onChange={this.handleChangedMemory} value={memory}
-                             handleKeyPress={this.handleKeyPress}/>
+                       handleKeyPress={this.handleKeyPress}/>
             </div>
-            <div className={'line'}>
+            <div className={'dialog__line'}>
                 <span>Checker: </span>
                 <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadChecker}>
-                    <button className={'problem__button'}>&#8593;</button>
+                    <button className={'button button_inline button_icon'}>
+                        <Icon type={'file'} className={'icon'}/>
+                    </button>
                 </FileUploader>
                 {
                     checker &&
                     <>
                         <span>{checker.name}</span>
-                        <button onClick={this.handleRemoveChecker}>x</button>
+                        <button className={'button button_inline button_icon'} onClick={this.handleRemoveChecker}>
+                            <Icon type={'close'} className={'icon'}/>
+                        </button>
                     </>
                 }
             </div>
-            <div>Tests:</div>
+            <div className={'dialog__sub-header'}>Tests:</div>
             {
+                //TODO: add check for not loaded files ('undefined-undefined' case)
                 tests.length > 0 &&
-                tests.map((item, id) => <div key={id}>
+                tests.map((item, id) => <div className={'dialog__line'} key={id}>
                     <span>{item.description + ' ( ' + item.input.name + ' - ' + item.output.name + ' )'}</span>
-                    <button key={'test_' + id} onClick={this.deleteTest}>X</button>
+                    <button className={'button button_inline button_icon'} key={'test_' + id} onClick={this.deleteTest}>
+                        <Icon type={'close'} className={'icon'}/>
+                    </button>
                 </div>)
             }
-            <div className={'line'}>
+            <div className={'dialog__line'}>
                 <FileUploader accept={'.txt'} onChange={this.handleUploadTestInput}>
-                    <button className={'problem__button'}>&#8593;</button>
+                    <>
+                        <span>Input: </span>
+                        <button className={'button button_inline button_icon'}>
+                            <Icon type={'file'} className={'icon'}/>
+                        </button>
+                    </>
                 </FileUploader>
                 {
                     testInput &&
                     <>
                         <span>{testInput.name}</span>
-                        <button onClick={this.handleRemoveTestInput}>x</button>
+                        <button className={'button button_inline button_icon'} onClick={this.handleRemoveTestInput}>
+                            <Icon type={'close'} className={'icon'}/>
+                        </button>
                     </>
                 }
                 <FileUploader accept={'.txt'} onChange={this.handleUploadTestOutput}>
-                    <button className={'problem__button'}>&#8593;</button>
+                    <>
+                        <span>Output: </span>
+                        <button className={'button button_inline button_icon'}>
+                            <Icon type={'file'} className={'icon'}/>
+                        </button>
+                    </>
                 </FileUploader>
                 {
                     testOutput &&
                     <>
                         <span>{testOutput.name}</span>
-                        <button onClick={this.handleRemoveTestOutput}>x</button>
+                        <button className={'button button_inline button_icon'} onClick={this.handleRemoveTestOutput}>
+                            <Icon type={'close'} className={'icon'}/>
+                        </button>
                     </>
                 }
                 <CustomInput placeholder="test-description"
-                             value={testDescription}
-                             onChange={this.handleChangedTestDescription}
-                             handleKeyPress={this.handleKeyPress}/>
-                <button onClick={this.addTest}>+</button>
+                       value={testDescription}
+                       onChange={this.handleChangedTestDescription}
+                       handleKeyPress={this.handleKeyPress}/>
+                <button className={'button button_inline button_icon'} onClick={this.addTest}>
+                    <Icon type={'add'} className={'icon'}/>
+                </button>
             </div>
-            <button onClick={this.add}>Add</button>
-            <button onClick={this.props.close}>Cancel</button>
+            <div className={'dialog__button-panel'}>
+                <button className={'button'} onClick={this.add}>Add</button>
+                <button className={'button'} onClick={this.props.close}>Cancel</button>
+            </div>
         </div>
     }
 }

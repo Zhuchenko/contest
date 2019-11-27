@@ -43,12 +43,12 @@ class ProblemItem extends Component {
                 <Link to={'/problems/' + id}>{name}</Link>
                 {
                     canEdit &&
-                    <button onClick={this.open}>edit</button>
+                    <button className={'button button_inline'} onClick={this.open}>edit</button>
                 }
                 {
                     canDelete &&
                     <>
-                        <button onClick={this.deleteProblem}>X</button>
+                        <button className={'button button_inline'} onClick={this.deleteProblem}>X</button>
                         <SharedRightsDialog {...{sharedReadRights, sharedWriteRights}} edit={this.edit}/>
                     </>
                 }

@@ -68,7 +68,7 @@ class GroupEditingForm extends Component {
         const {name, users} = this.state;
         const List = getList(UserItemWithCheckBox, users);
         return (
-            <div>
+            <div className={'dialog'}>
                 <CustomInput key='name'
                              placeholder="Name"
                              value={name}
@@ -76,8 +76,10 @@ class GroupEditingForm extends Component {
                              handleKeyPress={this.handleKeyPress}
                 />
                 <List handleChecked={this.handleChecked}/>
-                <button onClick={this.edit}>Save</button>
-                <button onClick={this.props.close}>Cancel</button>
+                <div className={'dialog__button-panel'}>
+                    <button className={'button'} onClick={this.edit}>Save</button>
+                    <button className={'button'} onClick={this.props.close}>Cancel</button>
+                </div>
             </div>
         )
     }

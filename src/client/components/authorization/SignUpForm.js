@@ -151,9 +151,9 @@ class SignUpForm extends Component {
                         />
                     )
                 }
-                <div className={'sign__button-panel'}>
-                    <button onClick={this.signUp} className={'sign__button'}>Sign up</button>
-                    <button onClick={hideForm} className={'sign__button'}>Cancel</button>
+                <div className={'dialog__button-panel'}>
+                    <button onClick={this.signUp} className={'button sign__button'}>Sign up</button>
+                    <button onClick={hideForm} className={'button sign__button'}>Cancel</button>
                 </div>
             </div>
         )
