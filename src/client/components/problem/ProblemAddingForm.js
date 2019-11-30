@@ -1,11 +1,9 @@
 import React, {Component} from 'react'
-import PropTypes from "prop-types";
-import Input from "../common/input";
-import {connect} from "react-redux";
-import * as actions from "../../redux/problem/actions";
-import FileUploader from "react-input-files";
-
-//import './css/user.css';
+import PropTypes from 'prop-types'
+import CustomInput from '../common/CustomInput'
+import {connect} from 'react-redux'
+import * as actions from '../../redux/problem/actions'
+import FileUploader from 'react-input-files'
 
 const getIndex = (key) => key.substring(key.indexOf("_") + 1);
 
@@ -138,10 +136,10 @@ class ProblemAddingForm extends Component {
             tests, testInput, testOutput, testDescription
         } = this.state;
         return <div>
-            <Input placeholder="Name"
-                   value={name}
-                   onChange={this.handleChangedName}
-                   handleKeyPress={this.handleKeyPress}/>
+            <CustomInput placeholder="Name"
+                         value={name}
+                         onChange={this.handleChangedName}
+                         handleKeyPress={this.handleKeyPress}/>
             <div>Text</div>
             <textarea onChange={this.handleChangedText} value={text} rows="10" cols="75"/>
             <div>Options:</div>
@@ -153,24 +151,24 @@ class ProblemAddingForm extends Component {
                 </div>)
             }
             <div className={'line'}>
-                <Input placeholder="language"
-                       value={language}
-                       onChange={this.handleChangedLanguage}
-                       handleKeyPress={this.handleKeyPress}/>
-                <Input placeholder="compiler"
-                       value={compiler}
-                       onChange={this.handleChangedCompiler}
-                       handleKeyPress={this.handleKeyPress}/>
+                <CustomInput placeholder="language"
+                             value={language}
+                             onChange={this.handleChangedLanguage}
+                             handleKeyPress={this.handleKeyPress}/>
+                <CustomInput placeholder="compiler"
+                             value={compiler}
+                             onChange={this.handleChangedCompiler}
+                             handleKeyPress={this.handleKeyPress}/>
                 <button onClick={this.addOption}>+</button>
             </div>
             <span>Limitations:</span>
             <div className={'line'}>
                 <span>Time: </span>
-                <Input type="number" placeholder={'time'} onChange={this.handleChangedTime} value={time}
-                       handleKeyPress={this.handleKeyPress}/>
+                <CustomInput type="number" placeholder={'time'} onChange={this.handleChangedTime} value={time}
+                             handleKeyPress={this.handleKeyPress}/>
                 <span>Memory: </span>
-                <Input type="number" placeholder={'memory'} onChange={this.handleChangedMemory} value={memory}
-                       handleKeyPress={this.handleKeyPress}/>
+                <CustomInput type="number" placeholder={'memory'} onChange={this.handleChangedMemory} value={memory}
+                             handleKeyPress={this.handleKeyPress}/>
             </div>
             <div className={'line'}>
                 <span>Checker: </span>
@@ -214,10 +212,10 @@ class ProblemAddingForm extends Component {
                         <button onClick={this.handleRemoveTestOutput}>x</button>
                     </>
                 }
-                <Input placeholder="test-description"
-                       value={testDescription}
-                       onChange={this.handleChangedTestDescription}
-                       handleKeyPress={this.handleKeyPress}/>
+                <CustomInput placeholder="test-description"
+                             value={testDescription}
+                             onChange={this.handleChangedTestDescription}
+                             handleKeyPress={this.handleKeyPress}/>
                 <button onClick={this.addTest}>+</button>
             </div>
             <button onClick={this.add}>Add</button>

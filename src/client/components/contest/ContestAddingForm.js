@@ -1,14 +1,14 @@
 import React, {Component} from 'react'
-import PropTypes from "prop-types";
-import Input from "../common/input";
-import {connect} from "react-redux";
-import * as actions from "../../redux/contest/actions";
-import DatePicker from "react-datepicker";
-import ItemWithCheckBox from "../common/ItemWithCheckBox";
-import {getGroupsForContestCreating, getSetsForContestCreating} from "../../services/contestApi";
+import PropTypes from 'prop-types'
+import CustomInput from '../common/CustomInput'
+import {connect} from 'react-redux'
+import * as actions from '../../redux/contest/actions'
+import DatePicker from 'react-datepicker'
+import ItemWithCheckBox from '../common/ItemWithCheckBox'
+import {getGroupsForContestCreating, getSetsForContestCreating} from '../../services/contestApi'
 
-import "react-datepicker/dist/react-datepicker.css";
-import getList from "../common/List";
+import 'react-datepicker/dist/react-datepicker.css'
+import getList from '../common/List'
 
 const GroupItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/groups/'}/>
 const SetItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/sets/'}/>
@@ -102,11 +102,11 @@ class ContestAddingForm extends Component {
 
         return (
             <div>
-                <Input key='name'
-                       placeholder="Name"
-                       value={name}
-                       onChange={this.handleChangedName}
-                       handleKeyPress={this.handleKeyPress}/>
+                <CustomInput key='name'
+                             placeholder="Name"
+                             value={name}
+                             onChange={this.handleChangedName}
+                             handleKeyPress={this.handleKeyPress}/>
                 <DatePicker
                     dateFormat={"dd/MM/yyyy"}
                     selected={startingDate}

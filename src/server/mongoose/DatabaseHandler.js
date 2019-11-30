@@ -43,6 +43,22 @@ export const getAllContests = async () => {
     return removeUnderscoreFromArray(await contest.find());
 };
 
+export const hasReadRightForTheContest = async (userId, contestId) => {
+    return !!(await contest.findOne({_id: contestId, sharedReadRights: userId}));
+};
+
+export const hasWriteRightForTheContest = async (userId, contestId) => {
+    return !!(await contest.findOne({_id: contestId, sharedWriteRights: userId}));
+};
+
+export const getContestsByReadRight = async (id) => {
+    return removeUnderscoreFromArray(await contest.find({sharedReadRights: id}));
+};
+
+export const getContestsByWriteRight = async (id) => {
+    return removeUnderscoreFromArray(await contest.find({sharedWriteRights: id}));
+};
+
 export const getContestsByAuthor = async (id) => {
     return removeUnderscoreFromArray(await contest.find({authorId: id}));
 };
@@ -68,8 +84,8 @@ export const isParticipantInTheContest = async (participantId, contestId) => {
 };
 
 export const getProblemByIdInContest = async (contestId, problemId) => {
-    const {problems} =  await getContestById(contestId);
-    return  problems.find(({id}) => id.toString() === problemId);
+    const {problems} = await getContestById(contestId);
+    return problems.find(({id}) => id.toString() === problemId);
 };
 
 export const addContest = async (newInstance) => {
@@ -99,6 +115,22 @@ export const getGroupsByAuthor = async (id) => {
     return removeUnderscoreFromArray(await group.find({authorId: id}));
 };
 
+export const hasReadRightForTheGroup = async (userId, groupId) => {
+    return !!(await group.findOne({_id: groupId, sharedReadRights: userId}));
+};
+
+export const hasWriteRightForTheGroup = async (userId, groupId) => {
+    return !!(await group.findOne({_id: groupId, sharedWriteRights: userId}));
+};
+
+export const getGroupsByReadRight = async (id) => {
+    return removeUnderscoreFromArray(await group.find({sharedReadRights: id}));
+};
+
+export const getGroupsByWriteRight = async (id) => {
+    return removeUnderscoreFromArray(await group.find({sharedWriteRights: id}));
+};
+
 export const getGroupsByParticipant = async (id) => {
     return removeUnderscoreFromArray(await group.find({users: id}));
 };
@@ -123,6 +155,23 @@ export const addProblem = async (newInstance) => {
 
 export const getAllProblems = async () => {
     return removeUnderscoreFromArray(await problem.find());
+};
+
+export const getProblemsByReadRight = async (id) => {
+    const p = await getAllProblems();
+    return removeUnderscoreFromArray(await problem.find({sharedReadRights: id}));
+};
+
+export const getProblemsByWriteRight = async (id) => {
+    return removeUnderscoreFromArray(await problem.find({sharedWriteRights: id}));
+};
+
+export const hasReadRightForTheProblem = async (userId, problemId) => {
+    return !!(await problem.findOne({_id: problemId, sharedReadRights: userId}));
+};
+
+export const hasWriteRightForTheProblem = async (userId, problemId) => {
+    return !!(await problem.findOne({_id: problemId, sharedWriteRights: userId}));
 };
 
 export const getProblemById = async (id) => {
@@ -159,6 +208,22 @@ export const getSetById = async (id) => {
 
 export const getAllSets = async () => {
     return removeUnderscoreFromArray(await set.find());
+};
+
+export const getSetsByReadRight = async (id) => {
+    return removeUnderscoreFromArray(await set.find({sharedReadRights: id}));
+};
+
+export const getSetsByWriteRight = async (id) => {
+    return removeUnderscoreFromArray(await set.find({sharedWriteRights: id}));
+};
+
+export const hasReadRightForTheSet = async (userId, setId) => {
+    return !!(await set.findOne({_id: setId, sharedReadRights: userId}));
+};
+
+export const hasWriteRightForTheSet = async (userId, setId) => {
+    return !!(await set.findOne({_id: setId, sharedWriteRights: userId}));
 };
 
 export const getSetsByAuthor = async (authorId) => {
@@ -228,6 +293,14 @@ export const getAllUsers = async () => {
 
 export const getAllParticipants = async () => {
     return removeUnderscoreFromArray(await user.find({role: "participant"}, '_id email name lastName role'));
+};
+
+export const getAllCoordinators = async () => {
+    return removeUnderscoreFromArray(await user.find({role: "coordinator"}, '_id email name lastName role'));
+};
+
+export const isCoordinator = async (id) => {
+    return !!(await user.findOne({_id: id, role: "coordinator"}));
 };
 
 export const updateUser = async (id, newState) => {

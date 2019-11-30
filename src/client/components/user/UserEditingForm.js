@@ -1,13 +1,11 @@
 import React, {Component} from 'react'
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types'
 import pickBy from 'lodash/pickBy';
 import {getUnverifiedUser, getUser} from '../../services/userApi'
-import roles from "./roles";
-import Input from "../common/Input";
-import {connect} from "react-redux";
-import * as actions from "../../redux/user/actions";
-
-//import './css/user.css';
+import roles from './roles'
+import CustomInput from '../common/CustomInput'
+import {connect} from 'react-redux'
+import * as actions from '../../redux/user/actions'
 
 class UserEditingForm extends Component {
     constructor(props) {
@@ -120,23 +118,23 @@ class UserEditingForm extends Component {
         const {canChangeRole} = this.props;
         return (
             <div>
-                <Input key='name'
-                       placeholder="Name"
-                       value={name.value}
-                       onChange={this.handleChangedName}
-                       handleKeyPress={this.handleKeyPress}/>
-                <Input key='lastName'
-                       placeholder="Last Name"
-                       value={lastName.value}
-                       onChange={this.handleChangedLastName}
-                       handleKeyPress={this.handleKeyPress}/>
+                <CustomInput key='name'
+                             placeholder="Name"
+                             value={name.value}
+                             onChange={this.handleChangedName}
+                             handleKeyPress={this.handleKeyPress}/>
+                <CustomInput key='lastName'
+                             placeholder="Last Name"
+                             value={lastName.value}
+                             onChange={this.handleChangedLastName}
+                             handleKeyPress={this.handleKeyPress}/>
                 {
                     email.value &&
-                    <Input key='email'
-                           placeholder="email"
-                           value={email.value}
-                           onChange={this.handleChangedEmail}
-                           handleKeyPress={this.handleKeyPress}/>
+                    <CustomInput key='email'
+                                 placeholder="email"
+                                 value={email.value}
+                                 onChange={this.handleChangedEmail}
+                                 handleKeyPress={this.handleKeyPress}/>
                 }
                 {
                     canChangeRole &&
@@ -150,11 +148,11 @@ class UserEditingForm extends Component {
                 }
                 {
                     this.props.unverified &&
-                    <Input key='authKey'
-                           placeholder="Auth Key"
-                           value={authKey.value}
-                           onChange={this.handleChangedAuthKey}
-                           handleKeyPress={this.handleKeyPress}/>
+                    <CustomInput key='authKey'
+                                 placeholder="Auth Key"
+                                 value={authKey.value}
+                                 onChange={this.handleChangedAuthKey}
+                                 handleKeyPress={this.handleKeyPress}/>
                 }
                 <button onClick={this.edit}>Save</button>
                 <button onClick={this.props.close}>Cancel</button>

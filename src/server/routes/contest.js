@@ -13,13 +13,24 @@ router.get('/', auth.required, async (req, res) => {
         contests = (await db.getAllContests()).map(contest => ({...contest, canEdit: true, canDelete: true}));
     } else {
         if (rights.contest.add) {
-            contests = (await db.getContestsByAuthor(id)).map(contest => ({
+            const ownContests = (await db.getContestsByAuthor(id)).map(contest => ({
                 ...contest,
                 canEdit: true,
                 canDelete: true
             }));
-            //TODO: union with can read {canEdit: false, canDelete: false}
-            //TODO: union with can write {canEdit: true, canDelete: false}
+
+            const sharedContestsForReading = (await db.getContestsByReadRight(id)).map(contest => ({
+                ...contest,
+                canEdit: true,
+                canDelete: false
+            }));
+
+            const sharedContestsForWriting = (await db.getContestsByWriteRight(id)).map(contest => ({
+                ...contest,
+                canEdit: false,
+                canDelete: false
+            }));
+            contests = [... ownContests, ...sharedContestsForReading, ...sharedContestsForWriting];
         } else {
             contests = (await db.getContestsByParticipant(id)).map(contest => ({
                 ...contest,
@@ -111,8 +122,10 @@ router.get('/:contestId/problems', auth.required, async (req, res) => {
     const contest = await db.getContestById(contestId);
     if (!contest) return res.status(404).end();   // TODO: check for converting to ObjectId
     const isParticipant = await db.isParticipantInTheContest(id, contestId);
+    const hasReadRight = await db.hasReadRightForTheContest(id, contestId);
+    const hasWriteRight = await db.hasReadRightForTheContest(id, contestId);
 
-    const canView = rights.contest.view || id === contest.authorId || isParticipant;
+    const canView = rights.contest.view || id === contest.authorId || isParticipant || hasReadRight || hasWriteRight;
     if (canView) {
         const {problems} = await db.getContestById(contestId);
 
@@ -129,8 +142,10 @@ router.get('/:contestId/problems/:problemId', auth.required, async (req, res) =>
     const contest = await db.getContestById(contestId);
     if (!contest) return res.status(404).end();   // TODO: check for converting to ObjectId
     const isParticipant = await db.isParticipantInTheContest(id, contestId);
+    const hasReadRight = await db.hasReadRightForTheContest(id, contestId);
+    const hasWriteRight = await db.hasReadRightForTheContest(id, contestId);
 
-    const canView = rights.contest.view || id === contest.authorId || isParticipant;
+    const canView = rights.contest.view || id === contest.authorId || isParticipant || hasReadRight || hasWriteRight;
     if (canView) {
         const problem = await db.getProblemByIdInContest(contestId, problemId);
 
@@ -159,6 +174,8 @@ router.post('/', auth.required, async (req, res) => {
             authorId: id,
             isActive: false,
             isFinished: false,
+            sharedReadRights: [],
+            sharedWriteRights: [],
             problems
         };
         await db.addContest(parsedContest);
@@ -174,8 +191,9 @@ router.post('/:contestId', auth.required, async (req, res) => {
 
     const oldContest = await db.getGroupById(contestId);
     if (!oldContest) return res.status(404).end();
+    const hasWriteRight = await db.hasReadRightForTheContest(id, contestId);
 
-    if (rights.contest.edit || oldContest.authorId === id) { // TODO: || can write
+    if (rights.contest.edit || oldContest.authorId === id || hasWriteRight) {
         await db.updateContest(contestId, contest);
         return res.status(200).end();
     } else {

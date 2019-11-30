@@ -3,10 +3,9 @@ import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/problem/actions'
-import ProblemEditingForm from "./ProblemEditingForm";
-import Popup from "../common/Popup";
-
-//import './css/item.css'
+import ProblemEditingForm from './ProblemEditingForm'
+import Popup from '../common/Popup'
+import SharedRightsDialog from '../ShareRigthsDialog'
 
 class ProblemItem extends Component {
     constructor(props) {
@@ -29,8 +28,14 @@ class ProblemItem extends Component {
         deleteProblem({id});
     };
 
+    edit = ({newState}) => {
+        const {id, editProblem} = this.props;
+        console.log(newState)
+        editProblem({newState, id});
+    };
+
     render() {
-        const {id, name, canEdit, canDelete} = this.props;
+        const {id, name, sharedReadRights, sharedWriteRights, canEdit, canDelete} = this.props;
         const {isFormOpened} = this.state;
 
         return (
@@ -42,7 +47,10 @@ class ProblemItem extends Component {
                 }
                 {
                     canDelete &&
-                    <button onClick={this.deleteProblem}>X</button>
+                    <>
+                        <button onClick={this.deleteProblem}>X</button>
+                        <SharedRightsDialog {...{sharedReadRights, sharedWriteRights}} edit={this.edit}/>
+                    </>
                 }
                 {
                     isFormOpened &&
@@ -60,7 +68,8 @@ ProblemItem.propTypes = {
     id: PropTypes.string.isRequired,
     canEdit: PropTypes.bool.isRequired,
     canDelete: PropTypes.bool.isRequired,
-    deleteProblem: PropTypes.func.isRequired
+    deleteProblem: PropTypes.func.isRequired,
+    editProblem: PropTypes.func.isRequired,
 };
 
 export default connect(null, actions)(ProblemItem);

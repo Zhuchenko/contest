@@ -4,7 +4,7 @@ import getClassNames from '../../utilities/getClassnames'
 
 import './css/input.css'
 
-const Input = (props) => {
+const CustomInput = (props) => {
     const {placeholder, onChange, value, type = 'text', isValid = true, errorMessage, handleKeyPress} = props;
     const classes = getClassNames({['sign__input']: true, ['sign__input--error']: !isValid});
 
@@ -23,7 +23,7 @@ const Input = (props) => {
     )
 };
 
-Input.propTypes = {
+CustomInput.propTypes = {
     placeholder: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
@@ -33,4 +33,4 @@ Input.propTypes = {
     errorMessage: PropTypes.string
 };
 
-export default Input
+export default CustomInput

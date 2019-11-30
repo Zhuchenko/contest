@@ -12,15 +12,26 @@ router.get('/', auth.required, async (req, res) => {
         groups = (await db.getAllGroups()).map(group => ({...group, canEdit: true, canDelete: true}));
     } else {
         if (rights.groupOfUsers.add) {
-            groups = (await  db.getGroupsByAuthor(id)).map(group => ({
+            const ownGroups = (await db.getGroupsByAuthor(id)).map(group => ({
                 ...group,
                 canEdit: true,
                 canDelete: true
             }));
-            //TODO: union with can read {canEdit: false, canDelete: false}
-            //TODO: union with can write {canEdit: true, canDelete: false}
+
+            const sharedGroupsForReading = (await db.getGroupsByReadRight(id)).map(group => ({
+                ...group,
+                canEdit: true,
+                canDelete: false
+            }));
+
+            const sharedGroupsForWriting = (await db.getGroupsByWriteRight(id)).map(group => ({
+                ...group,
+                canEdit: false,
+                canDelete: false
+            }));
+            groups = [... ownGroups, ...sharedGroupsForReading, ...sharedGroupsForWriting];
         } else {
-            groups = (await  db.getGroupsByParticipant(id)).map(group => ({
+            groups = (await db.getGroupsByParticipant(id)).map(group => ({
                 ...group,
                 canEdit: false,
                 canDelete: false
@@ -46,14 +57,16 @@ router.get('/:groupId', auth.required, async (req, res) => {
     const {params: {groupId}, payload: {id}} = req;
     const rights = await db.getUserRights(id);
 
-    const group = await  db.getGroupById(groupId);
+    const group = await db.getGroupById(groupId);
     if (!group) return res.status(404).end();   // TODO: check for converting to ObjectId
+    const hasReadRight = await db.hasReadRightForTheGroup(id, groupId);
+    const hasWriteRight = await db.hasReadRightForTheGroup(id, groupId);
 
-    const canView = rights.groupOfUsers.view || id === group.authorId || group.users.includes(id);
+    const canView = rights.groupOfUsers.view || id === group.authorId || group.users.includes(id) || hasReadRight || hasWriteRight;
     if (canView) {
         const usersFullInfo = await Promise.all(
             group.users.map(async userId => {
-                return await  db.getUserById(userId);
+                return await db.getUserById(userId);
             })
         );
         return res.json({group: {id: group.id, name: group.name, users: usersFullInfo}})
@@ -68,7 +81,10 @@ router.post('/', auth.required, async (req, res) => {
 
     if (rights.groupOfUsers.add) {
         group.authorId = id;
-        await  db.addGroup(group);
+        group.sharedRights = [];
+        group.sharedReadRights = [];
+        group.sharedWriteRights = [];
+        await db.addGroup(group);
         return res.status(200).end();
     } else {
         return res.status(403).end();
@@ -79,10 +95,11 @@ router.post('/:groupId', auth.required, async (req, res) => {
     const {body: {group}, params: {groupId}, payload: {id}} = req;
     const rights = await db.getUserRights(id);
 
-    const oldGroup = await  db.getGroupById(groupId);
+    const oldGroup = await db.getGroupById(groupId);
     if (!oldGroup) return res.status(404).end();
+    const hasWriteRight = await db.hasReadRightForTheGroup(id, groupId);
 
-    if (rights.groupOfUsers.edit || oldGroup.authorId === id) { // TODO: || can write
+    if (rights.groupOfUsers.edit || oldGroup.authorId === id || hasWriteRight) {
         await db.updateGroup(groupId, group);
         return res.status(200).end();
     } else {
@@ -94,11 +111,11 @@ router.delete('/:groupId', auth.required, async (req, res) => {
     const {params: {groupId}, payload: {id}} = req;
     const rights = await db.getUserRights(id);
 
-    const group = await  db.getGroupById(groupId);
+    const group = await db.getGroupById(groupId);
     if (!group) return res.status(404).end();
 
     if (rights.groupOfUsers.delete || group.authorId === id) {
-        await  db.deleteGroup(groupId);
+        await db.deleteGroup(groupId);
         return res.status(200).end();
     } else {
         return res.status(403).end();

@@ -89,7 +89,9 @@ export const GroupOfUsersSchema = new Schema({
     authorId: {
         type: String,
         required: true
-    }
+    },
+    sharedReadRights: [String],
+    sharedWriteRights: [String]
 });
 
 export const ProblemSchema = new Schema({
@@ -148,7 +150,9 @@ export const ProblemSchema = new Schema({
             type: String,
             required: true
         }
-    }]
+    }],
+    sharedReadRights: [String],
+    sharedWriteRights: [String]
 });
 
 export const SetOfProblemsSchema = new Schema({
@@ -161,7 +165,9 @@ export const SetOfProblemsSchema = new Schema({
         type: String,
         required: true
     },
-    problems: [String]
+    problems: [String],
+    sharedReadRights: [String],
+    sharedWriteRights: [String]
 });
 
 export const ContestSchema = new Schema({
@@ -174,10 +180,7 @@ export const ContestSchema = new Schema({
         type: Mixed,
         required: true
     },
-    groups: {
-        type: Array,
-        required: true
-    },
+    groups: [String],
     authorId: {
         type: String,
         required: true
@@ -198,6 +201,8 @@ export const ContestSchema = new Schema({
         type: Date,
         //required: true
     },
+    sharedReadRights: [String],
+    sharedWriteRights: [String]
 });
 
 export const ParcelSchema = new Schema({

@@ -1,13 +1,12 @@
 import React, {Component} from 'react'
-import PropTypes from "prop-types";
-import Input from "../common/input";
-import {connect} from "react-redux";
-import * as actions from "../../redux/groupOfUsers/actions";
-import getList from "../common/List";
-import UserItemWithCheckBox from "./UserItemWithCheckBox";
-import {getUsersForGroupCreating} from "../../services/groupOfUsersApi";
+import PropTypes from 'prop-types'
+import CustomInput from '../common/CustomInput'
+import {connect} from 'react-redux'
+import * as actions from '../../redux/groupOfUsers/actions'
+import getList from '../common/List'
+import UserItemWithCheckBox from './UserItemWithCheckBox'
+import {getUsersForGroupCreating} from '../../services/groupOfUsersApi'
 
-//import './css/user.css';
 
 class GroupAddingForm extends Component {
     constructor(props) {
@@ -66,11 +65,11 @@ class GroupAddingForm extends Component {
         const List = getList(UserItemWithCheckBox, users);
         return (
             <div>
-                <Input key='name'
-                       placeholder="Name"
-                       value={name}
-                       onChange={this.handleChangedName}
-                       handleKeyPress={this.handleKeyPress}/>
+                <CustomInput key='name'
+                             placeholder="Name"
+                             value={name}
+                             onChange={this.handleChangedName}
+                             handleKeyPress={this.handleKeyPress}/>
                 <List handleChecked={this.handleChecked}/>
                 <button onClick={this.add}>Add</button>
                 <button onClick={this.props.close}>Cancel</button>

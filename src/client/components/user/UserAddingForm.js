@@ -1,11 +1,9 @@
 import React, {Component} from 'react'
-import PropTypes from "prop-types";
-import Input from "../common/input";
+import PropTypes from 'prop-types'
+import CustomInput from '../common/CustomInput'
 import roles from './roles'
-import {connect} from "react-redux";
-import * as actions from "../../redux/user/actions";
-
-//import './css/user.css';
+import {connect} from 'react-redux'
+import * as actions from '../../redux/user/actions'
 
 class UserAddingForm extends Component {
     constructor(props) {
@@ -57,16 +55,16 @@ class UserAddingForm extends Component {
         const {name, lastName, roleIndex, authKey} = this.state;
         return (
             <div>
-                <Input key='name'
-                       placeholder="Name"
-                       value={name}
-                       onChange={this.handleChangedName}
-                       handleKeyPress={this.handleKeyPress}/>
-                <Input key='lastName'
-                       placeholder="Last Name"
-                       value={lastName}
-                       onChange={this.handleChangedLastName}
-                       handleKeyPress={this.handleKeyPress}/>
+                <CustomInput key='name'
+                             placeholder="Name"
+                             value={name}
+                             onChange={this.handleChangedName}
+                             handleKeyPress={this.handleKeyPress}/>
+                <CustomInput key='lastName'
+                             placeholder="Last Name"
+                             value={lastName}
+                             onChange={this.handleChangedLastName}
+                             handleKeyPress={this.handleKeyPress}/>
                 <select onChange={this.onChange} defaultValue={roleIndex}>
                     {
                         roles.map((role, i) => (
@@ -74,11 +72,11 @@ class UserAddingForm extends Component {
                         ))
                     }
                 </select>
-                <Input key='authKey'
-                       placeholder="Auth Key"
-                       value={authKey}
-                       onChange={this.handleChangedAuthKey}
-                       handleKeyPress={this.handleKeyPress}/>
+                <CustomInput key='authKey'
+                             placeholder="Auth Key"
+                             value={authKey}
+                             onChange={this.handleChangedAuthKey}
+                             handleKeyPress={this.handleKeyPress}/>
                 <button onClick={this.add}>Add</button>
                 <button onClick={this.props.close}>Cancel</button>
             </div>

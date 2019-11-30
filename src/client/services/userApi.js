@@ -16,6 +16,25 @@ export const getUsers = () => {
         })
 };
 
+export const getCoordinators = () => {
+    const headers = setAuthToken({});
+
+    return fetch('/api/users/share-rights/coordinators', {
+        method: 'GET',
+        headers
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json()
+                    .then(response => {
+                        return response.coordinators;
+                    })
+            } else {
+                throw response.status;
+            }
+        })
+};
+
 export const addUser = (user) => {
     const headers = setAuthToken({'Content-Type': 'application/json'});
 

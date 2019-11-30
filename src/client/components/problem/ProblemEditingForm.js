@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import PropTypes from "prop-types";
-import Input from "../common/input";
-import {connect} from "react-redux";
+import PropTypes from 'prop-types'
+import CustomInput from '../common/CustomInput'
+import {connect} from 'react-redux'
 import {getProblem} from '../../services/problemApi'
 import * as actions from '../../redux/problem/actions'
-//import FileUploader from "react-input-files";
+//import FileUploader from 'react-input-files'
 
 const getIndex = (key) => key.substring(key.indexOf("_") + 1);
 
@@ -148,10 +148,10 @@ class ProblemEditingForm extends Component {
     render() {
         const {name, text, options, language, compiler, time, memory} = this.state;
         return <div>
-            <Input placeholder="Name"
-                   value={name}
-                   onChange={this.handleChangedName}
-                   handleKeyPress={this.handleKeyPress}/>
+            <CustomInput placeholder="Name"
+                         value={name}
+                         onChange={this.handleChangedName}
+                         handleKeyPress={this.handleKeyPress}/>
             <div>Text</div>
             <textarea onChange={this.handleChangedText} value={text} rows="10" cols="75"/>
             <div>Options:</div>
@@ -163,24 +163,24 @@ class ProblemEditingForm extends Component {
                 </div>)
             }
             <div className={'line'}>
-                <Input placeholder="language"
-                       value={language}
-                       onChange={this.handleChangedLanguage}
-                       handleKeyPress={this.handleKeyPress}/>
-                <Input placeholder="compiler"
-                       value={compiler}
-                       onChange={this.handleChangedCompiler}
-                       handleKeyPress={this.handleKeyPress}/>
+                <CustomInput placeholder="language"
+                             value={language}
+                             onChange={this.handleChangedLanguage}
+                             handleKeyPress={this.handleKeyPress}/>
+                <CustomInput placeholder="compiler"
+                             value={compiler}
+                             onChange={this.handleChangedCompiler}
+                             handleKeyPress={this.handleKeyPress}/>
                 <button onClick={this.addOption}>+</button>
             </div>
             <span>Limitations:</span>
             <div className={'line'}>
                 <span>Time: </span>
-                <Input type="number" placeholder={'time'} onChange={this.handleChangedTime} value={time}
-                       handleKeyPress={this.handleKeyPress}/>
+                <CustomInput type="number" placeholder={'time'} onChange={this.handleChangedTime} value={time}
+                             handleKeyPress={this.handleKeyPress}/>
                 <span>Memory: </span>
-                <Input type="number" placeholder={'memory'} onChange={this.handleChangedMemory} value={memory}
-                       handleKeyPress={this.handleKeyPress}/>
+                <CustomInput type="number" placeholder={'memory'} onChange={this.handleChangedMemory} value={memory}
+                             handleKeyPress={this.handleKeyPress}/>
             </div>
             <button onClick={this.edit}>Save</button>
             <button onClick={this.props.close}>Cancel</button>

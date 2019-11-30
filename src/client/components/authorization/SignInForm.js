@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux';
 import * as actions from '../../redux/authorization/actions'
-import Input from '../common/input';
+import CustomInput from '../common/CustomInput';
 
 import './css/signForm.css'
 import './css/appbar__button.css'
@@ -62,9 +62,9 @@ class SignInForm extends Component {
             <div className={'sign__form'}>
                 {
                     inputs.map((item) =>
-                        <Input key={item.placeholder}
-                               {...item}
-                               handleKeyPress={this.handleKeyPress}
+                        <CustomInput key={item.placeholder}
+                                     {...item}
+                                     handleKeyPress={this.handleKeyPress}
                         />
                     )
                 }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import Input from '../common/input'
+import CustomInput from '../common/CustomInput'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/authorization/actions'
 import {validateEmail, validateInput, validatePassword, validateRepeatPassword} from '../../utilities/checks'
@@ -143,11 +143,11 @@ class SignUpForm extends Component {
             <div className={'sign__form'}>
                 {
                     inputs.map(({placeholder, value, type, onChange, errorMessage}) =>
-                        <Input key={placeholder}
-                               {...{placeholder, value, type, onChange}}
-                               isValid={!invalidFields.includes(placeholder)}
-                               errorMessage={errorMessage ?? 'it is required'}
-                               handleKeyPress={this.handleKeyPress}
+                        <CustomInput key={placeholder}
+                                     {...{placeholder, value, type, onChange}}
+                                     isValid={!invalidFields.includes(placeholder)}
+                                     errorMessage={errorMessage ?? 'it is required'}
+                                     handleKeyPress={this.handleKeyPress}
                         />
                     )
                 }

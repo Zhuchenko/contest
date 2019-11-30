@@ -70,6 +70,19 @@ router.delete('/:userId', auth.required, async (req, res) => {
     }
 });
 
+router.get('/share-rights/coordinators', auth.required, async (req, res) => {
+    const {payload: {id}} = req;
+    const rights = await db.getUserRights(id);
+    const isCoordinator = await db.isCoordinator(id);
+
+    if (rights.user.view || isCoordinator) {
+        const coordinators = await db.getAllCoordinators();
+        return res.json({coordinators})
+    } else {
+        return res.status(403).end();
+    }
+});
+
 router.post('/', auth.required, async (req, res) => {
     const {body: {user}, payload: {id}} = req;
     const rights = await db.getUserRights(id);

@@ -1,13 +1,11 @@
 import React, {Component} from 'react'
 import PropTypes from "prop-types";
-import Input from "../common/Input";
+import CustomInput from "../common/CustomInput";
 import {connect} from "react-redux";
 import * as actions from "../../redux/groupOfUsers/actions";
 import getList from "../common/List";
 import UserItemWithCheckBox from "./UserItemWithCheckBox";
 import {getGroup, getUsersForGroupCreating} from "../../services/groupOfUsersApi";
-
-//import './css/user.css';
 
 class GroupEditingForm extends Component {
     constructor(props) {
@@ -71,11 +69,11 @@ class GroupEditingForm extends Component {
         const List = getList(UserItemWithCheckBox, users);
         return (
             <div>
-                <Input key='name'
-                       placeholder="Name"
-                       value={name}
-                       onChange={this.handleChangedName}
-                       handleKeyPress={this.handleKeyPress}
+                <CustomInput key='name'
+                             placeholder="Name"
+                             value={name}
+                             onChange={this.handleChangedName}
+                             handleKeyPress={this.handleKeyPress}
                 />
                 <List handleChecked={this.handleChecked}/>
                 <button onClick={this.edit}>Save</button>
