@@ -1,0 +1,18 @@
+.nav-panel {
+    display: flex;
+}
+
+.nav-panel__link {
+    color: var(--light-font-color);
+    text-align: center;
+    vertical-align: middle;
+    line-height: var(--appbar-height);
+    padding: 0 0.5em;
+    transition: background 0.5s ease;
+}
+.nav-panel__link:hover {
+    background-color: var(--secondary-color);
+}
+.nav-panel__link_selected {
+    border-bottom: 0.25em solid var(--secondary-color);
+}

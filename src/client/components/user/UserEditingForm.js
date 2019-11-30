@@ -117,17 +117,17 @@ class UserEditingForm extends Component {
         const {name, lastName, email, roleIndex, unverified, authKey} = this.state;
         const {canChangeRole} = this.props;
         return (
-            <div>
+            <div className={'dialog scrollbar'}>
                 <CustomInput key='name'
-                             placeholder="Name"
-                             value={name.value}
-                             onChange={this.handleChangedName}
-                             handleKeyPress={this.handleKeyPress}/>
+                       placeholder="Name"
+                       value={name.value}
+                       onChange={this.handleChangedName}
+                       handleKeyPress={this.handleKeyPress}/>
                 <CustomInput key='lastName'
-                             placeholder="Last Name"
-                             value={lastName.value}
-                             onChange={this.handleChangedLastName}
-                             handleKeyPress={this.handleKeyPress}/>
+                       placeholder="Last Name"
+                       value={lastName.value}
+                       onChange={this.handleChangedLastName}
+                       handleKeyPress={this.handleKeyPress}/>
                 {
                     email.value &&
                     <CustomInput key='email'
@@ -154,8 +154,10 @@ class UserEditingForm extends Component {
                                  onChange={this.handleChangedAuthKey}
                                  handleKeyPress={this.handleKeyPress}/>
                 }
-                <button onClick={this.edit}>Save</button>
-                <button onClick={this.props.close}>Cancel</button>
+                <div className={'dialog__button-panel'}>
+                    <button className={'button'} onClick={this.edit}>Save</button>
+                    <button className={'button'} onClick={this.props.close}>Cancel</button>
+                </div>
             </div>
         )
     }

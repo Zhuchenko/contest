@@ -14,10 +14,10 @@ class TabBar extends Component {
         const {tabs, selectedId} = this.props;
 
         return (
-            <div className={'tab_bar'}>
+            <div className={'tab-bar'}>
                 {tabs.map((currentTab) => {
                     const isSelected = (selectedId === currentTab.id);
-                    const classes =  getClassNames({['tab']: true, ['tab--selected']: isSelected});
+                    const classes = getClassNames({['tab']: true, ['tab--selected']: isSelected});
 
                     return <button
                         id={currentTab.id}

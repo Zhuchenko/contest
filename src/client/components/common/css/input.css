@@ -1,15 +1,15 @@
 .sign__input{
-    margin: 10px;
-    padding: 4px;
+    margin: 0.75em;
+    padding: 0.25em;
 }
 
 .sign__input--error{
     margin-bottom: 0;
-    border: solid 1px red;
+    border: solid 1px var(--error-color);
 }
 
 .sign__error_message{
-    margin: 0 10px;
-    color: red;
-    font-size: 0.8rem;
+    margin: 0 0.75em;
+    color: var(--error-color);
+    font-size: 0.8em;
 }

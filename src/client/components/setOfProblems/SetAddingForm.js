@@ -64,15 +64,17 @@ class SetAddingForm extends Component {
         const {name, problems} = this.state;
         const List = getList(ProblemItemWithCheckBox, problems);
         return (
-            <div>
+            <div className={'dialog'}>
                 <CustomInput key='name'
-                             placeholder="Name"
-                             value={name}
-                             onChange={this.handleChangedName}
-                             handleKeyPress={this.handleKeyPress}/>
+                       placeholder="Name"
+                       value={name}
+                       onChange={this.handleChangedName}
+                       handleKeyPress={this.handleKeyPress}/>
                 <List handleChecked={this.handleChecked}/>
-                <button onClick={this.add}>Add</button>
-                <button onClick={this.props.close}>Cancel</button>
+                <div className={'dialog__button-panel'}>
+                    <button className={'button'} onClick={this.add}>Add</button>
+                    <button className={'button'} onClick={this.props.close}>Cancel</button>
+                </div>
             </div>
         )
     }

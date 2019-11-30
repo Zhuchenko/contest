@@ -4,6 +4,7 @@ import CustomInput from '../common/CustomInput'
 import {connect} from 'react-redux'
 import {getProblem} from '../../services/problemApi'
 import * as actions from '../../redux/problem/actions'
+import Icon from '../common/Icon'
 //import FileUploader from 'react-input-files'
 
 const getIndex = (key) => key.substring(key.indexOf("_") + 1);
@@ -147,43 +148,51 @@ class ProblemEditingForm extends Component {
 
     render() {
         const {name, text, options, language, compiler, time, memory} = this.state;
-        return <div>
+        return <div className={'dialog'}>
             <CustomInput placeholder="Name"
-                         value={name}
-                         onChange={this.handleChangedName}
-                         handleKeyPress={this.handleKeyPress}/>
-            <div>Text</div>
-            <textarea onChange={this.handleChangedText} value={text} rows="10" cols="75"/>
-            <div>Options:</div>
+                   value={name}
+                   onChange={this.handleChangedName}
+                   handleKeyPress={this.handleKeyPress}/>
+            <div className={'dialog__sub-header'}>Text</div>
+            <div className={'dialog__line'}>
+                <textarea onChange={this.handleChangedText} value={text} rows="10" cols="75"/>
+            </div>
+            <div className={'dialog__sub-header'}>Options:</div>
             {
                 options.length > 0 &&
-                options.map((item, id) => <div key={id}>
+                options.map((item, id) => <div className={'dialog__line'} key={id}>
                     <span>{item.language + ' - ' + item.compiler}</span>
-                    <button id={'option_' + id} onClick={this.deleteOption}>X</button>
+                    <button className={'button button_inline button_icon'} id={'option_' + id} onClick={this.deleteOption}>
+                        <Icon type={'close'} className={'icon'}/>
+                    </button>
                 </div>)
             }
-            <div className={'line'}>
+            <div className={'dialog__line'}>
                 <CustomInput placeholder="language"
-                             value={language}
-                             onChange={this.handleChangedLanguage}
-                             handleKeyPress={this.handleKeyPress}/>
+                       value={language}
+                       onChange={this.handleChangedLanguage}
+                       handleKeyPress={this.handleKeyPress}/>
                 <CustomInput placeholder="compiler"
-                             value={compiler}
-                             onChange={this.handleChangedCompiler}
-                             handleKeyPress={this.handleKeyPress}/>
-                <button onClick={this.addOption}>+</button>
+                       value={compiler}
+                       onChange={this.handleChangedCompiler}
+                       handleKeyPress={this.handleKeyPress}/>
+                <button className={'button button_inline button_icon'} onClick={this.addOption}>
+                    <Icon type={'add'} className={'icon'}/>
+                </button>
             </div>
-            <span>Limitations:</span>
-            <div className={'line'}>
-                <span>Time: </span>
+            <span className={'dialog__sub-header'}>Limitations:</span>
+            <div className={'dialog__line'}>
+                <span className={'dialog__line__label'}>Time: </span>
                 <CustomInput type="number" placeholder={'time'} onChange={this.handleChangedTime} value={time}
-                             handleKeyPress={this.handleKeyPress}/>
-                <span>Memory: </span>
+                       handleKeyPress={this.handleKeyPress}/>
+                <span className={'dialog__line__label'}>Memory: </span>
                 <CustomInput type="number" placeholder={'memory'} onChange={this.handleChangedMemory} value={memory}
-                             handleKeyPress={this.handleKeyPress}/>
+                       handleKeyPress={this.handleKeyPress}/>
             </div>
-            <button onClick={this.edit}>Save</button>
-            <button onClick={this.props.close}>Cancel</button>
+            <div className={'dialog__button-panel'}>
+                <button className={'button'} onClick={this.edit}>Save</button>
+                <button className={'button'} onClick={this.props.close}>Cancel</button>
+            </div>
         </div>
     }
 }

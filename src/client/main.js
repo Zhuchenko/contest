@@ -9,6 +9,8 @@ import rootSaga from './redux/rootSaga'
 import  { createStore, sagaMiddleware } from './utilities/createStore'
 import {init} from './redux/rootActions';
 
+import './main.css'
+
 const history = createBrowserHistory();
 const store = createStore(reducer);
 let sagaRun = sagaMiddleware.run(function* () {

@@ -2,18 +2,23 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  background: cadetblue;
+  height: 2em;
+  margin: 1em 0;
 }
 
 .tab{
-  height: 50px;
   cursor: pointer;
   border: 0;
-  color: black;
+  color: var(--dark-font-color);
   background-color: transparent;
   opacity: 0.5;
 }
 
+.tab:hover {
+  color: var(--secondary-color);
+}
+
 .tab--selected{
   opacity: 1;
+  border-bottom: 0.25em solid var(--secondary-color);
 }

@@ -54,17 +54,17 @@ class UserAddingForm extends Component {
     render() {
         const {name, lastName, roleIndex, authKey} = this.state;
         return (
-            <div>
+            <div className={'dialog scrollbar'}>
                 <CustomInput key='name'
-                             placeholder="Name"
-                             value={name}
-                             onChange={this.handleChangedName}
-                             handleKeyPress={this.handleKeyPress}/>
+                       placeholder="Name"
+                       value={name}
+                       onChange={this.handleChangedName}
+                       handleKeyPress={this.handleKeyPress}/>
                 <CustomInput key='lastName'
-                             placeholder="Last Name"
-                             value={lastName}
-                             onChange={this.handleChangedLastName}
-                             handleKeyPress={this.handleKeyPress}/>
+                       placeholder="Last Name"
+                       value={lastName}
+                       onChange={this.handleChangedLastName}
+                       handleKeyPress={this.handleKeyPress}/>
                 <select onChange={this.onChange} defaultValue={roleIndex}>
                     {
                         roles.map((role, i) => (
@@ -73,12 +73,14 @@ class UserAddingForm extends Component {
                     }
                 </select>
                 <CustomInput key='authKey'
-                             placeholder="Auth Key"
-                             value={authKey}
-                             onChange={this.handleChangedAuthKey}
-                             handleKeyPress={this.handleKeyPress}/>
-                <button onClick={this.add}>Add</button>
-                <button onClick={this.props.close}>Cancel</button>
+                       placeholder="Auth Key"
+                       value={authKey}
+                       onChange={this.handleChangedAuthKey}
+                       handleKeyPress={this.handleKeyPress}/>
+                <div className={'dialog__button-panel'}>
+                    <button className={'button'} onClick={this.add}>Add</button>
+                    <button className={'button'} onClick={this.props.close}>Cancel</button>
+                </div>
             </div>
         )
     }

@@ -101,7 +101,7 @@ class ContestAddingForm extends Component {
         const SetList = getList(SetItemWithCheckBox, sets);
 
         return (
-            <div>
+            <div className={'dialog scrollbar'}>
                 <CustomInput key='name'
                              placeholder="Name"
                              value={name}
@@ -111,19 +111,23 @@ class ContestAddingForm extends Component {
                     dateFormat={"dd/MM/yyyy"}
                     selected={startingDate}
                     onChange={this.handleChangeStartingDate}
+                    minDate={new Date()}
                 />
                 <br/>
                 <DatePicker
                     dateFormat={"dd/MM/yyyy"}
-                    selected={endingDate}
+                    selected={endingDate.getTime() >= startingDate.getTime() ? endingDate : startingDate}
                     onChange={this.handleChangeEndingDate}
+                    minDate={startingDate}
                 />
                 <div>groups</div>
                 <GroupList handleChecked={this.handleCheckedGroups}/>
                 <div>sets</div>
                 <SetList handleChecked={this.handleCheckedSets}/>
-                <button onClick={this.add}>Add</button>
-                <button onClick={this.props.close}>Cancel</button>
+                <div className={'dialog__button-panel'}>
+                    <button className={'button'} onClick={this.add}>Add</button>
+                    <button className={'button'} onClick={this.props.close}>Cancel</button>
+                </div>
             </div>
         )
     }

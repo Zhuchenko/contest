@@ -92,13 +92,13 @@ class Problem extends Component {
                     <>
                         <div>
                             <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadFile}>
-                                <button className={'problem__button'}>Upload</button>
+                                <button className={'button'}>Upload</button>
                             </FileUploader>
                             {attachedFile ?
                                 <div>{attachedFile.name}</div>
                                 : null}
                         </div>
-                        <button className={'problem__button'} onClick={this.sendSolution}>Send</button>
+                        <button className={'button'} onClick={this.sendSolution}>Send</button>
                         {results ?
                             results.map((result, index) =>
                                 <div key={index}>

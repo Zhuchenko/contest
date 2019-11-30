@@ -42,11 +42,11 @@ class UserItem extends Component {
             }
             {
                 canEditUser &&
-                <button onClick={this.open}>edit</button>
+                <button className={'button button_inline'} onClick={this.open}>edit</button>
             }
             {
                 canDeleteUser &&
-                <button onClick={this.deleteUser}>X</button>
+                <button className={'button button_inline'} onClick={this.deleteUser}>X</button>
             }
             {
                 isFormOpened &&
