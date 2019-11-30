@@ -21,11 +21,12 @@ class NavigationPanel extends Component {
     };
 
     getLinkClassName = (id) => {
-        var selectedId = this.state.selectedId;
+        const {selectedId} = this.state;
         return getClassNames({['nav-panel__link']: true, ['nav-panel__link_selected']: parseInt(selectedId) === parseInt(id)});
     };
 
     render() {
+        //console.log(window.location.pathname)
         const {isAuthorized, canAddUser, canAddProblems, canAddSet} = this.props;
 
         return (isAuthorized ? (<div className={'nav-panel'}>
