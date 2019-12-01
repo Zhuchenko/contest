@@ -15,32 +15,16 @@ export const getContests = () => {
         })
 };
 
-export const getParticipants = (contestId) => {
+export const getContest = (contestId) => {
     const headers = setAuthToken({});
 
-    return fetch('/api/contests/' + contestId + '/participants', {
+    return fetch('/api/contests/' + contestId, {
         method: 'GET',
         headers
     })
         .then(response => {
             if (response.status === 200) {
                 return response.json();
-            }
-            throw response.status;
-        })
-};
-
-export const getProblems = (contestId) => {
-    const headers = setAuthToken({});
-
-    return fetch('/api/contests/' + contestId + '/problems', {
-        method: 'GET',
-        headers
-    })
-        .then(response => {
-            if (response.status === 200) {
-                return response.json()
-                    .then(response => response.problems)
             }
             throw response.status;
         })
@@ -91,22 +75,6 @@ export const addContest = (contest) => {
                 return response;
             }
             throw response.status;
-        })
-};
-
-export const getContest = (contestId) => {
-    const headers = setAuthToken({});
-
-    return fetch('/api/contests/' + contestId, {
-        method: 'GET',
-        headers
-    })
-        .then(response => {
-            if (response.status === 200) {
-                return response.json()
-                    .then(response => response.contest)
-            }
-            throw response.status
         })
 };
 

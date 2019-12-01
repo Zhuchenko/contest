@@ -12,7 +12,8 @@ export const findOne = async (query) => {
 };
 
 export const add = async (newInstance) => {
-    Contest.create(newInstance);
+    return Contest.create(newInstance)
+        .then(obj => (obj.id));
 };
 
 export const update = async (id, newState) => {

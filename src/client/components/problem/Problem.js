@@ -19,7 +19,7 @@ class Problem extends Component {
             selectedId: 0,
             attachedFile: '',
             results: '',
-            isParticipant: false
+            isParticipant: true
         }
     }
 

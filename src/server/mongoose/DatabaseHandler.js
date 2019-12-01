@@ -89,7 +89,7 @@ export const getProblemByIdInContest = async (contestId, problemId) => {
 };
 
 export const addContest = async (newInstance) => {
-    contest.add(newInstance);
+    return await contest.add(newInstance);
 };
 
 export const updateContest = async (id, newState) => {

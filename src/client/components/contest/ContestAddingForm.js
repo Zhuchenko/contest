@@ -10,8 +10,8 @@ import {getGroupsForContestCreating, getSetsForContestCreating} from '../../serv
 import 'react-datepicker/dist/react-datepicker.css'
 import getList from '../common/List'
 
-const GroupItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/groups/'}/>
-const SetItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/sets/'}/>
+const GroupItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/groups/'}/>;
+const SetItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/sets/'}/>;
 
 class ContestAddingForm extends Component {
     constructor(props) {
