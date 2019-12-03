@@ -18,24 +18,42 @@ router.get('/', auth.required, async (req, res) => {
     try {
         let contests = [];
         if (rights.contest.view) {
-            contests = (await db.getAllContests()).map(contest => ({...contest, canEdit: true, canDelete: true}));
+            contests = await Promise.all((await db.getAllContests()).map(async contest => {
+                    const sharedReadRights = await Promise.all(contest.sharedReadRights.map(async userId => (await db.getUserById(userId))));
+                    const sharedWriteRights = await Promise.all(contest.sharedWriteRights.map(async userId => (await db.getUserById(userId))));
+                    return {
+                        ...contest,
+                        sharedReadRights,
+                        sharedWriteRights,
+                        canEdit: true,
+                        canDelete: true
+                    }
+                }
+            ));
         } else {
             if (rights.contest.add) {
-                const ownContests = (await db.getContestsByAuthor(id)).map(contest => ({
-                    ...contest,
-                    canEdit: true,
-                    canDelete: true
-                }));
+                const ownContests = await Promise.all((await db.getContestsByAuthor(id)).map(async contest => {
+                        const sharedReadRights = await Promise.all(contest.sharedReadRights.map(async userId => (await db.getUserById(userId))));
+                        const sharedWriteRights = await Promise.all(contest.sharedWriteRights.map(async userId => (await db.getUserById(userId))));
+                        return {
+                            ...contest,
+                            sharedReadRights,
+                            sharedWriteRights,
+                            canEdit: true,
+                            canDelete: true
+                        }
+                    }
+                ));
 
                 const sharedContestsForReading = (await db.getContestsByReadRight(id)).map(contest => ({
                     ...contest,
-                    canEdit: true,
+                    canEdit: false,
                     canDelete: false
                 }));
 
                 const sharedContestsForWriting = (await db.getContestsByWriteRight(id)).map(contest => ({
                     ...contest,
-                    canEdit: false,
+                    canEdit: true,
                     canDelete: false
                 }));
                 contests = [...ownContests, ...sharedContestsForReading, ...sharedContestsForWriting];

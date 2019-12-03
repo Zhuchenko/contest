@@ -52,8 +52,15 @@ class SharedRightsDialog extends Component {
         this.setState({sharedRights});
     };
 
-    open = () => {
-        this.setState({isOpened: true});
+    open = () => {//TODO: coordinators move to list
+        const sharedReadRights = this.props.sharedReadRights.map(item => ({user: item, right: "read"}));
+        const sharedWriteRights = this.props.sharedWriteRights.map(item => ({user: item, right: "write"}));
+        this.setState({
+            isOpened: true,
+            sharedRights: [...sharedReadRights, ...sharedWriteRights],
+            selectedCoordinator: 0,
+            selectedRight: 0,
+        });
     };
 
     close = () => {
@@ -75,7 +82,7 @@ class SharedRightsDialog extends Component {
         const {sharedRights} = this.state;
         const sharedReadRights = sharedRights.filter(item => item.right === "read").map(item => (item.user.id));
         const sharedWriteRights = sharedRights.filter(item => item.right === "write").map(item => (item.user.id));
-        edit({ newState: {sharedReadRights, sharedWriteRights} });
+        edit({newState: {sharedReadRights, sharedWriteRights}});
     };
 
     render() {

@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import * as actions from '../../redux/setOfProblems/actions'
 import Popup from '../common/Popup'
 import SetEditingForm from './SetEditingForm'
+import SharedRightsDialog from '../ShareRigthsDialog'
 
 class SetItem extends Component {
     constructor(props) {
@@ -27,8 +28,13 @@ class SetItem extends Component {
         deleteSet({id});
     };
 
+    edit = ({newState}) => {
+        const {id, editSet} = this.props;
+        editSet({newState, id});
+    };
+
     render() {
-        const {id, name, canEdit, canDelete} = this.props;
+        const {id, name, sharedReadRights, sharedWriteRights, canEdit, canDelete} = this.props;
         const {isFormOpened} = this.state;
 
         return (
@@ -40,7 +46,10 @@ class SetItem extends Component {
                 }
                 {
                     canDelete &&
-                    <button className={'button button_inline'} onClick={this.deleteSet}>X</button>
+                    <>
+                        <button className={'button button_inline'} onClick={this.deleteSet}>X</button>
+                        <SharedRightsDialog {...{sharedReadRights, sharedWriteRights}} edit={this.edit}/>
+                    </>
                 }
                 {
                     isFormOpened &&
@@ -58,7 +67,8 @@ SetItem.propTypes = {
     id: PropTypes.string.isRequired,
     canEdit: PropTypes.bool.isRequired,
     canDelete: PropTypes.bool.isRequired,
-    deleteSet: PropTypes.func.isRequired
+    deleteSet: PropTypes.func.isRequired,
+    editSet: PropTypes.func.isRequired
 };
 
 export default connect(null, actions)(SetItem);

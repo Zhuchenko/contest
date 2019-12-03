@@ -3,8 +3,9 @@ import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/groupOfUsers/actions'
-import GroupEditingForm from "./GroupEditingForm";
-import Popup from "../common/Popup";
+import GroupEditingForm from './GroupEditingForm'
+import Popup from '../common/Popup'
+import SharedRightsDialog from '../ShareRigthsDialog'
 
 //import './css/item.css'
 
@@ -29,8 +30,13 @@ class GroupItem extends Component {
         deleteGroup({id});
     };
 
+    edit = ({newState}) => {
+        const {id, editGroup} = this.props;
+        editGroup({newState, id});
+    };
+
     render() {
-        const {id, name, canEdit, canDelete} = this.props;
+        const {id, name, sharedReadRights, sharedWriteRights, canEdit, canDelete} = this.props;
         const {isFormOpened} = this.state;
 
         return (
@@ -42,7 +48,10 @@ class GroupItem extends Component {
                 }
                 {
                     canDelete &&
-                    <button className={'button button_inline'} onClick={this.deleteGroup}>X</button>
+                    <>
+                        <button className={'button button_inline'} onClick={this.deleteGroup}>X</button>
+                        <SharedRightsDialog {...{sharedReadRights, sharedWriteRights}} edit={this.edit}/>
+                    </>
                 }
                 {
                     isFormOpened &&
@@ -60,7 +69,8 @@ GroupItem.propTypes = {
     id: PropTypes.string.isRequired,
     canEdit: PropTypes.bool.isRequired,
     canDelete: PropTypes.bool.isRequired,
-    deleteGroup: PropTypes.func.isRequired
+    deleteGroup: PropTypes.func.isRequired,
+    editGroup: PropTypes.func.isRequired
 };
 
 export default connect(null, actions)(GroupItem);

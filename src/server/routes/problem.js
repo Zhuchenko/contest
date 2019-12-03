@@ -44,13 +44,13 @@ router.get('/', auth.required, async (req, res) => {
 
                 const sharedProblemsForReading = (await db.getProblemsByReadRight(id)).map(problem => ({
                     ...problem,
-                    canEdit: true,
+                    canEdit: false,
                     canDelete: false
                 }));
 
                 const sharedProblemsForWriting = (await db.getProblemsByWriteRight(id)).map(problem => ({
                     ...problem,
-                    canEdit: false,
+                    canEdit: true,
                     canDelete: false
                 }));
                 problems = [...ownProblems, ...sharedProblemsForReading, ...sharedProblemsForWriting];

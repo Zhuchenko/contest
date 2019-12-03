@@ -17,24 +17,42 @@ router.get('/', auth.required, async (req, res) => {
     try {
         let groups = [];
         if (rights.groupOfUsers.view) {
-            groups = (await db.getAllGroups()).map(group => ({...group, canEdit: true, canDelete: true}));
+            groups = await Promise.all((await db.getAllGroups()).map(async group => {
+                    const sharedReadRights = await Promise.all(group.sharedReadRights.map(async userId => (await db.getUserById(userId))));
+                    const sharedWriteRights = await Promise.all(group.sharedWriteRights.map(async userId => (await db.getUserById(userId))));
+                    return {
+                        ...group,
+                        sharedReadRights,
+                        sharedWriteRights,
+                        canEdit: true,
+                        canDelete: true
+                    }
+                }
+            ));
         } else {
             if (rights.groupOfUsers.add) {
-                const ownGroups = (await db.getGroupsByAuthor(id)).map(group => ({
-                    ...group,
-                    canEdit: true,
-                    canDelete: true
-                }));
+                const ownGroups = await Promise.all((await db.getGroupsByAuthor(id)).map(async group => {
+                        const sharedReadRights = await Promise.all(group.sharedReadRights.map(async userId => (await db.getUserById(userId))));
+                        const sharedWriteRights = await Promise.all(group.sharedWriteRights.map(async userId => (await db.getUserById(userId))));
+                        return {
+                            ...group,
+                            sharedReadRights,
+                            sharedWriteRights,
+                            canEdit: true,
+                            canDelete: true
+                        }
+                    }
+                ));
 
                 const sharedGroupsForReading = (await db.getGroupsByReadRight(id)).map(group => ({
                     ...group,
-                    canEdit: true,
+                    canEdit: false,
                     canDelete: false
                 }));
 
                 const sharedGroupsForWriting = (await db.getGroupsByWriteRight(id)).map(group => ({
                     ...group,
-                    canEdit: false,
+                    canEdit: true,
                     canDelete: false
                 }));
                 groups = [...ownGroups, ...sharedGroupsForReading, ...sharedGroupsForWriting];

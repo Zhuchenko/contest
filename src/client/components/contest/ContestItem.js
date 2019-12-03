@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/contest/actions'
+import SharedRightsDialog from '../ShareRigthsDialog'
 
 class ContestItem extends Component {
     delete = () => {
@@ -10,15 +11,22 @@ class ContestItem extends Component {
         deleteContest({id});
     };
 
+    edit = ({newState}) => {
+        const {id, editContest} = this.props;
+        editContest({newState, id});
+    };
     render() {
-        const {id, name, canDelete} = this.props;
+        const {id, name, sharedReadRights, sharedWriteRights, canDelete} = this.props;
 
         return (
             <div>
                 <Link to={'/contests/' + id}>{name}</Link>
                 {
                     canDelete &&
-                    <button className={'button button_inline'} onClick={this.delete}>X</button>
+                    <>
+                        <button className={'button button_inline'} onClick={this.delete}>X</button>
+                        <SharedRightsDialog {...{sharedReadRights, sharedWriteRights}} edit={this.edit}/>
+                    </>
                 }
             </div>
         )
@@ -29,7 +37,8 @@ ContestItem.propTypes = {
     name: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     canDelete: PropTypes.bool.isRequired,
-    deleteContest: PropTypes.func.isRequired
+    deleteContest: PropTypes.func.isRequired,
+    editContest: PropTypes.func.isRequired
 };
 
 export default connect(null, actions)(ContestItem);

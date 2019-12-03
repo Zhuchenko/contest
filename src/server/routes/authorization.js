@@ -3,7 +3,8 @@ import passport from 'passport'
 import auth from '../config/auth'
 import * as db from '../mongoose/DatabaseHandler'
 import generateCode from '../utils/generateCode'
-import {VerifyEmail} from "../sendmailService";
+import {VerifyEmail} from '../sendmailService'
+import {getUserById} from '../mongoose/api/user'
 import {getUnverifiedUser} from '../mongoose/api/unverifiedUser'
 
 import '../config/passport'
@@ -72,7 +73,7 @@ router.get('/signin', auth.required, async (req, res) => {
 
     let user;
     try {
-        user = await db.getUserById(id);
+        user = await getUserById(id);
     } catch (e) {
         return res.status(400).end();
     }
@@ -86,6 +87,7 @@ router.get('/signin', auth.required, async (req, res) => {
     } catch (e) {
         return res.status(500).json({e});
     }
+    console.log(user)
     return res.json({...user.toAuthJSON(), rights});
 });
 

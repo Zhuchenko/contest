@@ -30,7 +30,6 @@ class ProblemItem extends Component {
 
     edit = ({newState}) => {
         const {id, editProblem} = this.props;
-        console.log(newState)
         editProblem({newState, id});
     };
 

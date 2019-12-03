@@ -16,24 +16,42 @@ router.get('/', auth.required, async (req, res) => {
     try {
         let sets = [];
         if (rights.setOfProblems.view) {
-            sets = (await db.getAllSets()).map(set => ({...set, canEdit: true, canDelete: true}));
+            sets = await Promise.all((await db.getAllSets()).map(async set => {
+                    const sharedReadRights = await Promise.all(set.sharedReadRights.map(async userId => (await db.getUserById(userId))));
+                    const sharedWriteRights = await Promise.all(set.sharedWriteRights.map(async userId => (await db.getUserById(userId))));
+                    return {
+                        ...set,
+                        sharedReadRights,
+                        sharedWriteRights,
+                        canEdit: true,
+                        canDelete: true
+                    }
+                }
+            ));
         } else {
             if (rights.setOfProblems.add) {
-                const ownSets = (await db.getSetsByAuthor(id)).map(set => ({
-                    ...set,
-                    canEdit: true,
-                    canDelete: true
-                }));
+                const ownSets = await Promise.all((await db.getSetsByAuthor(id)).map(async set => {
+                        const sharedReadRights = await Promise.all(set.sharedReadRights.map(async userId => (await db.getUserById(userId))));
+                        const sharedWriteRights = await Promise.all(set.sharedWriteRights.map(async userId => (await db.getUserById(userId))));
+                        return {
+                            ...set,
+                            sharedReadRights,
+                            sharedWriteRights,
+                            canEdit: true,
+                            canDelete: true
+                        }
+                    }
+                ));
 
                 const sharedSetsForReading = (await db.getSetsByReadRight(id)).map(set => ({
                     ...set,
-                    canEdit: true,
+                    canEdit: false,
                     canDelete: false
                 }));
 
                 const sharedSetsForWriting = (await db.getSetsByWriteRight(id)).map(set => ({
                     ...set,
-                    canEdit: false,
+                    canEdit: true,
                     canDelete: false
                 }));
                 sets = [...ownSets, ...sharedSetsForReading, ...sharedSetsForWriting];
