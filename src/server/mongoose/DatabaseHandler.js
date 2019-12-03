@@ -12,10 +12,12 @@ import * as user from './api/user'
 const isNotUnderscoredId = (value, key) => key !== '_id';
 
 const removeUnderscore = (item) => {
+    if (!item) return null;
     return {id: item._id, ...pickBy(item, isNotUnderscoredId)};
 };
 
 const removeUnderscoreFromArray = (array) => {
+    if (!array || array.length === 0) return [];
     return array.map(item => (removeUnderscore(item)));
 };
 
@@ -76,6 +78,9 @@ export const getContestsByParticipant = async (participantId) => {
 export const isParticipantInTheContest = async (participantId, contestId) => {
     const groups = await getGroupsByParticipant(participantId);
     const contest = await getContestById(contestId);
+    if (!contest) {
+        return false;
+    }
     for (let i = 0, l = groups.length; i < l; i++) {
         if (contest.groups.includes(groups[i].id.toString()))
             return true;
@@ -84,8 +89,11 @@ export const isParticipantInTheContest = async (participantId, contestId) => {
 };
 
 export const getProblemByIdInContest = async (contestId, problemId) => {
-    const {problems} = await getContestById(contestId);
-    return problems.find(({id}) => id.toString() === problemId);
+    const contest = await getContestById(contestId);
+    if (!contest) {
+        return null;
+    }
+    return contest.problems.find(({id}) => id.toString() === problemId);
 };
 
 export const addContest = async (newInstance) => {
@@ -158,7 +166,6 @@ export const getAllProblems = async () => {
 };
 
 export const getProblemsByReadRight = async (id) => {
-    const p = await getAllProblems();
     return removeUnderscoreFromArray(await problem.find({sharedReadRights: id}));
 };
 
@@ -197,7 +204,10 @@ export const deleteProblem = async (id) => {
 // roles
 
 export const getRightsByName = async (name) => {
-    return (await role.findOne({name}, 'rights')).rights;
+    const c = await role.findOne({name}, 'rights');
+    if (c) {
+        return c.rights;
+    } else return null;
 };
 
 // sets of problems
@@ -283,8 +293,9 @@ export const getUserByEmail = async (email) => {
 };
 
 export const getUserRights = async (id) => {
-    const userRole = (await getUserById(id)).role;
-    return getRightsByName(userRole);
+    let c = await getUserById(id);
+    if (!c) return null;
+    return getRightsByName(c.role);
 };
 
 export const getAllUsers = async () => {

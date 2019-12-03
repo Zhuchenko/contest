@@ -33,7 +33,7 @@ export const signIn = (email, password) => {
                         return {user};
                     })
             }
-            throw response.json();
+            return response.json();
         })
 };
 
@@ -50,7 +50,7 @@ export const signUp = (personalData) => {
             if (response.status === 200) {
                 return response;
             }
-            throw response.status;
+            return response.json();
         })
 };
 
