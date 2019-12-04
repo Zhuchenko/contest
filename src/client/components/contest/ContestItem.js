@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/contest/actions'
 import SharedRightsDialog from '../ShareRigthsDialog'
+import Icon from '../common/Icon'
 
 class ContestItem extends Component {
     delete = () => {
@@ -24,7 +25,9 @@ class ContestItem extends Component {
                 {
                     canDelete &&
                     <>
-                        <button className={'button button_inline'} onClick={this.delete}>X</button>
+                        <button className={'button button_inline'} onClick={this.delete}>
+                            <Icon type={'close'} className={'icon'}/>
+                        </button>
                         <SharedRightsDialog {...{sharedReadRights, sharedWriteRights}} edit={this.edit}/>
                     </>
                 }

@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import * as actions from '../../redux/user/actions'
 import UserEditingForm from './UserEditingForm'
 import Popup from "../common/Popup";
+import Icon from "../common/Icon";
 
 //import './css/item.css'
 
@@ -42,11 +43,15 @@ class UserItem extends Component {
             }
             {
                 canEditUser &&
-                <button className={'button button_inline'} onClick={this.open}>edit</button>
+                <button className={'button button_inline'} onClick={this.open}>
+                    <Icon type={'edit'} className={'icon'}/>
+                </button>
             }
             {
                 canDeleteUser &&
-                <button className={'button button_inline'} onClick={this.deleteUser}>X</button>
+                <button className={'button button_inline'} onClick={this.deleteUser}>
+                    <Icon type={'close'} className={'icon'}/>
+                </button>
             }
             {
                 isFormOpened &&

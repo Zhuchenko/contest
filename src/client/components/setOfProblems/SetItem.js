@@ -6,6 +6,7 @@ import * as actions from '../../redux/setOfProblems/actions'
 import Popup from '../common/Popup'
 import SetEditingForm from './SetEditingForm'
 import SharedRightsDialog from '../ShareRigthsDialog'
+import Icon from '../common/Icon'
 
 class SetItem extends Component {
     constructor(props) {
@@ -42,12 +43,16 @@ class SetItem extends Component {
                 <Link to={'/sets/' + id}>{name}</Link>
                 {
                     canEdit &&
-                    <button className={'button button_inline'} onClick={this.open}>edit</button>
+                    <button className={'button button_inline'} onClick={this.open}>
+                        <Icon type={'edit'} className={'icon'}/>
+                    </button>
                 }
                 {
                     canDelete &&
                     <>
-                        <button className={'button button_inline'} onClick={this.deleteSet}>X</button>
+                        <button className={'button button_inline'} onClick={this.deleteSet}>
+                            <Icon type={'close'} className={'icon'}/>
+                        </button>
                         <SharedRightsDialog {...{sharedReadRights, sharedWriteRights}} edit={this.edit}/>
                     </>
                 }

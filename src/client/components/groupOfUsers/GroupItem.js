@@ -6,6 +6,7 @@ import * as actions from '../../redux/groupOfUsers/actions'
 import GroupEditingForm from './GroupEditingForm'
 import Popup from '../common/Popup'
 import SharedRightsDialog from '../ShareRigthsDialog'
+import Icon from '../common/Icon'
 
 //import './css/item.css'
 
@@ -44,12 +45,16 @@ class GroupItem extends Component {
                 <Link to={'/groups/' + id}>{name}</Link>
                 {
                     canEdit &&
-                    <button className={'button button_inline'} onClick={this.open}>edit</button>
+                    <button className={'button button_inline'} onClick={this.open}>
+                        <Icon type={'edit'} className={'icon'}/>
+                    </button>
                 }
                 {
                     canDelete &&
                     <>
-                        <button className={'button button_inline'} onClick={this.deleteGroup}>X</button>
+                        <button className={'button button_inline'} onClick={this.deleteGroup}>
+                            <Icon type={'close'} className={'icon'}/>
+                        </button>
                         <SharedRightsDialog {...{sharedReadRights, sharedWriteRights}} edit={this.edit}/>
                     </>
                 }

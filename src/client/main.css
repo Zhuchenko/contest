@@ -67,8 +67,7 @@ input {
     background-color: transparent;
     text-transform: uppercase;
     text-decoration: none;
-    border-color: var(--secondary-color);
-    border-spacing: 0.25em;
+    border: 0.1em solid var(--secondary-color);
     padding: 0.5em 1em;
     border-radius: 3em;
     display: inline-block;
@@ -133,6 +132,13 @@ input {
 }
 
 .dialog__line {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialog__line div[role="button"] {
     display: flex;
     flex-direction: row;
     justify-content: center;

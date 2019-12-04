@@ -207,39 +207,41 @@ class ProblemAddingForm extends Component {
             }
             <div className={'dialog__line'}>
                 <FileUploader accept={'.txt'} onChange={this.handleUploadTestInput}>
-                    <>
-                        <span>Input: </span>
+                    <div className={'dialog__line'}>
+                        <span className={'dialog__line__label'}>Input: </span>
                         <button className={'button button_inline button_icon'}>
                             <Icon type={'file'} className={'icon'}/>
                         </button>
-                    </>
+                    </div>
                 </FileUploader>
                 {
                     testInput &&
                     <>
-                        <span>{testInput.name}</span>
+                        <span className={'dialog__line__label'}>{testInput.name}</span>
                         <button className={'button button_inline button_icon'} onClick={this.handleRemoveTestInput}>
                             <Icon type={'close'} className={'icon'}/>
                         </button>
                     </>
                 }
                 <FileUploader accept={'.txt'} onChange={this.handleUploadTestOutput}>
-                    <>
-                        <span>Output: </span>
+                    <div className={'dialog__line'}>
+                        <span className={'dialog__line__label'}>Output: </span>
                         <button className={'button button_inline button_icon'}>
                             <Icon type={'file'} className={'icon'}/>
                         </button>
-                    </>
+                    </div>
                 </FileUploader>
                 {
                     testOutput &&
                     <>
-                        <span>{testOutput.name}</span>
+                        <span className={'dialog__line__label'}>{testOutput.name}</span>
                         <button className={'button button_inline button_icon'} onClick={this.handleRemoveTestOutput}>
                             <Icon type={'close'} className={'icon'}/>
                         </button>
                     </>
                 }
+            </div>
+            <div className={'dialog__line'}>
                 <CustomInput placeholder="test-description"
                        value={testDescription}
                        onChange={this.handleChangedTestDescription}

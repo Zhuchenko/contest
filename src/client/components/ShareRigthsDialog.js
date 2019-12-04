@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Popup from './common/Popup'
 import {getCoordinators} from '../services/userApi'
+import Icon from "./common/Icon";
 
 const rights = ["read", "write"];
 
@@ -99,7 +100,9 @@ class SharedRightsDialog extends Component {
                                 sharedRights.length > 0 &&
                                 sharedRights.map((item, id) => <div key={id}>
                                     <span>{item.user.lastName + ' ' + item.user.name + ' - ' + item.right}</span>
-                                    <button key={'right_' + id} onClick={this.delete}>X</button>
+                                    <button key={'right_' + id} onClick={this.delete}>
+                                        <Icon type={'close'} className={'icon'}/>
+                                    </button>
                                 </div>)
                             }
                             <select onChange={this.handleCoordinatorChanged} value={selectedCoordinator}>
@@ -116,7 +119,9 @@ class SharedRightsDialog extends Component {
                                     ))
                                 }
                             </select>
-                            <button onClick={this.add}>+</button>
+                            <button onClick={this.add}>
+                                <Icon type={'add'} className={'icon'}/>
+                            </button>
                             <button onClick={this.close}>Cancel</button>
                             <button onClick={this.save}>Save</button>
                         </div>

@@ -6,6 +6,7 @@ import * as actions from '../../redux/problem/actions'
 import ProblemEditingForm from './ProblemEditingForm'
 import Popup from '../common/Popup'
 import SharedRightsDialog from '../ShareRigthsDialog'
+import Icon from "../common/Icon";
 
 class ProblemItem extends Component {
     constructor(props) {
@@ -42,12 +43,16 @@ class ProblemItem extends Component {
                 <Link to={'/problems/' + id}>{name}</Link>
                 {
                     canEdit &&
-                    <button className={'button button_inline'} onClick={this.open}>edit</button>
+                    <button className={'button button_inline'} onClick={this.open}>
+                        <Icon type={'edit'} className={'icon'}/>
+                    </button>
                 }
                 {
                     canDelete &&
                     <>
-                        <button className={'button button_inline'} onClick={this.deleteProblem}>X</button>
+                        <button className={'button button_inline'} onClick={this.deleteProblem}>
+                            <Icon type={'close'} className={'icon'}/>
+                        </button>
                         <SharedRightsDialog {...{sharedReadRights, sharedWriteRights}} edit={this.edit}/>
                     </>
                 }
