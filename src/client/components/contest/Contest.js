@@ -44,8 +44,8 @@ class Contest extends Component {
         const {selectedId, participants, problems, status, isParticipant} = this.state;
 
         return (
-            <>
-            <div>{status}</div>
+            <div className={'wrapper'}>
+                <div className={'wrapper__header'}>{status}</div>
                 <TabBar handleChanged={this.handleChanged} tabs={this.tabs}
                         selectedId={selectedId}/>
                 {
@@ -56,7 +56,7 @@ class Contest extends Component {
                     (selectedId === problemTab.id) &&
                     <ProblemsTab {...{problems, isParticipant}} contestId={this.props.match.params.contestId}/>
                 }
-            </>
+            </div>
         )
     }
 }

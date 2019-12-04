@@ -31,18 +31,23 @@ class User extends Component {
     render() {
         const {name, lastName, email, role} = this.state;
         return (
-            <div className={'user'}>
-                <span>Name: </span>
-                <span>{name}</span>
-                <br/>
-                <span>Last Name: </span>
-                <span>{lastName}</span>
-                <br/>
-                <span>email: </span>
-                <span>{email}</span>
-                <br/>
-                <span>Role: </span>
-                <span>{role}</span>
+            <div className={'wrapper'}>
+                <div className={'wrapper__line'}>
+                    <label>Name: </label>
+                    <span>{name}</span>
+                </div>
+                <div className={'wrapper__line'}>
+                    <label>Last Name: </label>
+                    <span>{lastName}</span>
+                </div>
+                <div className={'wrapper__line'}>
+                    <label>Email: </label>
+                    <span>{email}</span>
+                </div>
+                <div className={'wrapper__line'}>
+                    <label>Role: </label>
+                    <span>{role}</span>
+                </div>
             </div>
         )
     }

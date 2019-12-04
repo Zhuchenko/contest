@@ -3,7 +3,10 @@ import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
 
 const ProblemsTab =  ({problems, contestId}) => {
-        return (problems.map(({id, name}) => <Link to={'/contests/' + contestId + '/problems/' + id}>{name}</Link>));
+        return (problems.map(({id, name}) => (<div className={'wrapper__line'}>
+                <Link to={'/contests/' + contestId + '/problems/' + id}>{name}</Link>
+            </div>))
+        );
 };
 
 ProblemsTab.propTypes = {

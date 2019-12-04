@@ -8,7 +8,7 @@ export default (ItemComponent, items) => {
             return <div className={'list'}>
                 {
                     items.map(item =>
-                        <ItemComponent key={item.id} id={item.id} {...item} {...this.props} />
+                        <ItemComponent className={'list__item'} key={item.id} id={item.id} {...item} {...this.props} />
                     )
                 }
             </div>

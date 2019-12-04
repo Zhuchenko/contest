@@ -102,28 +102,41 @@ class ContestAddingForm extends Component {
 
         return (
             <div className={'dialog scrollbar'}>
-                <CustomInput key='name'
-                             placeholder="Name"
-                             value={name}
-                             onChange={this.handleChangedName}
-                             handleKeyPress={this.handleKeyPress}/>
-                <DatePicker
-                    dateFormat={"dd/MM/yyyy"}
-                    selected={startingDate}
-                    onChange={this.handleChangeStartingDate}
-                    minDate={new Date()}
-                />
-                <br/>
-                <DatePicker
-                    dateFormat={"dd/MM/yyyy"}
-                    selected={endingDate.getTime() >= startingDate.getTime() ? endingDate : startingDate}
-                    onChange={this.handleChangeEndingDate}
-                    minDate={startingDate}
-                />
-                <div>groups</div>
-                <GroupList handleChecked={this.handleCheckedGroups}/>
-                <div>sets</div>
-                <SetList handleChecked={this.handleCheckedSets}/>
+                <div className={'dialog__line'}>
+                    <CustomInput key='name'
+                                 placeholder="Name"
+                                 value={name}
+                                 onChange={this.handleChangedName}
+                                 handleKeyPress={this.handleKeyPress}/>
+                </div>
+                <div className={'dialog__line'}>
+                    <DatePicker
+                        dateFormat={"dd/MM/yyyy"}
+                        selected={startingDate}
+                        onChange={this.handleChangeStartingDate}
+                        minDate={new Date()}
+                    />
+                </div>
+                <div className={'dialog__line'}>
+                    <DatePicker
+                        dateFormat={"dd/MM/yyyy"}
+                        selected={endingDate.getTime() >= startingDate.getTime() ? endingDate : startingDate}
+                        onChange={this.handleChangeEndingDate}
+                        minDate={startingDate}
+                    />
+                </div>
+                <div className={'dialog__line'}>
+                    <div className={'dialog__line__list'}>
+                        <span className={'dialog__line__label'}>Groups: </span>
+                        <GroupList handleChecked={this.handleCheckedGroups}/>
+                    </div>
+                </div>
+                <div className={'dialog__line'}>
+                    <div className={'dialog__line__list'}>
+                        <span className={'dialog__line__label'}>Sets: </span>
+                        <SetList handleChecked={this.handleCheckedSets}/>
+                    </div>
+                </div>
                 <div className={'dialog__button-panel'}>
                     <button className={'button'} onClick={this.add}>Add</button>
                     <button className={'button'} onClick={this.props.close}>Cancel</button>

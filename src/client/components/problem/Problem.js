@@ -2,8 +2,6 @@ import React, {Component} from 'react'
 import {getProblem, getProblemFromContest, sendParcel} from '../../services/problemApi'
 import FileUploader from 'react-input-files'
 
-import './css/problem.css';
-
 class Problem extends Component {
     constructor(props) {
         super(props);
@@ -74,23 +72,23 @@ class Problem extends Component {
                 <option key={index}>{option.language} ({option.compiler})</option>);
 
         return (
-            <div className={'problem'}>
-                <h1>{name}</h1>
-                <div className={'problem__text'}>{text}</div>
-                <div className={'problem__limitations'}>
+            <div className={'wrapper'}>
+                <div className={'wrapper__header'}>{name}</div>
+                <div className={'wrapper__line'}>{text}</div>
+                <div className={'wrapper__line wrapper__line__list'}>
                     <label>Limitations:</label>
                     <div>time: {time}</div>
                     <div>memory: {memory}</div>
                 </div>
-                <div>
+                <div className={'wrapper__line'}>
                     <label>Language:</label>
                     <select className={'problem__select'} onChange={this.handleOptionsChange}>
                         {languageOptions}
                     </select>
                 </div>
                 {isParticipant ?
-                    <>
-                        <div>
+                    <div className={'wrapper__buttons-panel'}>
+                        <div className={'wrapper__buttons-panel__button-with-text'}>
                             <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadFile}>
                                 <button className={'button'}>Upload</button>
                             </FileUploader>
@@ -107,7 +105,7 @@ class Problem extends Component {
                                     {result.message}
                                 </div>)
                             : null}
-                    </>
+                    </div>
                     : null
                 }
             </div>

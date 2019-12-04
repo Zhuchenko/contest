@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Popup from './common/Popup'
 import {getCoordinators} from '../services/userApi'
-import Icon from "./common/Icon";
+import Icon from './common/Icon'
+import CustomInput from "./common/CustomInput";
 
 const rights = ["read", "write"];
 
@@ -91,39 +92,45 @@ class SharedRightsDialog extends Component {
 
         return (
             <>
-                <button onClick={this.open}>share</button>
+                <button className={'button button_borderless button_icon'} onClick={this.open}>
+                    <Icon type={'share'} className={'icon'}/>
+                </button>
                 {
                     isOpened &&
                     <Popup>
-                        <div>
+                        <div className={'dialog'}>
+                            <div className={'dialog__line'}>
                             {
                                 sharedRights.length > 0 &&
                                 sharedRights.map((item, id) => <div key={id}>
                                     <span>{item.user.lastName + ' ' + item.user.name + ' - ' + item.right}</span>
-                                    <button key={'right_' + id} onClick={this.delete}>
+                                    <button className={'button button_borderless button_icon'} key={'right_' + id} onClick={this.delete}>
                                         <Icon type={'close'} className={'icon'}/>
                                     </button>
                                 </div>)
                             }
-                            <select onChange={this.handleCoordinatorChanged} value={selectedCoordinator}>
-                                {
-                                    coordinators.map((user, i) => (
-                                        <option key={i} value={i} label={user.lastName + ' ' + user.name}/>
-                                    ))
-                                }
-                            </select>
-                            <select onChange={this.handleRightChanged} value={selectedRight}>
-                                {
-                                    rights.map((right, i) => (
-                                        <option key={i} value={i} label={right}/>
-                                    ))
-                                }
-                            </select>
-                            <button onClick={this.add}>
-                                <Icon type={'add'} className={'icon'}/>
-                            </button>
-                            <button onClick={this.close}>Cancel</button>
-                            <button onClick={this.save}>Save</button>
+                                <select onChange={this.handleCoordinatorChanged} value={selectedCoordinator}>
+                                    {
+                                        coordinators.map((user, i) => (
+                                            <option key={i} value={i} label={user.lastName + ' ' + user.name}/>
+                                        ))
+                                    }
+                                </select>
+                                <select onChange={this.handleRightChanged} value={selectedRight}>
+                                    {
+                                        rights.map((right, i) => (
+                                            <option key={i} value={i} label={right}/>
+                                        ))
+                                    }
+                                </select>
+                                <button className={'button button_borderless button_icon'} onClick={this.open}>
+                                    <Icon type={'add'} className={'icon'}/>
+                                </button>
+                            </div>
+                            <div className={'dialog__button-panel'}>
+                                <button className={'button'} onClick={this.save}>Save</button>
+                                <button className={'button'} onClick={this.close}>Cancel</button>
+                            </div>
                         </div>
                     </Popup>
                 }

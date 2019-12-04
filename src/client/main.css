@@ -20,17 +20,18 @@ html, body, #root {
     background-color: var(--background-color);
 }
 
-html, body, button, input {
+html, body, button, input, select {
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
 }
 
-input, button, div {
+input, button, div, select {
     outline: none;
 }
 
 a {
     text-decoration: none;
+    color: var(--dark-font-color);
 }
 
 textarea {
@@ -40,6 +41,12 @@ textarea {
 input {
     border: none;
     border-bottom: 1px solid grey;
+}
+
+select {
+    border-radius: 0.5em;
+    padding: 0.5em;
+    margin: 0 0.5em;
 }
 
 .scrollbar::-webkit-scrollbar-track
@@ -84,17 +91,27 @@ input {
     color: var(--light-font-color);
 }
 
-.button_inline {
+.button_borderless {
     border: none;
     border-radius: 0;
+}
+
+.button_separate {
+    margin: 1em;
 }
 
 .button_icon {
     padding: 0.25em;
     height: calc(24px + 0.5em);
+    width: calc(24px + 0.5em);
 }
 .button_icon:hover .icon {
     fill: var(--light-font-color);
+}
+
+.button_large {
+    width: 5em;
+    height: 5em;
 }
 
 .icon {
@@ -145,7 +162,19 @@ input {
     align-items: center;
 }
 
+.dialog__line .react-datepicker-wrapper {
+    margin-bottom: 0.5em;
+}
+
 .dialog__line__label {
+    font-weight: bold;
+}
+
+.dialog__line__list {
+    margin-top: 0.5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .dialog__button-panel{
@@ -155,4 +184,67 @@ input {
     align-items: flex-start;
     justify-content: space-around;
     margin: 2em 0 0.5em 0;
+}
+
+.Select {
+    min-width: 5em;
+    margin: 0 0.5em;
+}
+
+.wrapper {
+    margin: 1.9rem 5% 0 5%;
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper__header {
+    font-size: 3em;
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.wrapper label {
+    font-weight: bold;
+}
+
+.wrapper__line {
+    margin: 0.5em 0;
+    display: flex;
+    align-items: center;
+}
+
+.wrapper__line a:hover {
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.wrapper__line .Select {
+    display: inline-block;
+}
+
+.wrapper__line__list {
+    margin-top: 0.5em;
+    flex-direction: column;
+    align-self: flex-start;
+    align-items: flex-start !important;
+}
+.wrapper__line__list div {
+    margin-left: 1em;
+}
+
+.wrapper__buttons-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 2em 0 0.5em 0;
+    width: 20%;
+}
+.wrapper__buttons-panel > * {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.wrapper__buttons-panel__button-with-text {
+    display: flex;
+    align-items: center;
 }

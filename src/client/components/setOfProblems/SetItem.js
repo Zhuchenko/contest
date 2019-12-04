@@ -35,22 +35,22 @@ class SetItem extends Component {
     };
 
     render() {
-        const {id, name, sharedReadRights, sharedWriteRights, canEdit, canDelete} = this.props;
+        const {className, id, name, sharedReadRights, sharedWriteRights, canEdit, canDelete} = this.props;
         const {isFormOpened} = this.state;
 
         return (
-            <div>
+            <div className={className}>
                 <Link to={'/sets/' + id}>{name}</Link>
                 {
                     canEdit &&
-                    <button className={'button button_inline'} onClick={this.open}>
+                    <button className={'button button_borderless button_icon'} onClick={this.open}>
                         <Icon type={'edit'} className={'icon'}/>
                     </button>
                 }
                 {
                     canDelete &&
                     <>
-                        <button className={'button button_inline'} onClick={this.deleteSet}>
+                        <button className={'button button_borderless button_icon'} onClick={this.deleteSet}>
                             <Icon type={'close'} className={'icon'}/>
                         </button>
                         <SharedRightsDialog {...{sharedReadRights, sharedWriteRights}} edit={this.edit}/>
@@ -68,6 +68,7 @@ class SetItem extends Component {
 }
 
 SetItem.propTypes = {
+    className: PropTypes.string,
     name: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     canEdit: PropTypes.bool.isRequired,

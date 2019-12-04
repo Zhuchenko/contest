@@ -28,10 +28,15 @@ class Set extends Component {
         const {name, problems} = this.state;
         const List = getList(ProblemInSet, problems);
         return (
-            <div>
-                <h3>{name}</h3>
-                <span>{"Number of problems: " + problems.length}</span>
-                <List/>
+            <div className={'wrapper'}>
+                <div className={'wrapper__header'}>{name}</div>
+                <div className={'wrapper__line'}>
+                    <label>{"Number of problems: " + problems.length}</label>
+                </div>
+                <div className={'wrapper__line wrapper__line__list'}>
+                    <label>List of problems: </label>
+                    <List/>
+                </div>
             </div>
         )
     }

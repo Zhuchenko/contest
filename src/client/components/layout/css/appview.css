@@ -12,4 +12,5 @@
 .appview__content {
   margin-top: var(--appbar-height);
   padding: 2em;
+  width: calc(100% - 4em);
 }
