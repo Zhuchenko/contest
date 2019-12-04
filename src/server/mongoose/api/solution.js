@@ -3,29 +3,26 @@ import { SolutionSchema } from '../schemas'
 
 export const Solution = mongoose.model('Solution', SolutionSchema, 'solutions')
 
-export const getSolutionById = (solutionId) => {
-    return Solution.findOne({ _id: solutionId }).exec();
+export const find = async (query) => {
+    return Solution.find(query, null, {lean: true}).exec();
 };
 
-export const getSolutionByOptions = async (options) => {
-    return Solution.findOne({ user: options.user, problem: options.problem, contest: options.contest }).exec();
+export const findOne = async (query) => {
+    return Solution.findOne(query, null, {lean: true});
 };
 
-export const addSolution = async (newSolution) => {
-    return Solution.create(newSolution)
-        .then(solution => {
-            return solution._id.toString();
-        });
+export const add = async (newInstance) => {
+    Solution.create(newInstance);
 };
 
-export const updateSolution = async (solutionId, solutionNewState) => {
-    Solution.updateOne({_id: solutionId}, {
+export const update = async (id, newState) => {
+    await Solution.updateOne({_id: id}, {
         $set: {
-            ...solutionNewState
+            ...newState
         }
-    }).exec();
+    });
 };
 
-export const deleteSolution = async (solutionId) => {
-    return Solution.findByIdAndRemove(solutionId).exec();
+export const remove = async (id) => {
+    Solution.findByIdAndRemove(id).exec();
 };

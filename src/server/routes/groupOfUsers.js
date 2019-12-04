@@ -109,7 +109,7 @@ router.get('/:groupId', auth.required, async (req, res) => {
 
     try {
         const hasReadRight = await db.hasReadRightForTheGroup(id, groupId);
-        const hasWriteRight = await db.hasReadRightForTheGroup(id, groupId);
+        const hasWriteRight = await db.hasWriteRightForTheGroup(id, groupId);
 
         const canView = rights.groupOfUsers.view || id === group.authorId || group.users.includes(id) || hasReadRight || hasWriteRight;
         if (canView) {
@@ -170,7 +170,7 @@ router.post('/:groupId', auth.required, async (req, res) => {
     if (!oldGroup) return res.status(404).end();
 
     try {
-        const hasWriteRight = await db.hasReadRightForTheGroup(id, groupId);
+        const hasWriteRight = await db.hasWriteRightForTheGroup(id, groupId);
 
         if (rights.groupOfUsers.edit || oldGroup.authorId === id || hasWriteRight) {
             await db.updateGroup(groupId, group);

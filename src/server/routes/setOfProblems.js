@@ -148,7 +148,7 @@ router.get('/:setId', auth.required, async (req, res) => {
 
     try {
         const hasReadRight = await db.hasReadRightForTheSet(id, setId);
-        const hasWriteRight = await db.hasReadRightForTheSet(id, setId);
+        const hasWriteRight = await db.hasWriteRightForTheSet(id, setId);
 
         const canView = rights.setOfProblems.view || id === set.authorId || hasReadRight || hasWriteRight;
         if (canView) {
@@ -208,7 +208,7 @@ router.post('/:setId', auth.required, async (req, res) => {
     if (!oldSet) return res.status(404).end();
 
     try {
-        const hasWriteRight = await db.hasReadRightForTheSet(id, setId);
+        const hasWriteRight = await db.hasWriteRightForTheSet(id, setId);
 
         if (rights.setOfProblems.edit || oldSet.authorId === id || hasWriteRight) {
             await db.updateSet(setId, set);

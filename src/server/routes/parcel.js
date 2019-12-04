@@ -1,9 +1,6 @@
 import express from 'express'
 import fetch from 'node-fetch'
-import {addParcel} from '../mongoose/api/parcel'
-import {getProblemById} from '../mongoose/api/problem'
-import {addTestResult} from '../mongoose/api/testResult'
-import {addSolution, getSolutionByOptions, updateSolution} from '../mongoose/api/solution'
+import * as db from '../mongoose/DatabaseHandler'
 import {convertTests} from '../utils/convertTest'
 import auth from '../config/auth'
 
@@ -12,53 +9,60 @@ const router = express.Router();
 router.post('/', auth.required, async (req, res) => {
     let {body: {parcel}, files: {code}, payload: {id}} = req;
     parcel = JSON.parse(parcel);
-    parcel.user = id;
-    parcel.date = Date.now();
-    parcel.code = code.data;
-    const problem = await getProblemById(parcel.problem);
+    const {contestId, problemId, options: {language}} = parcel;
+
+    //try {
+    const isParticipant = await db.isParticipantInTheContest(id, contestId);
+    const {isActive} = await db.getContestById(contestId);
+
+    if (!isParticipant || !isActive) return res.status(403).end();
+
+    const parcelId = await db.addParcel({
+        ...parcel,
+        authorId: id,
+        date: Date.now(),
+        code: code.data
+    });
+
+    const {checker, tests, limitation: {time, memory}} = await db.getProblemByIdInContest(contestId, problemId);
     const results = await fetch('http://localhost:51786/api/check', {
         method: 'POST',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             solution: Array.from(code.data),
-            checker: Array.from(problem.checker),
-            language: parcel.options.language,
-            timeLimit: problem.limitation.time,
-            memoryLimit: problem.limitation.memory,
-            tests: convertTests(problem.tests)
+            checker: Array.from(checker.buffer),
+            language, timeLimit: time, memoryLimit: memory,
+            tests: convertTests(tests)
         })
-    })
-        .then(response => {
-            if (response.status === 200) {
-                return response.json();
-            } else {
-                throw response.status
-            }
-        });
-    const parcelId = await addParcel(parcel);
-    await addTestResult({parcel: parcelId, tests: results});
-    const options = {user: id, problem: parcel.problem, contest: parcel.contest};
-    const solution = await getSolutionByOptions(options);
+    }).then(response => {
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            throw response.status
+        }
+    });
+    await db.addTestResult({parcelId, tests: results});
 
+    const solution = await db.getSolutionByOptions({authorId: id, problemId, contestId});
     if (solution) {
-        await updateSolution(solution.id, {
+        await db.updateSolution(solution.id, {
             attemptNumber: solution.attemptNumber + 1,
-            code: parcel.code
+            code: code.data
         })
     } else {
-        await addSolution({
-            user: id,
-            problem: parcel.problem,
-            contest: parcel.contest,
-            code: parcel.code,
+        await db.addSolution({
+            authorId: id,
+            problemId,
+            contestId,
+            code: code.data,
             attemptNumber: 1
         })
     }
 
-    return res.json({results})
+    return res.status(200).json({results})
+    // } catch (error) {
+    //     return res.status(500).json({error})
+    // }
 });
 
 module.exports = router;

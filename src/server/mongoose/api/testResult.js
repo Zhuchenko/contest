@@ -3,12 +3,16 @@ import { TestResultSchema } from '../schemas'
 
 export const TestResult = mongoose.model('TestResult', TestResultSchema, 'testResults')
 
-export const getTestResultById = async (testResultId) => {
-    return TestResult.findOne({ _id: testResultId }).exec();
+export const find = async (query) => {
+    return TestResult.find(query, null, {lean: true}).exec();
 };
 
-export const addTestResult = async (newTestResult) => {
-    let {tests, parcel} = newTestResult;
+export const findOne = async (query) => {
+    return TestResult.findOne(query, null, {lean: true});
+};
+
+export const add = async (newInstance) => {
+    let {tests, parcelId} = newInstance;
 
     tests = tests.map(res => {
         return {
@@ -20,21 +24,18 @@ export const addTestResult = async (newTestResult) => {
         }
     });
 
-    return TestResult.create({parcel, tests})
-        .then(testResult => {
-            return testResult._id.toString();
-        });
+    await TestResult.create({parcelId, tests});
 };
 
-export const updateTestResult = async (testResultId, testResultNewState) => {
-    await TestResult.updateOne({_id: testResultId}, {
+
+export const update = async (id, newState) => {
+    await TestResult.updateOne({_id: id}, {
         $set: {
-            ...testResultNewState
+            ...newState
         }
-    }).exec();
-    return testResultId;
+    });
 };
 
-export const deleteTestResult = async (testResultId) => {
-    return TestResult.findByIdAndRemove(testResultId).exec();
+export const remove = async (id) => {
+    TestResult.findByIdAndRemove(id).exec();
 };

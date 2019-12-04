@@ -73,7 +73,7 @@ class ProblemEditingForm extends Component {
         });
     };
 
-    deleteOption = ({target: {id}}) => {
+    deleteOption = ({currentTarget: {id}}) => {
         const {options} = this.state;
         options.splice(getIndex(id), 1);
         this.setState({options});

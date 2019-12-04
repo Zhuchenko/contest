@@ -49,12 +49,12 @@ class Problem extends Component {
 
     sendSolution = () => {
         const {attachedFile, options, selectedId} = this.state;
-        const {problemId, conestId} = this.props.match.params;
+        const {problemId, contestId} = this.props.match.params;
 
         if (attachedFile) {
             sendParcel({
-                problem: problemId,
-                contest: conestId,
+                problemId,
+                contestId,
                 options: options[selectedId]
             }, attachedFile)
                 .then(results => {
@@ -65,7 +65,7 @@ class Problem extends Component {
     };
 
     render() {
-        const {name, text, limitation: {time, memory}, options, attachedFile, results, isParticipant} = this.state;
+        const {name, text, limitation: {time, memory}, options, selectedId, attachedFile, results, isParticipant} = this.state;
 
         const languageOptions =
             options.map((option, index) =>

@@ -3,9 +3,12 @@ import pickBy from 'lodash/pickBy'
 import * as code from './api/code'
 import * as contest from './api/contest'
 import * as group from './api/groupOfUsers'
+import * as parcel from './api/parcel'
 import * as problem from './api/problem'
 import * as role from './api/role'
 import * as set from './api/setOfProblems'
+import * as solution from './api/solution'
+import * as testResult from './api/testResult'
 import * as unverifiedUser from './api/unverifiedUser'
 import * as user from './api/user'
 
@@ -43,6 +46,13 @@ export const getContestById = async (id) => {
 
 export const getAllContests = async () => {
     return removeUnderscoreFromArray(await contest.find());
+};
+
+export const contestIsActive = async (id) => {//TODO: remove
+    const contest = await contest.findOne({_id: id});
+    if(!contest){
+        return false;
+    } else return contest.isActive;
 };
 
 export const hasReadRightForTheContest = async (userId, contestId) => {
@@ -108,7 +118,6 @@ export const deleteContest = async (id) => {
     contest.remove(id);
 };
 
-
 // groups of users
 
 export const getGroupById = async (id) => {
@@ -153,6 +162,32 @@ export const updateGroup = async (id, newState) => {
 
 export const deleteGroup = async (id) => {
     group.remove(id);
+};
+
+// parcels
+
+export const getParcelById = async (id) => {
+    return removeUnderscore(await parcel.findOne({_id: id}));
+};
+
+export const getAllParcels = async () => {
+    return removeUnderscoreFromArray(await parcel.find());
+};
+
+export const getParcelsByAuthor = async (id) => {
+    return removeUnderscoreFromArray(await parcel.find({authorId: id}));
+};
+
+export const addParcel = async (newInstance) => {
+    return await parcel.add(newInstance);
+};
+
+export const updateParcel = async (id, newState) => {
+    parcel.update(id, newState);
+};
+
+export const deleteParcel = async (id) => {
+    parcel.remove(id);
 };
 
 //problems
@@ -250,6 +285,62 @@ export const updateSet = async (id, newState) => {
 
 export const deleteSet = async (id) => {
     set.remove(id);
+};
+
+// solutions
+
+export const getSolutionById = async (id) => {
+    return removeUnderscore(await solution.findOne({_id: id}));
+};
+
+export const getSolutionByOptions = async ({authorId, contest, problem}) => {
+    return removeUnderscore(await solution.findOne({authorId, problem, contest}));
+};
+
+export const getAllSolutions = async () => {
+    return removeUnderscoreFromArray(await solution.find());
+};
+
+export const getSolutionsByAuthor = async (id) => {
+    return removeUnderscoreFromArray(await solution.find({authorId: id}));
+};
+
+export const addSolution = async (newInstance) => {
+    solution.add(newInstance);
+};
+
+export const updateSolution = async (id, newState) => {
+    solution.update(id, newState);
+};
+
+export const deleteSolution = async (id) => {
+    solution.remove(id);
+};
+
+// test results
+
+export const getTestResultById = async (id) => {
+    return removeUnderscore(await testResult.findOne({_id: id}));
+};
+
+export const getAllTestResults = async () => {
+    return removeUnderscoreFromArray(await testResult.find());
+};
+
+export const getTestResultsByParcel = async (id) => {
+    return removeUnderscoreFromArray(await testResult.find({parcel: id}));
+};
+
+export const addTestResult = async (newInstance) => {
+    testResult.add(newInstance);
+};
+
+export const updateTestResult = async (id, newState) => {
+    testResult.update(id, newState);
+};
+
+export const deleteTestResult = async (id) => {
+    testResult.remove(id);
 };
 
 // unverified users

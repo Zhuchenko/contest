@@ -38,7 +38,7 @@ class SharedRightsDialog extends Component {
                 return;
             }
             if (rights[selectedRight] === "write") {
-                sharedRights = sharedRights.filter(({user}) => user.id === selectedCoordinator);
+                sharedRights = sharedRights.filter(({user}) => (user.id !== coordinators[selectedCoordinator].id))
             }
         }
 
@@ -48,7 +48,7 @@ class SharedRightsDialog extends Component {
         });
     };
 
-    delete = ({target: {id}}) => {
+    delete = ({currentTarget: {id}}) => {
         const {sharedRights} = this.state;
         sharedRights.splice(getIndex(id), 1);
         this.setState({sharedRights});
@@ -99,16 +99,19 @@ class SharedRightsDialog extends Component {
                     isOpened &&
                     <Popup>
                         <div className={'dialog'}>
+                            <div className={'dialog__line dialog__line__list'}>
+                                {
+                                    sharedRights.length > 0 &&
+                                    sharedRights.map((item, id) => <div key={id}>
+                                        <span>{item.user.lastName + ' ' + item.user.name + ' - ' + item.right}</span>
+                                        <button className={'button button_borderless button_icon'} key={'right_' + id}
+                                                onClick={this.delete}>
+                                            <Icon type={'close'} className={'icon'}/>
+                                        </button>
+                                    </div>)
+                                }
+                            </div>
                             <div className={'dialog__line'}>
-                            {
-                                sharedRights.length > 0 &&
-                                sharedRights.map((item, id) => <div key={id}>
-                                    <span>{item.user.lastName + ' ' + item.user.name + ' - ' + item.right}</span>
-                                    <button className={'button button_borderless button_icon'} key={'right_' + id} onClick={this.delete}>
-                                        <Icon type={'close'} className={'icon'}/>
-                                    </button>
-                                </div>)
-                            }
                                 <select onChange={this.handleCoordinatorChanged} value={selectedCoordinator}>
                                     {
                                         coordinators.map((user, i) => (
@@ -123,7 +126,7 @@ class SharedRightsDialog extends Component {
                                         ))
                                     }
                                 </select>
-                                <button className={'button button_borderless button_icon'} onClick={this.open}>
+                                <button className={'button button_borderless button_icon'} onClick={this.add}>
                                     <Icon type={'add'} className={'icon'}/>
                                 </button>
                             </div>

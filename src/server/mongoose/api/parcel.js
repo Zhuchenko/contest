@@ -3,26 +3,27 @@ import { ParcelSchema } from '../schemas'
 
 export const Parcel = mongoose.model('Parcel', ParcelSchema, 'parcels')
 
-export const getParcelById = async (parcelId) => {
-    return Parcel.findOne({ _id: parcelId }).exec();
+export const find = async (query) => {
+    return Parcel.find(query, null, {lean: true}).exec();
 };
 
-export const addParcel = async (newParcel) => {
-    return Parcel.create(newParcel)
-        .then(parcel => {
-            return parcel._id;
-        });
+export const findOne = async (query) => {
+    return Parcel.findOne(query, null, {lean: true});
 };
 
-export const updateParcel = async (parcelId, parcelNewState) => {
-    await Parcel.updateOne({_id: parcelId}, {
+export const add = async (newInstance) => {
+    return Parcel.create(newInstance)
+        .then(obj => (obj.id));
+};
+
+export const update = async (id, newState) => {
+    await Parcel.updateOne({_id: id}, {
         $set: {
-            ...parcelNewState
+            ...newState
         }
-    }).exec();
-    return parcelId;
+    });
 };
 
-export const deleteParcel = async (parcelId) => {
-    return Parcel.findByIdAndRemove(parcelId).exec();
+export const remove = async (id) => {
+    Parcel.findByIdAndRemove(id).exec();
 };

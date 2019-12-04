@@ -214,7 +214,7 @@ router.get('/:contestId/problems/:problemId', auth.required, async (req, res) =>
     try {
         const isParticipant = await db.isParticipantInTheContest(id, contestId);
         const hasReadRight = await db.hasReadRightForTheContest(id, contestId);
-        const hasWriteRight = await db.hasReadRightForTheContest(id, contestId);
+        const hasWriteRight = await db.hasWriteRightForTheContest(id, contestId);
 
         const canView = rights.contest.view || id === contest.authorId || isParticipant || hasReadRight || hasWriteRight;
         if (canView) {
@@ -305,7 +305,7 @@ router.post('/:contestId', auth.required, async (req, res) => {
     if (!oldContest) return res.status(404).end();
 
     try {
-        const hasWriteRight = await db.hasReadRightForTheContest(id, contestId);
+        const hasWriteRight = await db.hasWriteRightForTheContest(id, contestId);
         if (rights.contest.edit || oldContest.authorId === id || hasWriteRight) {
             await db.updateContest(contestId, contest);
             return res.status(200).end();

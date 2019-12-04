@@ -87,7 +87,7 @@ router.get('/signin', auth.required, async (req, res) => {
     } catch (e) {
         return res.status(500).json({e});
     }
-    console.log(user)
+
     return res.json({...user.toAuthJSON(), rights});
 });
 

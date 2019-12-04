@@ -83,7 +83,7 @@ router.get('/:problemId', auth.required, async (req, res) => {
 
     try {
         const hasReadRight = await db.hasReadRightForTheProblem(id, problemId);
-        const hasWriteRight = await db.hasReadRightForTheProblem(id, problemId);
+        const hasWriteRight = await db.hasWriteRightForTheProblem(id, problemId);
 
         const canView = rights.problem.view || id === problem.authorId || hasReadRight || hasWriteRight;
         if (canView) {
@@ -152,7 +152,7 @@ router.post('/:problemId', auth.required, async (req, res) => {
     if (!oldProblem) return res.status(404).end();
 
     try {
-        const hasWriteRight = await db.hasReadRightForTheProblem(id, problemId);
+        const hasWriteRight = await db.hasWriteRightForTheProblem(id, problemId);
 
         const canEdit = rights.problem.edit || id === problem.authorId || hasWriteRight;
         if (canEdit) {

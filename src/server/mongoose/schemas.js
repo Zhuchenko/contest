@@ -206,15 +206,15 @@ export const ContestSchema = new Schema({
 });
 
 export const ParcelSchema = new Schema({
-    user: {
+    authorId: {
         type: String,
         required: true
     },
-    problem: {
+    problemId: {
         type: String,
         required: true
     },
-    contest: {
+    contestId: {
         type: String,
         required: true
     },
@@ -240,15 +240,15 @@ export const ParcelSchema = new Schema({
 });
 
 export const SolutionSchema = new Schema({
-    user: {
+    authorId: {
         type: String,
         required: true
     },
-    problem: {
+    problemId: {
         type: String,
         required: true
     },
-    contest: {
+    contestId: {
         type: String,
         required: true
     },
@@ -264,7 +264,7 @@ export const SolutionSchema = new Schema({
 });
 
 export const TestResultSchema = new Schema({
-    parcel: {
+    parcelId: {
         type: String,
         required: true
     },
