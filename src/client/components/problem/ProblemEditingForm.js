@@ -162,7 +162,7 @@ class ProblemEditingForm extends Component {
                 options.length > 0 &&
                 options.map((item, id) => <div className={'dialog__line'} key={id}>
                     <span>{item.language + ' - ' + item.compiler}</span>
-                    <button className={'button button_inline button_icon'} id={'option_' + id} onClick={this.deleteOption}>
+                    <button className={'button button_borderless button_icon'} id={'option_' + id} onClick={this.deleteOption}>
                         <Icon type={'close'} className={'icon'}/>
                     </button>
                 </div>)
@@ -176,7 +176,7 @@ class ProblemEditingForm extends Component {
                        value={compiler}
                        onChange={this.handleChangedCompiler}
                        handleKeyPress={this.handleKeyPress}/>
-                <button className={'button button_inline button_icon'} onClick={this.addOption}>
+                <button className={'button button_borderless button_icon'} onClick={this.addOption}>
                     <Icon type={'add'} className={'icon'}/>
                 </button>
             </div>

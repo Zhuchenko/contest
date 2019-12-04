@@ -6,6 +6,7 @@ import * as actions from '../../redux/groupOfUsers/actions'
 import GroupEditingForm from './GroupEditingForm'
 import Popup from '../common/Popup'
 import SharedRightsDialog from '../ShareRigthsDialog'
+import Icon from '../common/Icon'
 
 //import './css/item.css'
 
@@ -36,20 +37,24 @@ class GroupItem extends Component {
     };
 
     render() {
-        const {id, name, sharedReadRights, sharedWriteRights, canEdit, canDelete} = this.props;
+        const {className, id, name, sharedReadRights, sharedWriteRights, canEdit, canDelete} = this.props;
         const {isFormOpened} = this.state;
 
         return (
-            <div>
+            <div className={className}>
                 <Link to={'/groups/' + id}>{name}</Link>
                 {
                     canEdit &&
-                    <button className={'button button_inline'} onClick={this.open}>edit</button>
+                    <button className={'button button_borderless button_icon'} onClick={this.open}>
+                        <Icon type={'edit'} className={'icon'}/>
+                    </button>
                 }
                 {
                     canDelete &&
                     <>
-                        <button className={'button button_inline'} onClick={this.deleteGroup}>X</button>
+                        <button className={'button button_borderless button_icon'} onClick={this.deleteGroup}>
+                            <Icon type={'close'} className={'icon'}/>
+                        </button>
                         <SharedRightsDialog {...{sharedReadRights, sharedWriteRights}} edit={this.edit}/>
                     </>
                 }
@@ -65,6 +70,7 @@ class GroupItem extends Component {
 }
 
 GroupItem.propTypes = {
+    className: PropTypes.string,
     name: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     canEdit: PropTypes.bool.isRequired,

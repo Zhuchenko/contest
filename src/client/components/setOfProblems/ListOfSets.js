@@ -6,6 +6,7 @@ import getList from '../common/List'
 import Popup from '../common/Popup'
 import SetAddingForm from './SetAddingForm'
 import SetItem from './SetItem'
+import Icon from "../common/Icon";
 
 class SetList extends Component {
     constructor(props) {
@@ -35,7 +36,9 @@ class SetList extends Component {
             <>
                 {
                     canAddSet &&
-                    <button className={'button'} onClick={this.open}>Add</button>
+                    <button className={'button button_borderless button_separate button_large button_icon'} onClick={this.open}>
+                        <Icon type={'add'} className={'icon'}/>
+                    </button>
                 }
                 <List/>
                 {

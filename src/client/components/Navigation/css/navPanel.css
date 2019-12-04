@@ -15,4 +15,6 @@
 }
 .nav-panel__link_selected {
     border-bottom: 0.25em solid var(--secondary-color);
+    color: var(--secondary-color);
+    font-weight: bold;
 }

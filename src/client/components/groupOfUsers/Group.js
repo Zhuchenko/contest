@@ -30,10 +30,15 @@ class Group extends Component {
         const {name, users} = this.state;
         const List = getList(UserInGroup, users);
         return (
-            <div>
-                <h3>{name}</h3>
-                <span>{"Number of participants: " + users.length}</span>
-                <List/>
+            <div className={'wrapper'}>
+                <div className={'wrapper__header'}>{name}</div>
+                <div className={'wrapper__line'}>
+                    <label>{"Number of participants: " + users.length}</label>
+                </div>
+                <div className={'wrapper__line wrapper__line__list'}>
+                    <label>List of participants: </label>
+                    <List/>
+                </div>
             </div>
         )
     }

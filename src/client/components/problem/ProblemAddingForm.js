@@ -150,7 +150,7 @@ class ProblemAddingForm extends Component {
                 options.length > 0 &&
                 options.map((item, id) => <div className={'dialog__line'} key={id}>
                     <span>{item.language + ' - ' + item.compiler}</span>
-                    <button className={'button button_inline button_icon'} id={'option_' + id} onClick={this.deleteOption}>
+                    <button className={'button button_borderless button_icon'} id={'option_' + id} onClick={this.deleteOption}>
                         <Icon type={'close'} className={'icon'}/>
                     </button>
                 </div>)
@@ -164,7 +164,7 @@ class ProblemAddingForm extends Component {
                        value={compiler}
                        onChange={this.handleChangedCompiler}
                        handleKeyPress={this.handleKeyPress}/>
-                <button className={'button button_inline button_icon'} onClick={this.addOption}>
+                <button className={'button button_borderless button_icon'} onClick={this.addOption}>
                     <Icon type={'add'} className={'icon'}/>
                 </button>
             </div>
@@ -180,7 +180,7 @@ class ProblemAddingForm extends Component {
             <div className={'dialog__line'}>
                 <span>Checker: </span>
                 <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadChecker}>
-                    <button className={'button button_inline button_icon'}>
+                    <button className={'button button_borderless button_icon'}>
                         <Icon type={'file'} className={'icon'}/>
                     </button>
                 </FileUploader>
@@ -188,7 +188,7 @@ class ProblemAddingForm extends Component {
                     checker &&
                     <>
                         <span>{checker.name}</span>
-                        <button className={'button button_inline button_icon'} onClick={this.handleRemoveChecker}>
+                        <button className={'button button_borderless button_icon'} onClick={this.handleRemoveChecker}>
                             <Icon type={'close'} className={'icon'}/>
                         </button>
                     </>
@@ -200,51 +200,53 @@ class ProblemAddingForm extends Component {
                 tests.length > 0 &&
                 tests.map((item, id) => <div className={'dialog__line'} key={id}>
                     <span>{item.description + ' ( ' + item.input.name + ' - ' + item.output.name + ' )'}</span>
-                    <button className={'button button_inline button_icon'} key={'test_' + id} onClick={this.deleteTest}>
+                    <button className={'button button_borderless button_icon'} key={'test_' + id} onClick={this.deleteTest}>
                         <Icon type={'close'} className={'icon'}/>
                     </button>
                 </div>)
             }
             <div className={'dialog__line'}>
                 <FileUploader accept={'.txt'} onChange={this.handleUploadTestInput}>
-                    <>
-                        <span>Input: </span>
-                        <button className={'button button_inline button_icon'}>
+                    <div className={'dialog__line'}>
+                        <span className={'dialog__line__label'}>Input: </span>
+                        <button className={'button button_borderless button_icon'}>
                             <Icon type={'file'} className={'icon'}/>
                         </button>
-                    </>
+                    </div>
                 </FileUploader>
                 {
                     testInput &&
                     <>
-                        <span>{testInput.name}</span>
-                        <button className={'button button_inline button_icon'} onClick={this.handleRemoveTestInput}>
+                        <span className={'dialog__line__label'}>{testInput.name}</span>
+                        <button className={'button button_borderless button_icon'} onClick={this.handleRemoveTestInput}>
                             <Icon type={'close'} className={'icon'}/>
                         </button>
                     </>
                 }
                 <FileUploader accept={'.txt'} onChange={this.handleUploadTestOutput}>
-                    <>
-                        <span>Output: </span>
-                        <button className={'button button_inline button_icon'}>
+                    <div className={'dialog__line'}>
+                        <span className={'dialog__line__label'}>Output: </span>
+                        <button className={'button button_borderless button_icon'}>
                             <Icon type={'file'} className={'icon'}/>
                         </button>
-                    </>
+                    </div>
                 </FileUploader>
                 {
                     testOutput &&
                     <>
-                        <span>{testOutput.name}</span>
-                        <button className={'button button_inline button_icon'} onClick={this.handleRemoveTestOutput}>
+                        <span className={'dialog__line__label'}>{testOutput.name}</span>
+                        <button className={'button button_borderless button_icon'} onClick={this.handleRemoveTestOutput}>
                             <Icon type={'close'} className={'icon'}/>
                         </button>
                     </>
                 }
+            </div>
+            <div className={'dialog__line'}>
                 <CustomInput placeholder="test-description"
                        value={testDescription}
                        onChange={this.handleChangedTestDescription}
                        handleKeyPress={this.handleKeyPress}/>
-                <button className={'button button_inline button_icon'} onClick={this.addTest}>
+                <button className={'button button_borderless button_icon'} onClick={this.addTest}>
                     <Icon type={'add'} className={'icon'}/>
                 </button>
             </div>

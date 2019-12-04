@@ -6,6 +6,7 @@ import getList from '../common/List'
 import Popup from "../common/Popup";
 import GroupAddingForm from "./GroupAddingForm";
 import GroupItem from "./GroupItem";
+import Icon from "../common/Icon";
 
 //import './css/list.css'
 
@@ -37,7 +38,9 @@ class GroupList extends Component {
             <>
                 {
                     canAddGroup &&
-                    <button className={'button'} onClick={this.open}>Add</button>
+                    <button className={'button button_borderless button_separate button_large button_icon'} onClick={this.open}>
+                        <Icon type={'add'} className={'icon'}/>
+                    </button>
                 }
                 <List/>
                 {

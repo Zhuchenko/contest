@@ -6,6 +6,7 @@ import getList from '../common/List'
 import Popup from "../common/Popup";
 import ContestAddingForm from "./ContestAddingForm";
 import ContestItem from "./ContestItem";
+import Icon from "../common/Icon";
 
 
 class ContestList extends Component {
@@ -36,7 +37,9 @@ class ContestList extends Component {
             <>
                 {
                     canAddContest &&
-                    <button className={'button'} onClick={this.open}>Add</button>
+                    <button className={'button button_borderless button_separate button_large button_icon'} onClick={this.open}>
+                        <Icon type={'add'} className={'icon'}/>
+                    </button>
                 }
                 <List/>
                 {
