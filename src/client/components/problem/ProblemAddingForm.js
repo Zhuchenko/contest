@@ -58,7 +58,7 @@ class ProblemAddingForm extends Component {
         });
     };
 
-    deleteOption = ({target: {id}}) => {
+    deleteOption = ({currentTarget: {id}}) => {
         const {options} = this.state;
         options.splice(getIndex(id), 1);
         this.setState({options});
@@ -114,7 +114,7 @@ class ProblemAddingForm extends Component {
         });
     };
 
-    deleteTest = ({target: {id}}) => {
+    deleteTest = ({currentTarget: {id}}) => {
         const {tests} = this.state;
         tests.splice(getIndex(id), 1);
         this.setState({tests});
