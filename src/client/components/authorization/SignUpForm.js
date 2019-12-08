@@ -4,6 +4,7 @@ import CustomInput from '../common/CustomInput'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/authorization/actions'
 import {validateEmail, validateInput, validatePassword, validateRepeatPassword} from '../../utilities/checks'
+import getTranslations from '../../utilities/getTranslations'
 
 import './css/signForm.css'
 import './css/appbar__button.css'
@@ -105,36 +106,37 @@ class SignUpForm extends Component {
             {
                 placeholder: 'email',
                 value: email,
-                errorMessage: 'it is not valid',
+                errorMessage: getTranslations({text: 'it is not valid', format: 'lowercase'}),
                 onChange: this.handleChangedEmail
             },
             {
-                placeholder: 'name',
+                placeholder: getTranslations({text: 'name', format: 'lowercase'}),
                 value: name,
                 onChange: this.handleChangedName
             },
             {
-                placeholder: 'last name',
+                placeholder: getTranslations({text: 'last name', format: 'lowercase'}),
                 value: lastName,
                 onChange: this.handleChangedLastName
             },
             {
+                //TODO: does it need to be translated?
                 placeholder: 'auth key',
                 value: authKey,
                 onChange: this.handleChangedAuthKey
             },
             {
-                placeholder: 'password',
+                placeholder: getTranslations({text: 'password', format: 'lowercase'}),
                 type: 'password',
                 value: password,
-                errorMessage: 'it is not equal to the requirements',
+                errorMessage: getTranslations({text: 'it is not equal to the requirements', format: 'lowercase'}),
                 onChange: this.handleChangedPassword
             },
             {
-                placeholder: 'repeat password',
+                placeholder: getTranslations({text: 'repeat password', format: 'lowercase'}),
                 type: 'password',
                 value: repeatPassword,
-                errorMessage: 'it does not match',
+                errorMessage: getTranslations({text: 'it does not match', format: 'lowercase'}),
                 onChange: this.handleChangedRepeatPassword
             }
         ];
@@ -146,14 +148,14 @@ class SignUpForm extends Component {
                         <CustomInput key={placeholder}
                                      {...{placeholder, value, type, onChange}}
                                      isValid={!invalidFields.includes(placeholder)}
-                                     errorMessage={errorMessage ?? 'it is required'}
+                                     errorMessage={errorMessage ?? getTranslations({text: 'it is required', format: 'lowercase'})}
                                      handleKeyPress={this.handleKeyPress}
                         />
                     )
                 }
                 <div className={'dialog__button-panel'}>
-                    <button onClick={this.signUp} className={'button sign__button'}>Sign up</button>
-                    <button onClick={hideForm} className={'button sign__button'}>Cancel</button>
+                    <button onClick={this.signUp} className={'button sign__button'}>{getTranslations({text: 'sign up'})}</button>
+                    <button onClick={hideForm} className={'button sign__button'}>{getTranslations({text: 'cancel'})}</button>
                 </div>
             </div>
         )

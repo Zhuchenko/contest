@@ -4,6 +4,7 @@ import CustomInput from '../common/CustomInput'
 import roles from './roles'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/user/actions'
+import getTranslations from '../../utilities/getTranslations'
 
 class UserAddingForm extends Component {
     constructor(props) {
@@ -56,30 +57,30 @@ class UserAddingForm extends Component {
         return (
             <div className={'dialog scrollbar'}>
                 <CustomInput key='name'
-                       placeholder="Name"
+                       placeholder={getTranslations({text: 'name'})}
                        value={name}
                        onChange={this.handleChangedName}
                        handleKeyPress={this.handleKeyPress}/>
                 <CustomInput key='lastName'
-                       placeholder="Last Name"
+                       placeholder={getTranslations({text: 'last name'})}
                        value={lastName}
                        onChange={this.handleChangedLastName}
                        handleKeyPress={this.handleKeyPress}/>
                 <select onChange={this.onChange} defaultValue={roleIndex}>
                     {
                         roles.map((role, i) => (
-                            <option key={i} value={i} label={role.name}/>
+                            <option key={i} value={i} label={getTranslations({text: role.name})}/>
                         ))
                     }
                 </select>
                 <CustomInput key='authKey'
-                       placeholder="Auth Key"
+                       placeholder="Auth key"
                        value={authKey}
                        onChange={this.handleChangedAuthKey}
                        handleKeyPress={this.handleKeyPress}/>
                 <div className={'dialog__button-panel'}>
-                    <button className={'button'} onClick={this.add}>Add</button>
-                    <button className={'button'} onClick={this.props.close}>Cancel</button>
+                    <button className={'button'} onClick={this.add}>{getTranslations({text: 'add'})}</button>
+                    <button className={'button'} onClick={this.props.close}>{getTranslations({text: 'cancel'})}</button>
                 </div>
             </div>
         )

@@ -1,14 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import * as actions from '../../redux/authorization/actions'
 import SignInDialog from './signDialog'
+import getTranslations from '../../utilities/getTranslations'
 
 import './css/signForm.css'
 import './css/appbar__button.css'
 
 const UserControls = (props) => {
-    const { authorized,  signOut} = props;
+    const {authorized, signOut} = props;
     if (!authorized) {
         return <SignInDialog/>
     }
@@ -16,7 +17,7 @@ const UserControls = (props) => {
     return (
         <div className={'appbar__button-panel'}>
             <button onClick={signOut} className={'appbar__button'}>
-                Sign out
+                {getTranslations({text: 'sign out'})}
             </button>
         </div>
     );

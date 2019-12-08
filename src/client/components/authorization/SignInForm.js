@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux';
 import * as actions from '../../redux/authorization/actions'
 import CustomInput from '../common/CustomInput';
+import getTranslations from '../../utilities/getTranslations';
 
 import './css/signForm.css'
 import './css/appbar__button.css'
@@ -51,7 +52,7 @@ class SignInForm extends Component {
                 onChange: this.handleChangedEmail
             },
             {
-                placeholder: 'password',
+                placeholder: getTranslations({text: 'password', format: 'lowercase'}),
                 type: 'password',
                 value: password,
                 onChange: this.handleChangedPassword
@@ -70,8 +71,8 @@ class SignInForm extends Component {
                     )
                 }
                 <div className={'dialog__button-panel'}>
-                    <button onClick={this.signIn} className={'button sign__button'}>Sign in</button>
-                    <button onClick={hideForm} className={'button sign__button'}>Cancel</button>
+                    <button onClick={this.signIn} className={'button sign__button'}>{getTranslations({text: 'Sign in'})}</button>
+                    <button onClick={hideForm} className={'button sign__button'}>{getTranslations({text: 'Cancel'})}</button>
                 </div>
             </div>
         )

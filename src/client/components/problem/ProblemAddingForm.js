@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import * as actions from '../../redux/problem/actions'
 import FileUploader from 'react-input-files'
 import Icon from '../common/Icon'
+import getTranslations from '../../utilities/getTranslations'
 
 const getIndex = (key) => key.substring(key.indexOf("_") + 1);
 
@@ -123,25 +124,25 @@ class ProblemAddingForm extends Component {
 
         return <div className={'dialog scrollbar'}>
             <div>{error}</div>
-            <CustomInput placeholder="Name"
+            <CustomInput placeholder={getTranslations({text: 'name'})}
                    value={name}
                    onChange={this.handleChangedName}
                    handleKeyPress={this.handleKeyPress}/>
-            <div className={'dialog__sub-header'}>Text</div>
+            <div className={'dialog__sub-header'}>{getTranslations({text: 'text'})}</div>
             <div className={'dialog__line'}>
                 <textarea onChange={this.handleChangedText} value={text} rows="10" cols="75"/>
             </div>
-            <span className={'dialog__sub-header'}>Limitations:</span>
+            <span className={'dialog__sub-header'}>{getTranslations({text: 'limitations'})}:</span>
             <div className={'dialog__line'}>
-                <span className={'dialog__line__label'}>Time: </span>
-                <CustomInput type="number" placeholder={'time'} onChange={this.handleChangedTime} value={time}
-                       handleKeyPress={this.handleKeyPress}/>
-                <span className={'dialog__line__label'}>Memory: </span>
-                <CustomInput type="number" placeholder={'memory'} onChange={this.handleChangedMemory} value={memory}
-                       handleKeyPress={this.handleKeyPress}/>
+                <span className={'dialog__line__label'}>{getTranslations({text: 'time'})}: </span>
+                <CustomInput type="number" placeholder={getTranslations({text: 'time', format: 'lowercase'})}
+                             onChange={this.handleChangedTime} value={time} handleKeyPress={this.handleKeyPress}/>
+                <span className={'dialog__line__label'}>{getTranslations({text: 'memory'})}: </span>
+                <CustomInput type="number" placeholder={getTranslations({text: 'memory', format: 'lowercase'})}
+                             onChange={this.handleChangedMemory} value={memory} handleKeyPress={this.handleKeyPress}/>
             </div>
             <div className={'dialog__line'}>
-                <span>Checker: </span>
+                <span>{getTranslations({text: 'checker'})}: </span>
                 <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadChecker}>
                     <button className={'button button_borderless button_icon'}>
                         <Icon type={'file'} className={'icon'}/>
@@ -152,7 +153,7 @@ class ProblemAddingForm extends Component {
                     <>
                         <span>{checker.name}</span>
                         <button className={'button button_borderless button_icon'} onClick={this.handleRemoveChecker}>
-                            <Icon type={'close'} className={'icon'}/>
+                            <Icon type={'delete'} className={'icon'}/>
                         </button>
                     </>
                 }
@@ -174,21 +175,21 @@ class ProblemAddingForm extends Component {
                     </>
                 }
             </div>
-            <div className={'dialog__sub-header'}>Tests:</div>
+            <div className={'dialog__sub-header'}>{getTranslations({text: 'tests'})}:</div>
             {
                 //TODO: add check for not loaded files ('undefined-undefined' case)
                 tests.length > 0 &&
                 tests.map((item, id) => <div className={'dialog__line'} key={id}>
                     <span>{item.description + ' ( ' + item.input.name + ' - ' + item.output.name + ' )'}</span>
                     <button className={'button button_borderless button_icon'} key={'test_' + id} onClick={this.deleteTest}>
-                        <Icon type={'close'} className={'icon'}/>
+                        <Icon type={'delete'} className={'icon'}/>
                     </button>
                 </div>)
             }
             <div className={'dialog__line'}>
                 <FileUploader accept={'.txt'} onChange={this.handleUploadTestInput}>
                     <div className={'dialog__line'}>
-                        <span className={'dialog__line__label'}>Input: </span>
+                        <span className={'dialog__line__label'}>{getTranslations({text: 'input'})}: </span>
                         <button className={'button button_borderless button_icon'}>
                             <Icon type={'file'} className={'icon'}/>
                         </button>
@@ -199,13 +200,13 @@ class ProblemAddingForm extends Component {
                     <>
                         <span className={'dialog__line__label'}>{testInput.name}</span>
                         <button className={'button button_borderless button_icon'} onClick={this.handleRemoveTestInput}>
-                            <Icon type={'close'} className={'icon'}/>
+                            <Icon type={'delete'} className={'icon'}/>
                         </button>
                     </>
                 }
                 <FileUploader accept={'.txt'} onChange={this.handleUploadTestOutput}>
                     <div className={'dialog__line'}>
-                        <span className={'dialog__line__label'}>Output: </span>
+                        <span className={'dialog__line__label'}>{getTranslations({text: 'output'})}: </span>
                         <button className={'button button_borderless button_icon'}>
                             <Icon type={'file'} className={'icon'}/>
                         </button>
@@ -216,13 +217,13 @@ class ProblemAddingForm extends Component {
                     <>
                         <span className={'dialog__line__label'}>{testOutput.name}</span>
                         <button className={'button button_borderless button_icon'} onClick={this.handleRemoveTestOutput}>
-                            <Icon type={'close'} className={'icon'}/>
+                            <Icon type={'delete'} className={'icon'}/>
                         </button>
                     </>
                 }
             </div>
             <div className={'dialog__line'}>
-                <CustomInput placeholder="test-description"
+                <CustomInput placeholder={getTranslations({text: 'test description', format: 'lowercase'})}
                        value={testDescription}
                        onChange={this.handleChangedTestDescription}
                        handleKeyPress={this.handleKeyPress}/>
@@ -231,8 +232,8 @@ class ProblemAddingForm extends Component {
                 </button>
             </div>
             <div className={'dialog__button-panel'}>
-                <button className={'button'} disabled={isCreating} onClick={this.add}>{isCreating ? 'Wait' : 'Add'}</button>
-                <button className={'button'} disabled={isCreating} onClick={closeProblemCreatingDialog}>{isCreating ? 'Wait' : 'Cancel'}</button>
+                <button className={'button'} disabled={isCreating} onClick={this.add}>{isCreating ? 'Wait' : getTranslations({text: 'add'})}</button>
+                <button className={'button'} disabled={isCreating} onClick={closeProblemCreatingDialog}>{isCreating ? 'Wait' : getTranslations({text: 'cancel'})}</button>
             </div>
         </div>
     }

@@ -4,6 +4,7 @@ import CustomInput from '../common/CustomInput'
 import {connect} from 'react-redux'
 import {getProblem} from '../../services/problemApi'
 import * as actions from '../../redux/problem/actions'
+import getTranslations from '../../utilities/getTranslations'
 
 class ProblemEditingForm extends Component {
     constructor(props) {
@@ -66,26 +67,26 @@ class ProblemEditingForm extends Component {
     render() {
         const {name, text, time, memory} = this.state;
         return <div className={'dialog'}>
-            <CustomInput placeholder="Name"
+            <CustomInput placeholder={getTranslations({text: 'name'})}
                    value={name}
                    onChange={this.handleChangedName}
                    handleKeyPress={this.handleKeyPress}/>
-            <div className={'dialog__sub-header'}>Text</div>
+            <div className={'dialog__sub-header'}>{getTranslations({text: 'text'})}</div>
             <div className={'dialog__line'}>
                 <textarea onChange={this.handleChangedText} value={text} rows="10" cols="75"/>
             </div>
-            <span className={'dialog__sub-header'}>Limitations:</span>
+            <span className={'dialog__sub-header'}>{getTranslations({text: 'limitations'})}:</span>
             <div className={'dialog__line'}>
-                <span className={'dialog__line__label'}>Time: </span>
-                <CustomInput type="number" placeholder={'time'} onChange={this.handleChangedTime} value={time}
+                <span className={'dialog__line__label'}>{getTranslations({text: 'time'})}: </span>
+                <CustomInput type="number" placeholder={getTranslations({text: 'time', format: 'lowercase'})} onChange={this.handleChangedTime} value={time}
                        handleKeyPress={this.handleKeyPress}/>
-                <span className={'dialog__line__label'}>Memory: </span>
-                <CustomInput type="number" placeholder={'memory'} onChange={this.handleChangedMemory} value={memory}
+                <span className={'dialog__line__label'}>{getTranslations({text: 'memory'})}: </span>
+                <CustomInput type="number" placeholder={getTranslations({text: 'tests', format: 'lowercase'})} onChange={this.handleChangedMemory} value={memory}
                        handleKeyPress={this.handleKeyPress}/>
             </div>
             <div className={'dialog__button-panel'}>
-                <button className={'button'} onClick={this.edit}>Save</button>
-                <button className={'button'} onClick={this.props.close}>Cancel</button>
+                <button className={'button'} onClick={this.edit}>{getTranslations({text: 'save'})}</button>
+                <button className={'button'} onClick={this.props.close}>{getTranslations({text: 'cancel'})}</button>
             </div>
         </div>
     }

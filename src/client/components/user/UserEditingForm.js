@@ -6,6 +6,7 @@ import roles from './roles'
 import CustomInput from '../common/CustomInput'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/user/actions'
+import getTranslations from '../../utilities/getTranslations'
 
 class UserEditingForm extends Component {
     constructor(props) {
@@ -119,12 +120,12 @@ class UserEditingForm extends Component {
         return (
             <div className={'dialog scrollbar'}>
                 <CustomInput key='name'
-                       placeholder="Name"
+                       placeholder={getTranslations({text: 'name'})}
                        value={name.value}
                        onChange={this.handleChangedName}
                        handleKeyPress={this.handleKeyPress}/>
                 <CustomInput key='lastName'
-                       placeholder="Last Name"
+                       placeholder={getTranslations({text: 'last name'})}
                        value={lastName.value}
                        onChange={this.handleChangedLastName}
                        handleKeyPress={this.handleKeyPress}/>
@@ -141,7 +142,7 @@ class UserEditingForm extends Component {
                     <select onChange={this.onChange} value={roleIndex.value}>
                         {
                             roles.map((role, i) => (
-                                <option key={i} value={i} label={role.name}/>
+                                <option key={i} value={i} label={getTranslations({text: role.name})}/>
                             ))
                         }
                     </select>
@@ -149,14 +150,14 @@ class UserEditingForm extends Component {
                 {
                     this.props.unverified &&
                     <CustomInput key='authKey'
-                                 placeholder="Auth Key"
+                                 placeholder="Auth key"
                                  value={authKey.value}
                                  onChange={this.handleChangedAuthKey}
                                  handleKeyPress={this.handleKeyPress}/>
                 }
                 <div className={'dialog__button-panel'}>
-                    <button className={'button'} onClick={this.edit}>Save</button>
-                    <button className={'button'} onClick={this.props.close}>Cancel</button>
+                    <button className={'button'} onClick={this.edit}>{getTranslations({text: 'save'})}</button>
+                    <button className={'button'} onClick={this.props.close}>{getTranslations({text: 'cancel'})}</button>
                 </div>
             </div>
         )

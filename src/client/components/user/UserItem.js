@@ -50,7 +50,7 @@ class UserItem extends Component {
             {
                 canDeleteUser &&
                 <button className={'button button_borderless button_icon'} onClick={this.deleteUser}>
-                    <Icon type={'close'} className={'icon'}/>
+                    <Icon type={'delete'} className={'icon'}/>
                 </button>
             }
             {
