@@ -142,7 +142,7 @@ class ProblemAddingForm extends Component {
                              onChange={this.handleChangedMemory} value={memory} handleKeyPress={this.handleKeyPress}/>
             </div>
             <div className={'dialog__line'}>
-                <span>{getTranslations({text: 'checker'})}: </span>
+                <span className={'dialog__line__label'}>{getTranslations({text: 'checker'})}: </span>
                 <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadChecker}>
                     <button className={'button button_borderless button_icon'}>
                         <Icon type={'file'} className={'icon'}/>
@@ -151,7 +151,7 @@ class ProblemAddingForm extends Component {
                 {
                     checker &&
                     <>
-                        <span>{checker.name}</span>
+                        <span className={'dialog__line__label'}>{checker.name}</span>
                         <button className={'button button_borderless button_icon'} onClick={this.handleRemoveChecker}>
                             <Icon type={'delete'} className={'icon'}/>
                         </button>
@@ -204,6 +204,8 @@ class ProblemAddingForm extends Component {
                         </button>
                     </>
                 }
+            </div>
+            <div className={'dialog__line'}>
                 <FileUploader accept={'.txt'} onChange={this.handleUploadTestOutput}>
                     <div className={'dialog__line'}>
                         <span className={'dialog__line__label'}>{getTranslations({text: 'output'})}: </span>
