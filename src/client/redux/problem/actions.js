@@ -8,6 +8,10 @@ export const getProblemsSuccess = createAction('GET_PROBLEMS_SUCCESS');
 
 export const getProblemsFailure = createAction('GET_PROBLEMS_FAILURE');
 
+export const openProblemCreatingDialog = createAction('OPEN_PROBLEM_CREATING_DIALOG');
+
+export const closeProblemCreatingDialog = createAction('CLOSE_PROBLEM_CREATING_DIALOG');
+
 export const addProblem = createAction('ADD_PROBLEM');
 
 export const addProblemSuccess = createAction('ADD_PROBLEM_SUCCESS');

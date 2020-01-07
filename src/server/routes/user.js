@@ -82,6 +82,14 @@ router.delete('/:userId', auth.required, async (req, res) => {
     const user = await db.getUserById(userId);
     if (!user) return res.status(404).end();
 
+    const groups = await db.getAllGroupsByQuery({users: userId});
+    for (let i = 0; i < groups.length; i++) {
+        const u = groups[i].users;
+        const index = u.indexOf(userId);
+        if (index !== -1) u.splice(index, 1);
+        await db.updateGroup(groups[i].id, {users: u});
+    }
+
     if (rights.user.delete) {
         await db.deleteUser(userId);
         return res.status(200).end();
@@ -136,7 +144,7 @@ router.get('/unverified/:userId', auth.required, async (req, res) => {
     }
 
     if (rights.user.add) {
-        const user = await db.getUnverifiedUserById(userId);
+        const user = await db.getUnverifiedUser({_id: userId});
         if (user) {
             return res.json({user})
         } else {
@@ -156,7 +164,7 @@ router.post('/unverified/:userId', auth.required, async (req, res) => {
         return res.status(400).json({e});
     }
 
-    const oldUser = await db.getUnverifiedUserById(userId);
+    const oldUser = await db.getUnverifiedUser({_id: userId});
     if (!oldUser) return res.status(404).end();
 
     if (rights.user.add) {
@@ -176,7 +184,7 @@ router.delete('/unverified/:userId', auth.required, async (req, res) => {
         return res.status(400).json({e});
     }
 
-    const user = await db.getUnverifiedUserById(userId);
+    const user = await db.getUnverifiedUser({_id: userId});
     if (!user) return res.status(404).end();
 
     if (rights.user.add) {

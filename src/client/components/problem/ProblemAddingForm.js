@@ -14,9 +14,6 @@ class ProblemAddingForm extends Component {
         this.state = {
             name: '',
             text: '',
-            options: [],
-            language: '',
-            compiler: '',
             time: 0,
             memory: 0,
             checker: '',
@@ -28,9 +25,9 @@ class ProblemAddingForm extends Component {
     }
 
     add = () => {
-        const {name, text, options, time, memory, checker, tests} = this.state;
+        const {name, text, time, memory, checker, tests} = this.state;
         const {addProblem, close} = this.props;
-        addProblem({problem: {name, text, options, limitation: {time, memory}}, checker, tests});
+        addProblem({problem: {name, text, limitation: {time, memory}}, checker, tests});
         close();
     };
 
@@ -40,28 +37,6 @@ class ProblemAddingForm extends Component {
 
     handleChangedText = ({target: {value}}) => {
         this.setState({text: value});
-    };
-
-    handleChangedLanguage = ({target: {value}}) => {
-        this.setState({language: value});
-    };
-
-    handleChangedCompiler = ({target: {value}}) => {
-        this.setState({compiler: value});
-    };
-
-    addOption = () => {
-        const {options, language, compiler} = this.state;
-        this.setState({
-            options: [...options, {language, compiler}],
-            language: '', compiler: ''
-        });
-    };
-
-    deleteOption = ({currentTarget: {id}}) => {
-        const {options} = this.state;
-        options.splice(getIndex(id), 1);
-        this.setState({options});
     };
 
     handleChangedTime = ({target: {value}}) => {
@@ -132,11 +107,11 @@ class ProblemAddingForm extends Component {
     };
 
     render() {
-        const {
-            name, text, options, language, compiler, time, memory, checker,
-            tests, testInput, testOutput, testDescription
-        } = this.state;
+        const {name, text, time, memory, checker, tests, testInput, testOutput, testDescription} = this.state;
+        const {isCreating, error, closeProblemCreatingDialog} = this.props;
+
         return <div className={'dialog scrollbar'}>
+            <div>{error}</div>
             <CustomInput placeholder="Name"
                    value={name}
                    onChange={this.handleChangedName}
@@ -144,29 +119,6 @@ class ProblemAddingForm extends Component {
             <div className={'dialog__sub-header'}>Text</div>
             <div className={'dialog__line'}>
                 <textarea onChange={this.handleChangedText} value={text} rows="10" cols="75"/>
-            </div>
-            <div className={'dialog__sub-header'}>Options:</div>
-            {
-                options.length > 0 &&
-                options.map((item, id) => <div className={'dialog__line'} key={id}>
-                    <span>{item.language + ' - ' + item.compiler}</span>
-                    <button className={'button button_borderless button_icon'} id={'option_' + id} onClick={this.deleteOption}>
-                        <Icon type={'close'} className={'icon'}/>
-                    </button>
-                </div>)
-            }
-            <div className={'dialog__line'}>
-                <CustomInput placeholder="language"
-                       value={language}
-                       onChange={this.handleChangedLanguage}
-                       handleKeyPress={this.handleKeyPress}/>
-                <CustomInput placeholder="compiler"
-                       value={compiler}
-                       onChange={this.handleChangedCompiler}
-                       handleKeyPress={this.handleKeyPress}/>
-                <button className={'button button_borderless button_icon'} onClick={this.addOption}>
-                    <Icon type={'add'} className={'icon'}/>
-                </button>
             </div>
             <span className={'dialog__sub-header'}>Limitations:</span>
             <div className={'dialog__line'}>
@@ -251,8 +203,8 @@ class ProblemAddingForm extends Component {
                 </button>
             </div>
             <div className={'dialog__button-panel'}>
-                <button className={'button'} onClick={this.add}>Add</button>
-                <button className={'button'} onClick={this.props.close}>Cancel</button>
+                <button className={'button'} disabled={isCreating} onClick={this.add}>{isCreating ? 'Wait' : 'Add'}</button>
+                <button className={'button'} disabled={isCreating} onClick={closeProblemCreatingDialog}>{isCreating ? 'Wait' : 'Cancel'}</button>
             </div>
         </div>
     }
@@ -260,7 +212,11 @@ class ProblemAddingForm extends Component {
 
 ProblemAddingForm.propTypes = {
     close: PropTypes.func.isRequired,
-    addProblem: PropTypes.func.isRequired
+    addProblem: PropTypes.func.isRequired,
+    closeProblemCreatingDialog: PropTypes.func.isRequired,
 };
 
-export default connect(null, actions)(ProblemAddingForm)
+export default connect(state => ({
+    isCreating: state.problem.isCreating,
+    error: state.problem.error
+}), actions)(ProblemAddingForm)

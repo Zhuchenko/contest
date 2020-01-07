@@ -183,6 +183,14 @@ router.delete('/:problemId', auth.required, async (req, res) => {
     }
     if (!problem) return res.status(404).end();
 
+    const sets = await db.getAllSetsByQuery({problems: problemId});
+    for (let i = 0; i < sets.length; i++) {
+        const p = sets[i].problems;
+        const index = p.indexOf(problemId);
+        if (index !== -1) p.splice(index, 1);
+        await db.updateSet(sets[i].id, {problems: p});
+    }
+
     try {
         if (rights.problem.delete || problem.authorId === id) {
             await db.deleteProblem(problemId);

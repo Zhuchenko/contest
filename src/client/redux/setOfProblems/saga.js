@@ -1,6 +1,7 @@
 import {all, call, put, takeLatest} from 'redux-saga/effects'
 import * as actions from './actions'
 import {addSet, deleteSet, editSet, getSets} from '../../services/setOfProblemsApi'
+import {toastr} from "react-redux-toastr";
 
 export default function* setOfUsersSaga() {
     yield all([
@@ -17,7 +18,8 @@ function* getSetsSaga() {
 
         yield put(actions.getSetsSuccess(sets));
     } catch (error) {
-        yield put(actions.getSetsFailure(error))
+        yield put(actions.getSetsFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
@@ -28,8 +30,10 @@ function* addSetSaga(action) {
 
         yield put(actions.getSets());
         yield put(actions.getSetsSuccess());
+        toastr.success('Успех', "Набор задач создан");
     } catch (error) {
-        yield put(actions.getSetsFailure(error))
+        yield put(actions.getSetsFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
@@ -40,8 +44,10 @@ function* editSetSaga(action) {
 
         yield put(actions.getSets());
         yield put(actions.editSetSuccess());
+        toastr.success('Успех', "Набор задач изменен");
     } catch (error) {
-        yield put(actions.editSetFailure(error))
+        yield put(actions.editSetFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
@@ -52,7 +58,9 @@ function* deleteSetSaga(action) {
 
         yield put(actions.getSets());
         yield put(actions.deleteSetSuccess());
+        toastr.success('Успех', "Набор задач удален");
     } catch (error) {
-        yield put(actions.deleteSetFailure(error))
+        yield put(actions.deleteSetFailure(error));
+        toastr.error('Ошибка', error);
     }
 }

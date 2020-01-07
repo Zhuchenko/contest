@@ -21,7 +21,7 @@ class Contest extends Component {
             selectedId: participantTab.id,
             isParticipant: true,
             participants: [],
-            problems: [],
+            sets: [],
             status: ''
         };
         this.tabs = [participantTab, problemTab];
@@ -29,8 +29,8 @@ class Contest extends Component {
 
     componentDidMount() {
         getContest(this.props.match.params.contestId)
-            .then(({participants, problems, status, isParticipant}) => {
-                this.setState({participants, isParticipant, problems, status})
+            .then(({participants, sets, status, isParticipant}) => {
+                this.setState({participants, isParticipant, sets, status})
             }).catch((errorCode) => {
             this.props.setError({errorCode});
         });
@@ -41,7 +41,7 @@ class Contest extends Component {
     };
 
     render() {
-        const {selectedId, participants, problems, status, isParticipant} = this.state;
+        const {selectedId, participants, sets, status, isParticipant} = this.state;
 
         return (
             <div className={'wrapper'}>
@@ -50,11 +50,11 @@ class Contest extends Component {
                         selectedId={selectedId}/>
                 {
                     (selectedId === participantTab.id) &&
-                    <ParticipantsTab {...{participants, isParticipant}} contestId={this.props.match.params.contestId}/>
+                    <ParticipantsTab {...{participants, isParticipant}}/>
                 }
                 {
                     (selectedId === problemTab.id) &&
-                    <ProblemsTab {...{problems, isParticipant}} contestId={this.props.match.params.contestId}/>
+                    <ProblemsTab {...{sets, isParticipant}} contestId={this.props.match.params.contestId}/>
                 }
             </div>
         )

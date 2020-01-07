@@ -1,6 +1,7 @@
 import {all, call, put, takeLatest} from 'redux-saga/effects'
 import * as actions from './actions'
 import {addGroup, deleteGroup, editGroup, getGroups} from '../../services/groupOfUsersApi'
+import {toastr} from "react-redux-toastr";
 
 export default function* groupOfUsersSaga() {
     yield all([
@@ -17,7 +18,8 @@ function* getGroupsSaga() {
 
         yield put(actions.getGroupsSuccess(groups));
     } catch (error) {
-        yield put(actions.getGroupsFailure(error))
+        yield put(actions.getGroupsFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
@@ -28,8 +30,10 @@ function* addGroupSaga(action) {
 
         yield put(actions.getGroups());
         yield put(actions.getGroupsSuccess());
+        toastr.success('Успех', "Группа пользователей создана");
     } catch (error) {
-        yield put(actions.getGroupsFailure(error))
+        yield put(actions.getGroupsFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
@@ -40,8 +44,10 @@ function* editGroupSaga(action) {
 
         yield put(actions.getGroups());
         yield put(actions.editGroupSuccess());
+        toastr.success('Успех', "Группа пользователей изменена");
     } catch (error) {
-        yield put(actions.editGroupFailure(error))
+        yield put(actions.editGroupFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
@@ -52,7 +58,9 @@ function* deleteGroupSaga(action) {
 
         yield put(actions.getGroups());
         yield put(actions.deleteGroupSuccess());
+        toastr.success('Успех', "Группа пользователей удалена");
     } catch (error) {
-        yield put(actions.deleteGroupFailure(error))
+        yield put(actions.deleteGroupFailure(error));
+        toastr.error('Ошибка', error);
     }
 }

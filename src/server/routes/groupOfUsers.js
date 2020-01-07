@@ -200,6 +200,14 @@ router.delete('/:groupId', auth.required, async (req, res) => {
     }
     if (!group) return res.status(404).end();
 
+    const contests = await db.getAllContestsByQuery({groups: groupId});
+    for (let i = 0; i < contests.length; i++) {
+        const g = contests[i].groups;
+        const index = g.indexOf(groupId);
+        if (index !== -1) g.splice(index, 1);
+        await db.updateContest(contests[i].id, {groups: g});
+    }
+
     try {
         if (rights.groupOfUsers.delete || group.authorId === id) {
             await db.deleteGroup(groupId);

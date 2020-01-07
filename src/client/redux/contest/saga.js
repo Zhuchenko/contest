@@ -1,6 +1,7 @@
 import {all, call, put, takeLatest} from 'redux-saga/effects'
 import * as actions from './actions'
 import {addContest, deleteContest, editContest, getContests} from '../../services/contestApi'
+import {toastr} from "react-redux-toastr";
 
 export default function* groupOfUsersSaga() {
     yield all([
@@ -17,19 +18,22 @@ function* getContestsSaga() {
 
         yield put(actions.getContestsSuccess(contests));
     } catch (error) {
-        yield put(actions.getContestsFailure(error))
+        yield put(actions.getContestsFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
 function* addContestSaga(action) {
     try {
-        const {name, groups, sets, startingDate, endingDate} = action.payload;
-        yield call(addContest, {name, groups, sets, startingDate, endingDate});
+        const contest = action.payload;
+        yield call(addContest, contest);
 
         yield put(actions.getContests());
         yield put(actions.getContestsSuccess());
+        toastr.success('Успех', "Соревнование создано");
     } catch (error) {
-        yield put(actions.getContestsFailure(error))
+        yield put(actions.getContestsFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
@@ -40,8 +44,10 @@ function* editContestSaga(action) {
 
         yield put(actions.getContests());
         yield put(actions.editContestSuccess());
+        toastr.success('Успех', "Соревнование изменено");
     } catch (error) {
-        yield put(actions.editContestFailure(error))
+        yield put(actions.editContestFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
@@ -52,7 +58,9 @@ function* deleteContestSaga(action) {
 
         yield put(actions.getContests());
         yield put(actions.deleteContestSuccess());
+        toastr.success('Успех', "Соревнование удалено");
     } catch (error) {
-        yield put(actions.deleteContestFailure(error))
+        yield put(actions.deleteContestFailure(error));
+        toastr.error('Ошибка', error);
     }
 }

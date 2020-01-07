@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {getProblem, getProblemFromContest, sendParcel} from '../../services/problemApi'
 import FileUploader from 'react-input-files'
+import marked from 'marked'
 
 class Problem extends Component {
     constructor(props) {
@@ -13,11 +14,10 @@ class Problem extends Component {
                 time: 0,
                 memory: 0
             },
-            options: [],
             selectedId: 0,
             attachedFile: '',
             results: '',
-            isParticipant: true
+            isParticipant: false
         }
     }
 
@@ -25,21 +25,16 @@ class Problem extends Component {
         const {contestId, problemId} = this.props.match.params;
         if (contestId) {
             getProblemFromContest(contestId, problemId)
-                .then(({problem: {name, text, limitation, options}, isParticipant}) => {
-                    this.setState({name, text, limitation, options, isParticipant});
+                .then(({problem: {name, text, limitation}, isParticipant}) => {
+                    this.setState({name, text, limitation, isParticipant});
                 })
         } else {
             getProblem(problemId)
-                .then(({name, text, limitation, options}) => {
-                    this.setState({name, text, limitation, options});
+                .then(({name, text, limitation}) => {
+                    this.setState({name, text, limitation});
                 })
         }
     }
-
-    handleOptionsChange = (e) => {
-        const selectedId = e.target.selectedIndex;
-        this.setState({selectedId});
-    };
 
     handleUploadFile = (files) => {
         if (files && files[0]) {
@@ -65,26 +60,16 @@ class Problem extends Component {
     };
 
     render() {
-        const {name, text, limitation: {time, memory}, options, selectedId, attachedFile, results, isParticipant} = this.state;
-
-        const languageOptions =
-            options.map((option, index) =>
-                <option key={index}>{option.language} ({option.compiler})</option>);
+        const {name, text, limitation: {time, memory}, attachedFile, results, isParticipant} = this.state;
 
         return (
             <div className={'wrapper'}>
                 <div className={'wrapper__header'}>{name}</div>
-                <div className={'wrapper__line'}>{text}</div>
+                <div dangerouslySetInnerHTML={{ __html:  marked(text)}}/>
                 <div className={'wrapper__line wrapper__line__list'}>
                     <label>Limitations:</label>
                     <div>time: {time}</div>
                     <div>memory: {memory}</div>
-                </div>
-                <div className={'wrapper__line'}>
-                    <label>Language:</label>
-                    <select className={'problem__select'} onChange={this.handleOptionsChange}>
-                        {languageOptions}
-                    </select>
                 </div>
                 {isParticipant ?
                     <div className={'wrapper__buttons-panel'}>

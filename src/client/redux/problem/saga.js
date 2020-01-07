@@ -1,6 +1,7 @@
 import {all, call, put, takeLatest} from 'redux-saga/effects'
 import * as actions from './actions'
 import {addProblem, deleteProblem, editProblem, getProblems} from '../../services/problemApi'
+import {toastr} from "react-redux-toastr";
 
 export default function* problemSaga() {
     yield all([
@@ -16,7 +17,8 @@ function* getProblemsSaga() {
         const problems = yield call(getProblems);
         yield put(actions.getProblemsSuccess(problems));
     } catch (error) {
-        yield put(actions.getProblemsFailure(error))
+        yield put(actions.getProblemsFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
@@ -26,9 +28,11 @@ function* addProblemSaga(action) {
         yield call(addProblem, problem);
 
         yield put(actions.getProblems());
-        yield put(actions.getProblemsSuccess());
+        yield put(actions.addProblemSuccess());
+        toastr.success('Успех', "Задача создана");
     } catch (error) {
-        yield put(actions.getProblemsFailure(error))
+        yield put(actions.addProblemFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
@@ -39,8 +43,10 @@ function* editProblemSaga(action) {
 
         yield put(actions.getProblems());
         yield put(actions.editProblemSuccess());
+        toastr.success('Успех', "Задача изменена");
     } catch (error) {
-        yield put(actions.editProblemFailure(error))
+        yield put(actions.editProblemFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
@@ -51,7 +57,9 @@ function* deleteProblemSaga(action) {
 
         yield put(actions.getProblems());
         yield put(actions.deleteProblemSuccess());
+        toastr.success('Успех', "Задача удалена");
     } catch (error) {
-        yield put(actions.deleteProblemFailure(error))
+        yield put(actions.deleteProblemFailure(error));
+        toastr.error('Ошибка', error);
     }
 }

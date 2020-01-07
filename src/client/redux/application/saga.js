@@ -1,6 +1,7 @@
 import { all, takeLatest, call, put } from 'redux-saga/es/effects'
 import * as actions from './actions'
 import { init } from '../../services/authorizationApi'
+import {toastr} from "react-redux-toastr";
 
 export default  function* applicationSaga() {
     yield all([
@@ -16,10 +17,12 @@ function* initSaga() {
             yield put(actions.initSuccessAuthorized(user));
         }
         else{
-            yield put(actions.initSuccessNotAuthorized())
+            yield put(actions.initSuccessNotAuthorized());
+            toastr.warning('Внимание', "Вы не авторизованы");
         }
     }
     catch (error) {
-        yield put(actions.initFailure({error}))
+        yield put(actions.initFailure({error}));
+        toastr.warning('Внимание', "Вы не авторизованы");
     }
 }

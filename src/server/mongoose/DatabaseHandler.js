@@ -48,6 +48,10 @@ export const getAllContests = async () => {
     return removeUnderscoreFromArray(await contest.find());
 };
 
+export const getAllContestsByQuery = async (query) => {
+    return removeUnderscoreFromArray(await contest.find(query));
+};
+
 export const contestIsActive = async (id) => {//TODO: remove
     const contest = await contest.findOne({_id: id});
     if(!contest){
@@ -126,6 +130,10 @@ export const getGroupById = async (id) => {
 
 export const getAllGroups = async () => {
     return removeUnderscoreFromArray(await group.find());
+};
+
+export const getAllGroupsByQuery = async (query) => {
+    return removeUnderscoreFromArray(await group.find(query));
 };
 
 export const getGroupsByAuthor = async (id) => {
@@ -220,10 +228,6 @@ export const getProblemById = async (id) => {
     return removeUnderscore(await problem.findOne({_id: id}));
 };
 
-export const getProblemByIdForContest = async (id) => {
-    return removeUnderscore(await problem.findOne({_id: id}, 'name text checker limitation tests numberOfTests options'));
-};
-
 export const getProblemsByAuthor = async (authorId) => {
     return removeUnderscoreFromArray(await problem.find({authorId}));
 };
@@ -253,6 +257,10 @@ export const getSetById = async (id) => {
 
 export const getAllSets = async () => {
     return removeUnderscoreFromArray(await set.find());
+};
+
+export const getAllSetsByQuery = async (query) => {
+    return removeUnderscoreFromArray(await set.find(query));
 };
 
 export const getSetsByReadRight = async (id) => {
@@ -349,14 +357,6 @@ export const getUnverifiedUser = async (query) => {
     return removeUnderscore(await unverifiedUser.findOne(query, '_id email authKey name lastName role'));
 };
 
-export const getUnverifiedUserById = async (id) => {
-    return removeUnderscore(await unverifiedUser.findOne({_id: id}, '_id email authKey name lastName role'));
-};
-
-export const getUnverifiedUserByEmail = async (email) => {
-    return removeUnderscore(await unverifiedUser.findOne({email}, '_id email authKey name lastName role'));
-};
-
 export const getAllUnverifiedUsers = async () => {
     return removeUnderscoreFromArray(await unverifiedUser.find({}, '_id email authKey name lastName role'));
 };
@@ -403,6 +403,10 @@ export const getAllCoordinators = async () => {
 
 export const isCoordinator = async (id) => {
     return !!(await user.findOne({_id: id, role: "coordinator"}));
+};
+
+export const addUser = async (newInstance) => {
+    user.add(newInstance);
 };
 
 export const updateUser = async (id, newState) => {

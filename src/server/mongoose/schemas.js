@@ -82,7 +82,6 @@ UserSchema.methods.toAuthJSON = function () {
 export const GroupOfUsersSchema = new Schema({
     name: {
         type: String,
-        unique: true,
         required: true
     },
     users: [String],
@@ -97,7 +96,6 @@ export const GroupOfUsersSchema = new Schema({
 export const ProblemSchema = new Schema({
     name: {
         type: String,
-        unique: true,
         required: true
     },
     text: {
@@ -141,16 +139,6 @@ export const ProblemSchema = new Schema({
         type: Number,
         required: true
     },
-    options: [{
-        language: {
-            type: String,
-            required: true
-        },
-        compiler: {
-            type: String,
-            required: true
-        }
-    }],
     sharedReadRights: [String],
     sharedWriteRights: [String]
 });
@@ -158,7 +146,6 @@ export const ProblemSchema = new Schema({
 export const SetOfProblemsSchema = new Schema({
     name: {
         type: String,
-        unique: true,
         required: true
     },
     authorId: {
@@ -173,13 +160,9 @@ export const SetOfProblemsSchema = new Schema({
 export const ContestSchema = new Schema({
     name: {
         type: String,
-        unique: true,
         required: true
     },
-    problems: {
-        type: Mixed,
-        required: true
-    },
+    sets: [String],
     groups: [String],
     authorId: {
         type: String,
@@ -195,11 +178,15 @@ export const ContestSchema = new Schema({
     },
     startingDate: {
         type: Date,
-        //required: true
+        required: true
     },
     endingDate: {
         type: Date,
-        //required: true
+        required: true
+    },
+    language: {
+        type: String,
+        required: true
     },
     sharedReadRights: [String],
     sharedWriteRights: [String]

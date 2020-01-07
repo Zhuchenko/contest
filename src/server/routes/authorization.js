@@ -57,15 +57,14 @@ router.get('/verify-email/:code', auth.optional, async (req, res) => {
     }
 
     try {
-        const {id, email, name, lastName, role, _hash, _salt} = await db.getUnverifiedUserByEmail(rightCode.email); //getAndDelete
-        db.deleteUnverifiedUser(id);
-        db.addUser({email, name, lastName, role, _hash, _salt});
-        db.deleteCode(rightCode.id);
+        const {id, email, name, lastName, role, _hash, _salt} = await db.getUnverifiedUser({email: rightCode.email}); //getAndDelete
+        await db.deleteUnverifiedUser(id);
+        await db.addUser({email, name, lastName, role, _hash, _salt});
+        await db.deleteCode(rightCode.id);
     } catch (e) {
         return res.status(500).end();
     }
-
-    res.status(200).end();
+    res.redirect('https://localhost:3000').end();
 });
 
 router.get('/signin', auth.required, async (req, res) => {

@@ -2,6 +2,7 @@ import {all, call, put, takeLatest} from 'redux-saga/effects'
 import * as actions from './actions'
 import {getUsers, addUser, editUser, editUnverifiedUser, deleteUser, deleteUnverifiedUser} from '../../services/userApi'
 import {setError} from "../application/actions";
+import {toastr} from "react-redux-toastr";
 
 
 export default function* userSaga() {
@@ -19,7 +20,8 @@ function* getUsersSaga() {
         yield put(actions.getUsersSuccess(users));
     } catch (error) {
         yield put(setError({errorCode:error}));
-        yield put(actions.getUsersFailure(error))
+        yield put(actions.getUsersFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
@@ -30,8 +32,10 @@ function* addUserSaga(action) {
 
         yield put(actions.getUsers());
         yield put(actions.addUserSuccess());
+        toastr.success('Успех', "Пользователь создан");
     } catch (error) {
-        yield put(actions.addUserFailure(error))
+        yield put(actions.addUserFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
@@ -45,8 +49,10 @@ function* editUserSaga(action) {
 
         yield put(actions.getUsers());
         yield put(actions.editUserSuccess());
+        toastr.success('Успех', "Пользователь изменен");
     } catch (error) {
-        yield put(actions.editUserFailure(error))
+        yield put(actions.editUserFailure(error));
+        toastr.error('Ошибка', error);
     }
 }
 
@@ -60,7 +66,9 @@ function* deleteUserSaga(action) {
 
         yield put(actions.getUsers());
         yield put(actions.deleteUserSuccess());
+        toastr.success('Успех', "Пользователь удален");
     } catch (error) {
-        yield put(actions.deleteUserFailure(error))
+        yield put(actions.deleteUserFailure(error));
+        toastr.error('Ошибка', error);
     }
 }

@@ -238,6 +238,14 @@ router.delete('/:setId', auth.required, async (req, res) => {
     }
     if (!set) return res.status(404).end();
 
+    const contests = await db.getAllContestsByQuery({sets: setId});
+    for (let i = 0; i < contests.length; i++) {
+        const s = contests[i].sets;
+        const index = s.indexOf(setId);
+        if (index !== -1) s.splice(index, 1);
+        await db.updateContest(contests[i].id, {sets: s});
+    }
+
     try {
         if (rights.setOfProblems.delete || set.authorId === id) {
             await db.deleteSet(setId);

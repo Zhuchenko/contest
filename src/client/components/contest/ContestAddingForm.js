@@ -9,9 +9,12 @@ import {getGroupsForContestCreating, getSetsForContestCreating} from '../../serv
 
 import 'react-datepicker/dist/react-datepicker.css'
 import getList from '../common/List'
+import roles from "../user/roles";
 
 const GroupItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/groups/'}/>;
 const SetItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/sets/'}/>;
+
+const LANGUAGES = ['C#', 'C++'];
 
 class ContestAddingForm extends Component {
     constructor(props) {
@@ -21,7 +24,8 @@ class ContestAddingForm extends Component {
             groups: [],
             sets: [],
             startingDate: new Date(),
-            endingDate: new Date()
+            endingDate: new Date(),
+            languageIndex: 0
         }
     }
 
@@ -50,12 +54,17 @@ class ContestAddingForm extends Component {
     }
 
     add = () => {
-        const {name, groups, sets, startingDate, endingDate} = this.state;
+        const {name, groups, sets, startingDate, endingDate, languageIndex} = this.state;
         const selectedGroups = groups.filter(group => group.isSelected).map(group => group.id);
         const selectedSets = sets.filter(set => set.isSelected).map(set => set.id);
+        const language = LANGUAGES[languageIndex];
         const {addContest, close} = this.props;
-        addContest({name, groups: selectedGroups, sets: selectedSets, startingDate, endingDate});
+        addContest({name, groups: selectedGroups, sets: selectedSets, startingDate, endingDate, language});
         close();
+    };
+
+    handleChangeLanguage = ({target: {value}}) => {
+        this.setState({languageIndex: value});
     };
 
     handleChangeStartingDate = date => {
@@ -96,7 +105,7 @@ class ContestAddingForm extends Component {
     };
 
     render() {
-        const {name, groups, sets, startingDate, endingDate} = this.state;
+        const {name, groups, sets, startingDate, endingDate, languageIndex} = this.state;
         const GroupList = getList(GroupItemWithCheckBox, groups);
         const SetList = getList(SetItemWithCheckBox, sets);
 
@@ -137,6 +146,13 @@ class ContestAddingForm extends Component {
                         <SetList handleChecked={this.handleCheckedSets}/>
                     </div>
                 </div>
+                <select onChange={this.handleChangeLanguage} defaultValue={languageIndex}>
+                    {
+                        LANGUAGES.map((lang, i) => (
+                            <option key={i} value={i} label={lang}/>
+                        ))
+                    }
+                </select>
                 <div className={'dialog__button-panel'}>
                     <button className={'button'} onClick={this.add}>Add</button>
                     <button className={'button'} onClick={this.props.close}>Cancel</button>

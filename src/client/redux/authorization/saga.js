@@ -14,12 +14,12 @@ export default function* authorizationSaga() {
 function* signInSaga(action) {
     const {email, password} = action.payload;
     const {user, errorMessage}  = yield call(signIn, email, password);
-console.log(errorMessage)
+
     if (user) {
-        toastr.success('Title', 'Message')
         yield put(actions.signInSuccess(user));
     } else {
         yield put(actions.signInFailure({errorMessage}));
+        toastr.error('Ошибка', errorMessage);
     }
 }
 
@@ -31,6 +31,7 @@ function* signUpSaga(action) {
         yield put(actions.signUpSuccess());
     } else {
         yield put(actions.signUpFailure({errorMessage}));
+        toastr.error('Ошибка', errorMessage);
     }
 }
 

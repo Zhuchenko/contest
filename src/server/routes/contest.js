@@ -1,6 +1,5 @@
 import express from 'express'
 import schedule from 'node-schedule'
-import flatten from 'lodash/flatten'
 import auth from '../config/auth'
 import * as db from '../mongoose/DatabaseHandler'
 
@@ -98,7 +97,7 @@ router.get('/creating/groups', auth.required, async (req, res) => {
         } else {
             return res.status(403).end();
         }
-        return res.json({groups});
+        return res.status(200).json({groups});
     } catch (error) {
         return res.status(500).json({error});
     }
@@ -175,16 +174,26 @@ router.get('/:contestId', auth.required, async (req, res) => {
             const groups = await Promise.all(
                 contest.groups.map(async groupId => {
                     const {id, name, users} = await db.getGroupById(groupId);
-                    const usersFullInfo = await Promise.all(users.map(async usersId => {
-                        return await db.getUserById(usersId);
+                    const usersFullInfo = await Promise.all(users.map(async userId => {
+                        return await db.getUserById(userId);
                     }));
                     return {id, name, users: usersFullInfo};
                 })
             );
 
+            const sets = await Promise.all(
+                contest.sets.map(async setId => {
+                    const {id, name, problems} = await db.getSetById(setId);
+                    const problemsFullInfo = await Promise.all(problems.map(async problemId => {
+                        return await db.getProblemById(problemId);
+                    }));
+                    return {id, name, problems: problemsFullInfo};
+                })
+            );
+
             //TODO: add rights to problem list
 
-            return res.json({status, participants: groups, isParticipant, problems: contest.problems})
+            return res.json({status, participants: groups, isParticipant, sets})
         } else {
             return res.status(403).end();
         }
@@ -218,9 +227,9 @@ router.get('/:contestId/problems/:problemId', auth.required, async (req, res) =>
 
         const canView = rights.contest.view || id === contest.authorId || isParticipant || hasReadRight || hasWriteRight;
         if (canView) {
-            const problem = await db.getProblemByIdInContest(contestId, problemId);
+            const problem = await db.getProblemById(problemId);
 
-            return res.json({problem, isParticipant})
+            return res.status(200).json({problem, isParticipant});
         } else {
             return res.status(403).end();
         }
@@ -241,16 +250,6 @@ router.post('/', auth.required, async (req, res) => {
 
     try {
         if (rights.contest.add) {
-            const problemIds = flatten(await Promise.all(
-                contest.sets.map(async setId => {
-                    const set = await db.getSetById(setId);
-                    return set.problems
-                })));
-            const problems = await Promise.all(
-                problemIds.map(async problemId => {
-                    return db.getProblemByIdForContest(problemId);
-                }));
-
             const start = new Date(contest.startingDate);
             const startingDate = new Date(start.getFullYear(), start.getMonth(), start.getDate(), 0, 0, 0, 0);
 
@@ -265,8 +264,7 @@ router.post('/', auth.required, async (req, res) => {
                 isActive: false,
                 isFinished: false,
                 sharedReadRights: [],
-                sharedWriteRights: [],
-                problems
+                sharedWriteRights: []
             };
             const contestId = await db.addContest(parsedContest);
 
