@@ -178,6 +178,10 @@ export const getParcelById = async (id) => {
     return removeUnderscore(await parcel.findOne({_id: id}));
 };
 
+export const getParcel = async (query) => {
+    return removeUnderscore(await parcel.findOne(query));
+};
+
 export const getAllParcels = async () => {
     return removeUnderscoreFromArray(await parcel.find());
 };
@@ -301,8 +305,8 @@ export const getSolutionById = async (id) => {
     return removeUnderscore(await solution.findOne({_id: id}));
 };
 
-export const getSolutionByOptions = async ({authorId, contest, problem}) => {
-    return removeUnderscore(await solution.findOne({authorId, problem, contest}));
+export const getSolution = async (query) => {
+    return removeUnderscore(await solution.findOne(query));
 };
 
 export const getAllSolutions = async () => {

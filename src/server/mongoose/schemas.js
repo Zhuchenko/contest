@@ -205,15 +205,9 @@ export const ParcelSchema = new Schema({
         type: String,
         required: true
     },
-    options: {
-        language: {
-            type: String,
-            required: true
-        },
-        compiler: {
-            type: String,
-            required: true
-        }
+    language: {
+        type: String,
+        required: true
     },
     code: {
         type: Buffer,
@@ -269,11 +263,11 @@ export const TestResultSchema = new Schema({
         },
         time: {
             type: Number,
-            //required: true
+            required: true
         },
         memory: {
             type: Number,
-            //required: true
+            required: true
         }
     }]
 });

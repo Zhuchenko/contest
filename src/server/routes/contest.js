@@ -1,5 +1,6 @@
 import express from 'express'
 import schedule from 'node-schedule'
+import flatten from 'lodash/flatten'
 import auth from '../config/auth'
 import * as db from '../mongoose/DatabaseHandler'
 
@@ -171,29 +172,45 @@ router.get('/:contestId', auth.required, async (req, res) => {
                 status = 'is finished';
             }
 
-            const groups = await Promise.all(
+            const users = flatten(await Promise.all(
                 contest.groups.map(async groupId => {
-                    const {id, name, users} = await db.getGroupById(groupId);
-                    const usersFullInfo = await Promise.all(users.map(async userId => {
+                    const group = await db.getGroupById(groupId);
+                    return await Promise.all(group.users.map(async userId => {
                         return await db.getUserById(userId);
                     }));
-                    return {id, name, users: usersFullInfo};
                 })
-            );
+            ));
 
-            const sets = await Promise.all(
+            const problems = flatten(await Promise.all(
                 contest.sets.map(async setId => {
-                    const {id, name, problems} = await db.getSetById(setId);
-                    const problemsFullInfo = await Promise.all(problems.map(async problemId => {
+                    const set = await db.getSetById(setId);
+                    return await Promise.all(set.problems.map(async problemId => {
                         return await db.getProblemById(problemId);
                     }));
-                    return {id, name, problems: problemsFullInfo};
                 })
-            );
+            ));
 
             //TODO: add rights to problem list
 
-            return res.json({status, participants: groups, isParticipant, sets})
+            let table = [];
+
+            for (let userIndex = 0; userIndex < users.length; userIndex++){
+                for (let problemIndex = 0; problemIndex < problems.length; problemIndex++){
+                    let result;
+                    try {
+                        const query = {contestId, problemId: problems[problemIndex].id, authorId: users[userIndex].id};
+                        const parcel = await db.getParcel(query);
+                        const {tests} = await db.getTestResultsByParcel(parcel.id);
+                        result = tests[tests.length - 1];
+                    }
+                    catch(e){
+                        result = {shortening: '-', message: 'Еще не было решений'};
+                    }
+                    table[users[userIndex]][problems[problemIndex]] = result;
+                }
+            }
+
+            return res.status(200).json({status, table, users, problems})
         } else {
             return res.status(403).end();
         }
