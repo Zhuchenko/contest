@@ -115,12 +115,13 @@ router.post('/', auth.required, async (req, res) => {
                 tests.push({
                     input: files['input' + i].data,
                     output: files['output' + i].data,
-                    description: descriptions[i]
                 })
             }
+
             problem.tests = tests;
             problem.authorId = id;
             problem.checker = files.checker.data;
+            problem.generator = files.generator.data;
             problem.sharedReadRights = [];
             problem.sharedWriteRights = [];
 

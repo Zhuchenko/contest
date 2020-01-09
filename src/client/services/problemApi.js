@@ -68,7 +68,7 @@ export const editProblem = (id, problem) => {
         })
 };
 
-export const addProblem = ({problem, checker, tests}) => {
+export const addProblem = ({problem, checker, generator, tests}) => {
     const headers = setAuthToken({});
 
     const formData = new FormData();
@@ -79,6 +79,7 @@ export const addProblem = ({problem, checker, tests}) => {
         descriptions[i] = tests[i].description;
     }
     formData.append('checker', checker);
+    formData.append('generator', generator);
     formData.append('descriptions', JSON.stringify(descriptions));
     formData.append('problem', JSON.stringify(problem));
 

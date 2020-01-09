@@ -153,6 +153,7 @@ router.get('/:contestId', auth.required, async (req, res) => {
         return res.status(400).json({error});
     }
 
+    console.log('here 0')
 
     try {
         const isParticipant = await db.isParticipantInTheContest(id, contestId);
@@ -161,6 +162,8 @@ router.get('/:contestId', auth.required, async (req, res) => {
 
         const canView = rights.contest.view || id === contest.authorId || isParticipant || hasReadRight || hasWriteRight;
         if (canView) {
+
+            console.log('here first')
             let status = '';
             if (!contest.isFinished) {
                 if (!contest.isActive) {
@@ -172,6 +175,8 @@ router.get('/:contestId', auth.required, async (req, res) => {
                 status = 'is finished';
             }
 
+            console.log('status')
+            console.log(status)
             const users = flatten(await Promise.all(
                 contest.groups.map(async groupId => {
                     const group = await db.getGroupById(groupId);
@@ -181,6 +186,8 @@ router.get('/:contestId', auth.required, async (req, res) => {
                 })
             ));
 
+            console.log('users')
+            console.log(users)
             const problems = flatten(await Promise.all(
                 contest.sets.map(async setId => {
                     const set = await db.getSetById(setId);
@@ -190,6 +197,8 @@ router.get('/:contestId', auth.required, async (req, res) => {
                 })
             ));
 
+            console.log('problems')
+            console.log(problems)
             //TODO: add rights to problem list
 
             let table = [];
@@ -210,6 +219,11 @@ router.get('/:contestId', auth.required, async (req, res) => {
                 }
             }
 
+
+            console.log('table')
+            console.log(table)
+
+console.log('here last')
             return res.status(200).json({status, table, users, problems})
         } else {
             return res.status(403).end();

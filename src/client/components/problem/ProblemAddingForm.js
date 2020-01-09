@@ -17,6 +17,7 @@ class ProblemAddingForm extends Component {
             time: 0,
             memory: 0,
             checker: '',
+            generator: '',
             tests: [],
             testInput: '',
             testOutput: '',
@@ -25,9 +26,9 @@ class ProblemAddingForm extends Component {
     }
 
     add = () => {
-        const {name, text, time, memory, checker, tests} = this.state;
+        const {name, text, time, memory, checker, generator, tests} = this.state;
         const {addProblem, close} = this.props;
-        addProblem({problem: {name, text, limitation: {time, memory}}, checker, tests});
+        addProblem({problem: {name, text, limitation: {time, memory}}, checker, generator, tests});
         close();
     };
 
@@ -55,6 +56,16 @@ class ProblemAddingForm extends Component {
 
     handleRemoveChecker = () => {
         this.setState({checker: ''});
+    };
+
+    handleUploadGenerator = (files) => {
+        if (files && files[0]) {
+            this.setState({generator: files[0]});
+        }
+    };
+
+    handleRemoveGenerator = () => {
+        this.setState({generator: ''});
     };
 
     handleUploadTestInput = (files) => {
@@ -107,7 +118,7 @@ class ProblemAddingForm extends Component {
     };
 
     render() {
-        const {name, text, time, memory, checker, tests, testInput, testOutput, testDescription} = this.state;
+        const {name, text, time, memory, checker, generator, tests, testInput, testOutput, testDescription} = this.state;
         const {isCreating, error, closeProblemCreatingDialog} = this.props;
 
         return <div className={'dialog scrollbar'}>
@@ -141,6 +152,23 @@ class ProblemAddingForm extends Component {
                     <>
                         <span>{checker.name}</span>
                         <button className={'button button_borderless button_icon'} onClick={this.handleRemoveChecker}>
+                            <Icon type={'close'} className={'icon'}/>
+                        </button>
+                    </>
+                }
+            </div>
+            <div className={'dialog__line'}>
+                <span>Generator: </span>
+                <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadGenerator}>
+                    <button className={'button button_borderless button_icon'}>
+                        <Icon type={'file'} className={'icon'}/>
+                    </button>
+                </FileUploader>
+                {
+                    generator &&
+                    <>
+                        <span>{generator.name}</span>
+                        <button className={'button button_borderless button_icon'} onClick={this.handleRemoveGenerator}>
                             <Icon type={'close'} className={'icon'}/>
                         </button>
                     </>
@@ -211,7 +239,6 @@ class ProblemAddingForm extends Component {
 }
 
 ProblemAddingForm.propTypes = {
-    close: PropTypes.func.isRequired,
     addProblem: PropTypes.func.isRequired,
     closeProblemCreatingDialog: PropTypes.func.isRequired,
 };

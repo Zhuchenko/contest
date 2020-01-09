@@ -106,6 +106,10 @@ export const ProblemSchema = new Schema({
         type: String,
         required: true
     },
+    generator: {
+        type: Buffer,
+        required: true
+    },
     checker: {
         type: Buffer,
         required: true

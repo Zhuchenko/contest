@@ -12,7 +12,7 @@ const problemReducer = handleActions(
     {
         [actions.init]: () => initialState,
 
-        [actions.getProblemsSuccess]: (state, {payload}) => ({ problems: payload.problems }),
+        [actions.getProblemsSuccess]: (state, {payload}) => ({...state, problems: payload.problems}),
 
         [actions.openProblemCreatingDialog]: (state) => ({
             ...state,
@@ -35,7 +35,7 @@ const problemReducer = handleActions(
             error: ''
         }),
 
-        [actions.addProblemSuccess]:(state) => ({
+        [actions.addProblemSuccess]: (state) => ({
             ...state,
             creatingDialogIsOpen: false,
             isCreating: false,
