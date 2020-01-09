@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {getContest} from '../../services/contestApi'
+import getTranslations from '../../utilities/getTranslations'
 
 class Contest extends Component {
     constructor(props) {
@@ -26,7 +27,7 @@ class Contest extends Component {
 
         return (
             <div className={'wrapper'}>
-                <div className={'wrapper__header'}>{status}</div>
+                <div className={'wrapper__header'}>{getTranslations({text: status, format: 'lowercase'})}</div>
                 <table>
                     <thead>
                     <tr>

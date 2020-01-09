@@ -6,6 +6,7 @@ import * as actions from '../../redux/setOfProblems/actions'
 import getList from '../common/List'
 import ProblemItemWithCheckBox from './ProblemItemWithCheckBox'
 import {getSet, getProblemsForSetCreating} from '../../services/setOfProblemsApi'
+import getTranslations from '../../utilities/getTranslations'
 
 class SetEditingForm extends Component {
     constructor(props) {
@@ -71,14 +72,14 @@ class SetEditingForm extends Component {
         return (
             <div className={'dialog'}>
                 <CustomInput key='name'
-                       placeholder="Name"
+                       placeholder={getTranslations({text: 'name'})}
                        value={name}
                        onChange={this.handleChangedName}
                        handleKeyPress={this.handleKeyPress}/>
                 <List handleChecked={this.handleChecked}/>
                 <div className={'dialog__button-panel'}>
-                    <button className={'button'} onClick={this.edit}>Save</button>
-                    <button className={'button'} onClick={this.props.close}>Cancel</button>
+                    <button className={'button'} onClick={this.edit}>{getTranslations({text: 'save'})}</button>
+                    <button className={'button'} onClick={this.props.close}>{getTranslations({text: 'cancel'})}</button>
                 </div>
             </div>
         )

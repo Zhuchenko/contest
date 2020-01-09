@@ -6,10 +6,10 @@ import * as actions from '../../redux/contest/actions'
 import DatePicker from 'react-datepicker'
 import ItemWithCheckBox from '../common/ItemWithCheckBox'
 import {getGroupsForContestCreating, getSetsForContestCreating} from '../../services/contestApi'
+import getList from '../common/List'
+import getTranslations from '../../utilities/getTranslations'
 
 import 'react-datepicker/dist/react-datepicker.css'
-import getList from '../common/List'
-import roles from "../user/roles";
 
 const GroupItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/groups/'}/>;
 const SetItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/sets/'}/>;
@@ -113,7 +113,7 @@ class ContestAddingForm extends Component {
             <div className={'dialog scrollbar'}>
                 <div className={'dialog__line'}>
                     <CustomInput key='name'
-                                 placeholder="Name"
+                                 placeholder={getTranslations({text: 'name'})}
                                  value={name}
                                  onChange={this.handleChangedName}
                                  handleKeyPress={this.handleKeyPress}/>
@@ -136,13 +136,13 @@ class ContestAddingForm extends Component {
                 </div>
                 <div className={'dialog__line'}>
                     <div className={'dialog__line__list'}>
-                        <span className={'dialog__line__label'}>Groups: </span>
+                        <span className={'dialog__line__label'}>{getTranslations({text: 'groups'})}: </span>
                         <GroupList handleChecked={this.handleCheckedGroups}/>
                     </div>
                 </div>
                 <div className={'dialog__line'}>
                     <div className={'dialog__line__list'}>
-                        <span className={'dialog__line__label'}>Sets: </span>
+                        <span className={'dialog__line__label'}>{getTranslations({text: 'sets'})}: </span>
                         <SetList handleChecked={this.handleCheckedSets}/>
                     </div>
                 </div>
@@ -154,8 +154,8 @@ class ContestAddingForm extends Component {
                     }
                 </select>
                 <div className={'dialog__button-panel'}>
-                    <button className={'button'} onClick={this.add}>Add</button>
-                    <button className={'button'} onClick={this.props.close}>Cancel</button>
+                    <button className={'button'} onClick={this.add}>{getTranslations({text: 'add'})}</button>
+                    <button className={'button'} onClick={this.props.close}>{getTranslations({text: 'cancel'})}</button>
                 </div>
             </div>
         )

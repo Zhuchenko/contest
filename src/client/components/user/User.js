@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {getUser} from '../../services/userApi'
 import * as actions from '../../redux/application/actions'
-import {connect} from "react-redux";
+import {connect} from 'react-redux'
+import getTranslations from '../../utilities/getTranslations'
 
 
 //import './css/user.css';
@@ -33,19 +34,19 @@ class User extends Component {
         return (
             <div className={'wrapper'}>
                 <div className={'wrapper__line'}>
-                    <label>Name: </label>
+                    <label>{getTranslations({text: 'name'})}:&nbsp;</label>
                     <span>{name}</span>
                 </div>
                 <div className={'wrapper__line'}>
-                    <label>Last Name: </label>
+                    <label>{getTranslations({text: 'last name'})}:&nbsp;</label>
                     <span>{lastName}</span>
                 </div>
                 <div className={'wrapper__line'}>
-                    <label>Email: </label>
+                    <label>Email:&nbsp;</label>
                     <span>{email}</span>
                 </div>
                 <div className={'wrapper__line'}>
-                    <label>Role: </label>
+                    <label>{getTranslations({text: 'role'})}:&nbsp;</label>
                     <span>{role}</span>
                 </div>
             </div>

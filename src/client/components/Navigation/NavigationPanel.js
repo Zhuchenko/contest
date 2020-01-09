@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
+import getTranslations from '../../utilities/getTranslations'
 
 import './css/navPanel.css'
 import getClassNames from "../../utilities/getClassnames";
@@ -30,11 +31,11 @@ class NavigationPanel extends Component {
         const {isAuthorized, canAddUser, canAddProblems, canAddSet} = this.props;
 
         return (isAuthorized ? (<div className={'nav-panel'}>
-                {canAddProblems ? <Link id={0} className={this.getLinkClassName(0)} to={'/problems/'} onClick={this.handleClick}>{'Problems'}</Link> : null}
-                {canAddSet ? <Link id={1} className={this.getLinkClassName(1)} to={'/sets/'} onClick={this.handleClick}>{'Sets'}</Link> : null}
-                <Link id={2} className={this.getLinkClassName(2)} to={'/groups/'} onClick={this.handleClick}>{'Groups'}</Link>
-                <Link id={3} className={this.getLinkClassName(3)} to={'/contests/'} onClick={this.handleClick}>{'Contests'}</Link>
-                {canAddUser ? <Link id={4} className={this.getLinkClassName(4)} to={'/users/'} onClick={this.handleClick}>{'Users'}</Link> : null}
+                {canAddProblems ? <Link id={0} className={this.getLinkClassName(0)} to={'/problems/'} onClick={this.handleClick}>{getTranslations({text: 'problems'})}</Link> : null}
+                {canAddSet ? <Link id={1} className={this.getLinkClassName(1)} to={'/sets/'} onClick={this.handleClick}>{getTranslations({text: 'sets'})}</Link> : null}
+                <Link id={2} className={this.getLinkClassName(2)} to={'/groups/'} onClick={this.handleClick}>{getTranslations({text: 'groups'})}</Link>
+                <Link id={3} className={this.getLinkClassName(3)} to={'/contests/'} onClick={this.handleClick}>{getTranslations({text: 'contests'})}</Link>
+                {canAddUser ? <Link id={4} className={this.getLinkClassName(4)} to={'/users/'} onClick={this.handleClick}>{getTranslations({text: 'users'})}</Link> : null}
             </div>) : null
 
         )

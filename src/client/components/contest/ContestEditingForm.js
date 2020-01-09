@@ -9,6 +9,7 @@
 //
 // //import './css/user.css';
 //
+////TODO: add translations
 // class ContestEditingForm extends Component {
 //     constructor(props) {
 //         super(props);

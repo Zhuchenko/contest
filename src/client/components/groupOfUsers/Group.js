@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {getGroup} from '../../services/groupOfUsersApi'
 import getList from "../common/List";
 import {Link} from "react-router-dom";
+import getTranslations from '../../utilities/getTranslations'
 
 //import './css/user.css';
 
@@ -33,10 +34,10 @@ class Group extends Component {
             <div className={'wrapper'}>
                 <div className={'wrapper__header'}>{name}</div>
                 <div className={'wrapper__line'}>
-                    <label>{"Number of participants: " + users.length}</label>
+                    <label>{getTranslations({text: 'number of participants'}) + ": " + users.length}</label>
                 </div>
                 <div className={'wrapper__line wrapper__line__list'}>
-                    <label>List of participants: </label>
+                    <label>{getTranslations({text: 'list of participants'})}: </label>
                     <List/>
                 </div>
             </div>

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {getSet} from '../../services/setOfProblemsApi'
 import getList from "../common/List";
 import {Link} from "react-router-dom";
+import getTranslations from '../../utilities/getTranslations'
 
 const ProblemInSet = (problem) => <Link to={'/problems/' + problem.id}>{problem.name}</Link>;
 
@@ -31,10 +32,10 @@ class Set extends Component {
             <div className={'wrapper'}>
                 <div className={'wrapper__header'}>{name}</div>
                 <div className={'wrapper__line'}>
-                    <label>{"Number of problems: " + problems.length}</label>
+                    <label>{getTranslations({text: 'number of problems'}) + ": " + problems.length}</label>
                 </div>
                 <div className={'wrapper__line wrapper__line__list'}>
-                    <label>List of problems: </label>
+                    <label>{getTranslations({text: 'list of problems'})}: </label>
                     <List/>
                 </div>
             </div>

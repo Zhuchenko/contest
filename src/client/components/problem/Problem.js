@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {getProblem, getProblemFromContest, sendParcel} from '../../services/problemApi'
 import FileUploader from 'react-input-files'
+import getTranslations from '../../utilities/getTranslations'
 import marked from 'marked'
 
 class Problem extends Component {
@@ -67,25 +68,25 @@ class Problem extends Component {
                 <div className={'wrapper__header'}>{name}</div>
                 <div dangerouslySetInnerHTML={{ __html:  marked(text)}}/>
                 <div className={'wrapper__line wrapper__line__list'}>
-                    <label>Limitations:</label>
-                    <div>time: {time}</div>
-                    <div>memory: {memory}</div>
+                    <label>{getTranslations({text: 'limitations'})}:</label>
+                    <div>{getTranslations({text: 'time'})}: {time}</div>
+                    <div>{getTranslations({text: 'memory'})}: {memory}</div>
                 </div>
                 {isParticipant ?
                     <div className={'wrapper__buttons-panel'}>
                         <div className={'wrapper__buttons-panel__button-with-text'}>
                             <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadFile}>
-                                <button className={'button'}>Upload</button>
+                                <button className={'button'}>{getTranslations({text: 'upload'})}</button>
                             </FileUploader>
                             {attachedFile ?
                                 <div>{attachedFile.name}</div>
                                 : null}
                         </div>
-                        <button className={'button'} onClick={this.sendSolution}>Send</button>
+                        <button className={'button'} onClick={this.sendSolution}>{getTranslations({text: 'send'})}</button>
                         {results ?
                             results.map((result, index) =>
                                 <div key={index}>
-                                    number: {result.number} {result.shortening}
+                                    {getTranslations({text: 'number'})}: {result.number} {result.shortening}
                                     <br/>
                                     {result.message}
                                 </div>)

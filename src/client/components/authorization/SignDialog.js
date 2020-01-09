@@ -6,18 +6,19 @@ import Popup from '../common/Popup';
 import SignInForm from './SignInForm';
 import SignUpForm from './SignUpForm';
 import TabBar from '../common/TabBar';
+import getTranslations from '../../utilities/getTranslations';
 
 import './css/signDialog.css'
 import './css/appbar__button.css'
 
 const signIn = {
     id: "signIn",
-    text: "Sign in"
+    text: getTranslations({text: "Sign in"})
 };
 
 const signUp = {
     id: "signUp",
-    text: "Sign up"
+    text: getTranslations({text: "Sign up"})
 };
 
 class SignDialog extends Component {

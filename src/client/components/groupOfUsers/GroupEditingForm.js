@@ -6,6 +6,7 @@ import * as actions from "../../redux/groupOfUsers/actions";
 import getList from "../common/List";
 import UserItemWithCheckBox from "./UserItemWithCheckBox";
 import {getGroup, getUsersForGroupCreating} from "../../services/groupOfUsersApi";
+import getTranslations from '../../utilities/getTranslations'
 
 class GroupEditingForm extends Component {
     constructor(props) {
@@ -70,15 +71,15 @@ class GroupEditingForm extends Component {
         return (
             <div className={'dialog'}>
                 <CustomInput key='name'
-                             placeholder="Name"
+                             placeholder={getTranslations({text: 'name'})}
                              value={name}
                              onChange={this.handleChangedName}
                              handleKeyPress={this.handleKeyPress}
                 />
                 <List handleChecked={this.handleChecked}/>
                 <div className={'dialog__button-panel'}>
-                    <button className={'button'} onClick={this.edit}>Save</button>
-                    <button className={'button'} onClick={this.props.close}>Cancel</button>
+                    <button className={'button'} onClick={this.edit}>{getTranslations({text: 'save'})}</button>
+                    <button className={'button'} onClick={this.props.close}>{getTranslations({text: 'cancel'})}</button>
                 </div>
             </div>
         )

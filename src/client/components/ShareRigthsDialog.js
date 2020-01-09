@@ -3,8 +3,10 @@ import PropTypes from 'prop-types'
 import Popup from './common/Popup'
 import {getCoordinators} from '../services/userApi'
 import Icon from './common/Icon'
+import getTranslations from '../utilities/getTranslations'
 import CustomInput from "./common/CustomInput";
 
+//TODO: add translations to rights
 const rights = ["read", "write"];
 
 const getIndex = (key) => key.substring(key.indexOf("_") + 1);
@@ -106,7 +108,7 @@ class SharedRightsDialog extends Component {
                                         <span>{item.user.lastName + ' ' + item.user.name + ' - ' + item.right}</span>
                                         <button className={'button button_borderless button_icon'} key={'right_' + id}
                                                 onClick={this.delete}>
-                                            <Icon type={'close'} className={'icon'}/>
+                                            <Icon type={'delete'} className={'icon'}/>
                                         </button>
                                     </div>)
                                 }
@@ -131,8 +133,8 @@ class SharedRightsDialog extends Component {
                                 </button>
                             </div>
                             <div className={'dialog__button-panel'}>
-                                <button className={'button'} onClick={this.save}>Save</button>
-                                <button className={'button'} onClick={this.close}>Cancel</button>
+                                <button className={'button'} onClick={this.save}>{getTranslations({text: 'save'})}</button>
+                                <button className={'button'} onClick={this.close}>{getTranslations({text: 'cancel'})}</button>
                             </div>
                         </div>
                     </Popup>

@@ -53,7 +53,7 @@ class GroupItem extends Component {
                     canDelete &&
                     <>
                         <button className={'button button_borderless button_icon'} onClick={this.deleteGroup}>
-                            <Icon type={'close'} className={'icon'}/>
+                            <Icon type={'delete'} className={'icon'}/>
                         </button>
                         <SharedRightsDialog {...{sharedReadRights, sharedWriteRights}} edit={this.edit}/>
                     </>
