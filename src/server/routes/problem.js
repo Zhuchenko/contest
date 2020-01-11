@@ -126,7 +126,7 @@ router.post('/', auth.required, async (req, res) => {
                 body: JSON.stringify({
                     generator: Array.from(generator),
                     tests: inputs,
-                    language: problem.languages[0], //TODO
+                    language: problem.language,
                     timeLimit: problem.limitation.time,
                     memoryLimit: problem.limitation.memory,
                 })

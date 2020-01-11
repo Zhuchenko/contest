@@ -10,7 +10,7 @@ const ItemWithCheckBox = ({id, path, name, isSelected, handleChecked}) => {
     return (
         <div>
             <input type="checkbox" id={id} onChange={handleChanged} checked={isSelected}/>
-            <Link to={path + id}>{name}</Link>
+            <span>{name}</span>
         </div>
     )
 };

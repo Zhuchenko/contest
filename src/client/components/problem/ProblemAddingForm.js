@@ -31,6 +31,34 @@ class ProblemAddingForm extends Component {
 
     add = () => {
         const {name, text, time, memory, checker, generator, tests, languageIndex} = this.state;
+        if (!name){
+            toastr.error('Error', 'Enter name');
+            return;
+        }
+        if (!text){
+            toastr.error('Error', 'Enter text');
+            return;
+        }
+        if (time <= 0){
+            toastr.error('Error', 'Time must be greater than 0.');
+            return;
+        }
+        if (memory <= 0){
+            toastr.error('Error', 'Time must be greater than 0.');
+            return;
+        }
+        if (!checker){
+            toastr.error('Error', 'Attach checker');
+            return;
+        }
+        if (!generator){
+            toastr.error('Error', 'Attach generator');
+            return;
+        }
+        if (tests.length === 0){
+            toastr.error('Error', 'The number of tests must be more than 0.');
+            return;
+        }
         const {addProblem} = this.props;
         const language = languageOptions[languageIndex].id;
         addProblem({problem: {name, text, limitation: {time, memory}, language}, checker, generator, tests});
@@ -142,10 +170,10 @@ class ProblemAddingForm extends Component {
             <span className={'dialog__sub-header'}>{getTranslations({text: 'limitations'})}:</span>
             <div className={'dialog__line'}>
                 <span className={'dialog__line__label'}>{getTranslations({text: 'time'})}: </span>
-                <CustomInput type="number" placeholder={getTranslations({text: 'time', format: 'lowercase'})}
+                <CustomInput type="number" min={0} step={10} placeholder={getTranslations({text: 'time', format: 'lowercase'})}
                              onChange={this.handleChangedTime} value={time} handleKeyPress={this.handleKeyPress}/>
                 <span className={'dialog__line__label'}>{getTranslations({text: 'memory'})}: </span>
-                <CustomInput type="number" placeholder={getTranslations({text: 'memory', format: 'lowercase'})}
+                <CustomInput type="number" min={0} step={8}  placeholder={getTranslations({text: 'memory', format: 'lowercase'})}
                              onChange={this.handleChangedMemory} value={memory} handleKeyPress={this.handleKeyPress}/>
             </div>
             <div className={'dialog__line'}>

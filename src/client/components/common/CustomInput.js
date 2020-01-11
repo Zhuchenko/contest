@@ -5,13 +5,13 @@ import getClassNames from '../../utilities/getClassnames'
 import './css/input.css'
 
 const CustomInput = (props) => {
-    const {id, placeholder, onChange, value, type = 'text', isValid = true, errorMessage, handleKeyPress} = props;
+    const {id, placeholder, onChange, value, type = 'text', isValid = true, errorMessage, handleKeyPress, min, max, step} = props;
     const classes = getClassNames({['sign__input']: true, ['sign__input--error']: !isValid});
 
     return (
         <>
             <input
-                {...{id, type, placeholder, onChange, value}}
+                {...{id, type, placeholder, onChange, value, min, max, step}}
                 className={classes}
                 onKeyDown={handleKeyPress}
             />

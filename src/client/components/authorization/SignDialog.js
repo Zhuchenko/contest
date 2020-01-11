@@ -24,7 +24,7 @@ const signUp = {
 class SignDialog extends Component {
     constructor(props) {
         super(props);
-        this.state = {selectedId: -1};
+        this.state = {selectedId: signIn.id};
         this.tabs = [signIn, signUp];
     }
 

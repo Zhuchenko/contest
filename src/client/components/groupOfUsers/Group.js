@@ -4,8 +4,6 @@ import getList from "../common/List";
 import {Link} from "react-router-dom";
 import getTranslations from '../../utilities/getTranslations'
 
-//import './css/user.css';
-
 const UserInGroup = (user) => <Link to={'/users/' + user.id}>{user.lastName + ' ' + user.name}</Link>;
 
 class Group extends Component {

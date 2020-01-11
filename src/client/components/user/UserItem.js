@@ -7,8 +7,6 @@ import UserEditingForm from './UserEditingForm'
 import Popup from "../common/Popup";
 import Icon from "../common/Icon";
 
-//import './css/item.css'
-
 class UserItem extends Component {
     constructor(props) {
         super(props);

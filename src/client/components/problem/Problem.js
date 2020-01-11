@@ -4,6 +4,7 @@ import FileUploader from 'react-input-files'
 import getTranslations from '../../utilities/getTranslations'
 import marked from 'marked'
 import languageOptions from './languages'
+import {toastr} from "react-redux-toastr";
 
 class Problem extends Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class Problem extends Component {
                 time: 0,
                 memory: 0
             },
-            language: '',
+            languageExt: '',
             selectedId: 0,
             attachedFile: '',
             results: '',
@@ -29,11 +30,12 @@ class Problem extends Component {
         if (contestId) {
             getProblemFromContest(contestId, problemId)
                 .then(({problem: {name, text, limitation, language}, isParticipant}) => {
+                    console.log(language)
                     this.setState({
                         name,
                         text,
                         limitation,
-                        language: languageOptions.find(l => l.id === language),
+                        languageExt: languageOptions.find(l => l.id === language).ext,
                         isParticipant
                     });
                 })
@@ -46,8 +48,12 @@ class Problem extends Component {
     }
 
     handleUploadFile = (files) => {
-        if (files && files[0]) {
-            this.setState({attachedFile: files[0], results: ''});
+        if (files && files[0] && files[0].size > 0) {
+            if (files[0].size > 0) {
+                this.setState({attachedFile: files[0], results: ''});
+            } else {
+                toastr.error('Error', 'Size of the file must be greater then 0.');
+            }
         }
     };
 
@@ -68,7 +74,7 @@ class Problem extends Component {
     };
 
     render() {
-        const {name, text, limitation: {time, memory}, language, attachedFile, results, isParticipant} = this.state;
+        const {name, text, limitation: {time, memory}, languageExt, attachedFile, results, isParticipant} = this.state;
 
         return (
             <div className={'wrapper'}>
@@ -82,7 +88,7 @@ class Problem extends Component {
                 {isParticipant ?
                     <div className={'wrapper__buttons-panel'}>
                         <div className={'wrapper__buttons-panel__button-with-text'}>
-                            <FileUploader accept={language.ext} onChange={this.handleUploadFile}>
+                            <FileUploader accept={languageExt} onChange={this.handleUploadFile}>
                                 <button className={'button'}>{getTranslations({text: 'upload'})}</button>
                             </FileUploader>
                             {attachedFile ?

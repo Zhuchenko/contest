@@ -4,7 +4,6 @@ import Popup from './common/Popup'
 import {getCoordinators} from '../services/userApi'
 import Icon from './common/Icon'
 import getTranslations from '../utilities/getTranslations'
-import CustomInput from "./common/CustomInput";
 
 //TODO: add translations to rights
 const rights = ["read", "write"];

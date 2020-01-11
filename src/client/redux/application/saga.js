@@ -18,11 +18,9 @@ function* initSaga() {
         }
         else{
             yield put(actions.initSuccessNotAuthorized());
-            toastr.warning('Внимание', "Вы не авторизованы");
         }
     }
     catch (error) {
         yield put(actions.initFailure({error}));
-        toastr.warning('Внимание', "Вы не авторизованы");
     }
 }
