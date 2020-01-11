@@ -14,16 +14,21 @@ import 'react-datepicker/dist/react-datepicker.css'
 const GroupItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/groups/'}/>;
 const SetItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/sets/'}/>;
 
+const STARTING_DATE = new Date();
+
 
 class ContestAddingForm extends Component {
     constructor(props) {
         super(props);
+
+        STARTING_DATE.setDate(STARTING_DATE.getDate() + 1);
+
         this.state = {
             name: '',
             groups: [],
             sets: [],
-            startingDate: new Date(),
-            endingDate: new Date()
+            startingDate: STARTING_DATE,
+            endingDate: STARTING_DATE
         }
     }
 
@@ -116,7 +121,7 @@ class ContestAddingForm extends Component {
                         dateFormat={"dd/MM/yyyy"}
                         selected={startingDate}
                         onChange={this.handleChangeStartingDate}
-                        minDate={new Date()}
+                        minDate={STARTING_DATE}
                     />
                 </div>
                 <div className={'dialog__line'}>
