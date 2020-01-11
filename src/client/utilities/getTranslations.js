@@ -113,9 +113,9 @@ const translations = {
         'english': 'limitations',
         'russian': 'ограничения'
     },
-    'language': {
-        'english': 'language',
-        'russian': 'язык'
+    'languages': {
+        'english': 'languages',
+        'russian': 'языки'
     },
     'number': {
         'english': 'number',
@@ -140,14 +140,6 @@ const translations = {
     'text': {
         'english': 'text',
         'russian': 'текст'
-    },
-    'options': {
-        'english': 'options',
-        'russian': 'опции'
-    },
-    'compiler': {
-        'english': 'compiler',
-        'russian': 'компилятор'
     },
     'checker': {
         'english': 'checker',

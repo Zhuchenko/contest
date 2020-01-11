@@ -107,16 +107,38 @@ router.post('/', auth.required, async (req, res) => {
 
     try {
         if (rights.problem.add) {
+            const generator = files.generator.data;
             let problem = JSON.parse(body.problem);
             const descriptions = JSON.parse(body.descriptions);
 
-            let tests = [];
+            let inputs = [];
             for (let i = 0, l = descriptions.length; i < l; i++) {
-                tests.push({
-                    input: files['input' + i].data,
-                    output: files['output' + i].data,
-                })
+                inputs.push({
+                    input: files['test' + i].data,
+                    number: i
+                });
             }
+
+            const outputs = await fetch('http://localhost:51786/api/generate_tests', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        generator: Array.from(generator),
+                        tests: inputs,
+                        language: problem.language[0],
+                        timeLimit: problem.limitations.time,
+                        memoryLimit: problem.limitations.memory,
+                    })
+                }).then(response => {
+                    if (response.status === 200) {
+                        return response.json();
+                    } else {
+                        throw response.status
+                    }
+                }).then(response => {
+                    console.log(response);
+                })
+            ;
 
             problem.tests = tests;
             problem.authorId = id;

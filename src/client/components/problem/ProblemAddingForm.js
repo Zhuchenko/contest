@@ -1,11 +1,17 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import {toastr} from "react-redux-toastr";
 import CustomInput from '../common/CustomInput'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/problem/actions'
 import FileUploader from 'react-input-files'
 import Icon from '../common/Icon'
 import getTranslations from '../../utilities/getTranslations'
+
+const ALL_LANGUAGES = {id: 'all', text: 'All'};
+const CSHARP = {id: 'csharp', text: 'C#'};
+const CPP = {id: 'cpp', text: 'C++'};
+const LANGUAGE_OPTIONS = [ALL_LANGUAGES, CSHARP, CPP];
 
 const getIndex = (key) => key.substring(key.indexOf("_") + 1);
 
@@ -18,6 +24,7 @@ class ProblemAddingForm extends Component {
             time: 0,
             memory: 0,
             checker: '',
+            languageIndex: 0,
             generator: '',
             tests: [],
             testInput: '',
@@ -27,10 +34,11 @@ class ProblemAddingForm extends Component {
     }
 
     add = () => {
-        const {name, text, time, memory, checker, generator, tests} = this.state;
-        const {addProblem, close} = this.props;
-        addProblem({problem: {name, text, limitation: {time, memory}}, checker, generator, tests});
-        close();
+        const {name, text, time, memory, checker, generator, tests, languageIndex} = this.state;
+        const {addProblem} = this.props;
+        const selectedLanguage = LANGUAGE_OPTIONS[languageIndex].id;
+        const languages = selectedLanguage !== ALL_LANGUAGES.id ? [selectedLanguage] : [CSHARP.id, CPP.id];
+        addProblem({problem: {name, text, limitation: {time, memory}, languages}, checker, generator, tests});
     };
 
     handleChangedName = ({target: {value}}) => {
@@ -49,9 +57,17 @@ class ProblemAddingForm extends Component {
         this.setState({memory: value});
     };
 
+    handleChangeLanguage = ({target: {value}}) => {
+        this.setState({languageIndex: value});
+    };
+
     handleUploadChecker = (files) => {
         if (files && files[0]) {
-            this.setState({checker: files[0]});
+            if (files[0].size > 0) {
+                this.setState({checker: files[0]});
+            } else {
+                toastr.error('Error', 'Size of the file must be greater then 0.');
+            }
         }
     };
 
@@ -60,8 +76,12 @@ class ProblemAddingForm extends Component {
     };
 
     handleUploadGenerator = (files) => {
-        if (files && files[0]) {
-            this.setState({generator: files[0]});
+        if (files && files[0] && files[0].size > 0) {
+            if (files[0].size > 0) {
+                this.setState({generator: files[0]});
+            } else {
+                toastr.error('Error', 'Size of the file must be greater then 0.');
+            }
         }
     };
 
@@ -69,36 +89,28 @@ class ProblemAddingForm extends Component {
         this.setState({generator: ''});
     };
 
-    handleUploadTestInput = (files) => {
-        if (files && files[0]) {
-            this.setState({testInput: files[0]});
+    handleUploadTests = (files) => {
+        let {tests} = this.state;
+
+        if (files) {
+            for (let i = 0; i < files.length; i++) {
+                if (files[i]) {
+                    if (files[i].size > 0) {
+                        tests.push({file: files[i], description: ''});
+                    } else {
+                        toastr.warning('Warning', 'Size of `' + files[i].name + '`  was be equal  0. It was ignored.');
+                    }
+                }
+            }
+            this.setState({tests});
         }
     };
 
-    handleRemoveTestInput = () => {
-        this.setState({testInput: ''});
-    };
-
-    handleUploadTestOutput = (files) => {
-        if (files && files[0]) {
-            this.setState({testOutput: files[0]});
-        }
-    };
-
-    handleRemoveTestOutput = () => {
-        this.setState({testOutput: ''});
-    };
-
-    handleChangedTestDescription = ({target: {value}}) => {
-        this.setState({testDescription: value});
-    };
-
-    addTest = () => {
-        const {tests, testInput, testOutput, testDescription} = this.state;
-        this.setState({
-            tests: [...tests, {input: testInput, output: testOutput, description: testDescription}],
-            testInput: '', testOutput: '', testDescription: ''
-        });
+    handleChangedTestDescription = ({target: {id, value}}) => {
+        const i = getIndex(id);
+        let {tests} = this.state;
+        tests[i].description = value;
+        this.setState({tests});
     };
 
     deleteTest = ({currentTarget: {id}}) => {
@@ -119,15 +131,15 @@ class ProblemAddingForm extends Component {
     };
 
     render() {
-        const {name, text, time, memory, checker, generator, tests, testInput, testOutput, testDescription} = this.state;
+        const {name, text, time, memory, checker, generator, languageIndex, tests, testInput, testOutput, testDescription} = this.state;
         const {isCreating, error, closeProblemCreatingDialog} = this.props;
 
         return <div className={'dialog scrollbar'}>
             <div>{error}</div>
             <CustomInput placeholder={getTranslations({text: 'name'})}
-                   value={name}
-                   onChange={this.handleChangedName}
-                   handleKeyPress={this.handleKeyPress}/>
+                         value={name}
+                         onChange={this.handleChangedName}
+                         handleKeyPress={this.handleKeyPress}/>
             <div className={'dialog__sub-header'}>{getTranslations({text: 'text'})}</div>
             <div className={'dialog__line'}>
                 <textarea onChange={this.handleChangedText} value={text} rows="10" cols="75"/>
@@ -140,6 +152,16 @@ class ProblemAddingForm extends Component {
                 <span className={'dialog__line__label'}>{getTranslations({text: 'memory'})}: </span>
                 <CustomInput type="number" placeholder={getTranslations({text: 'memory', format: 'lowercase'})}
                              onChange={this.handleChangedMemory} value={memory} handleKeyPress={this.handleKeyPress}/>
+            </div>
+            <div className={'dialog__line'}>
+                <span className={'dialog__line__label'}>{getTranslations({text: 'languages'})}: </span>
+                <select onChange={this.handleChangeLanguage} value={languageIndex}>
+                    {
+                        LANGUAGE_OPTIONS.map((lang, i) => (
+                            <option key={lang.id} value={i} label={lang.text}/>
+                        ))
+                    }
+                </select>
             </div>
             <div className={'dialog__line'}>
                 <span className={'dialog__line__label'}>{getTranslations({text: 'checker'})}: </span>
@@ -168,26 +190,32 @@ class ProblemAddingForm extends Component {
                 {
                     generator &&
                     <>
-                        <span>{generator.name}</span>
+                        <span className={'dialog__line__label'}>{generator.name}</span>
                         <button className={'button button_borderless button_icon'} onClick={this.handleRemoveGenerator}>
-                            <Icon type={'close'} className={'icon'}/>
+                            <Icon type={'delete'} className={'icon'}/>
                         </button>
                     </>
                 }
             </div>
             <div className={'dialog__sub-header'}>{getTranslations({text: 'tests'})}:</div>
             {
-                //TODO: add check for not loaded files ('undefined-undefined' case)
                 tests.length > 0 &&
-                tests.map((item, id) => <div className={'dialog__line'} key={id}>
-                    <span>{item.description + ' ( ' + item.input.name + ' - ' + item.output.name + ' )'}</span>
-                    <button className={'button button_borderless button_icon'} key={'test_' + id} onClick={this.deleteTest}>
-                        <Icon type={'delete'} className={'icon'}/>
-                    </button>
-                </div>)
+                tests.map((item, id) =>
+                    <div className={'dialog__line'} key={id}>
+                        <span>{(id + 1) + '. ' + item.file.name}</span>
+                        <CustomInput id={'test-description_' + id}
+                                     placeholder={getTranslations({text: 'test description', format: 'lowercase'})}
+                                     value={item.description}
+                                     onChange={this.handleChangedTestDescription}
+                                     handleKeyPress={this.handleKeyPress}/>
+                        <button id={'test_' + id} className={'button button_borderless button_icon'}
+                                onClick={this.deleteTest}>
+                            <Icon type={'delete'} className={'icon'}/>
+                        </button>
+                    </div>)
             }
             <div className={'dialog__line'}>
-                <FileUploader accept={'.txt'} onChange={this.handleUploadTestInput}>
+                <FileUploader multiple={true} accept={'.txt'} onChange={this.handleUploadTests}>
                     <div className={'dialog__line'}>
                         <span className={'dialog__line__label'}>{getTranslations({text: 'input'})}: </span>
                         <button className={'button button_borderless button_icon'}>
@@ -195,47 +223,12 @@ class ProblemAddingForm extends Component {
                         </button>
                     </div>
                 </FileUploader>
-                {
-                    testInput &&
-                    <>
-                        <span className={'dialog__line__label'}>{testInput.name}</span>
-                        <button className={'button button_borderless button_icon'} onClick={this.handleRemoveTestInput}>
-                            <Icon type={'delete'} className={'icon'}/>
-                        </button>
-                    </>
-                }
-            </div>
-            <div className={'dialog__line'}>
-                <FileUploader accept={'.txt'} onChange={this.handleUploadTestOutput}>
-                    <div className={'dialog__line'}>
-                        <span className={'dialog__line__label'}>{getTranslations({text: 'output'})}: </span>
-                        <button className={'button button_borderless button_icon'}>
-                            <Icon type={'file'} className={'icon'}/>
-                        </button>
-                    </div>
-                </FileUploader>
-                {
-                    testOutput &&
-                    <>
-                        <span className={'dialog__line__label'}>{testOutput.name}</span>
-                        <button className={'button button_borderless button_icon'} onClick={this.handleRemoveTestOutput}>
-                            <Icon type={'delete'} className={'icon'}/>
-                        </button>
-                    </>
-                }
-            </div>
-            <div className={'dialog__line'}>
-                <CustomInput placeholder={getTranslations({text: 'test description', format: 'lowercase'})}
-                       value={testDescription}
-                       onChange={this.handleChangedTestDescription}
-                       handleKeyPress={this.handleKeyPress}/>
-                <button className={'button button_borderless button_icon'} onClick={this.addTest}>
-                    <Icon type={'add'} className={'icon'}/>
-                </button>
             </div>
             <div className={'dialog__button-panel'}>
-                <button className={'button'} disabled={isCreating} onClick={this.add}>{isCreating ? 'Wait' : getTranslations({text: 'add'})}</button>
-                <button className={'button'} disabled={isCreating} onClick={closeProblemCreatingDialog}>{isCreating ? 'Wait' : getTranslations({text: 'cancel'})}</button>
+                <button className={'button'} disabled={isCreating}
+                        onClick={this.add}>{isCreating ? 'Wait' : getTranslations({text: 'add'})}</button>
+                <button className={'button'} disabled={isCreating}
+                        onClick={closeProblemCreatingDialog}>{isCreating ? 'Wait' : getTranslations({text: 'cancel'})}</button>
             </div>
         </div>
     }

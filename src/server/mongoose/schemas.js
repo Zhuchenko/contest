@@ -106,6 +106,7 @@ export const ProblemSchema = new Schema({
         type: String,
         required: true
     },
+    languages: [String],
     generator: {
         type: Buffer,
         required: true
@@ -186,10 +187,6 @@ export const ContestSchema = new Schema({
     },
     endingDate: {
         type: Date,
-        required: true
-    },
-    language: {
-        type: String,
         required: true
     },
     sharedReadRights: [String],
