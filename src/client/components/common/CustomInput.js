@@ -5,13 +5,13 @@ import getClassNames from '../../utilities/getClassnames'
 import './css/input.css'
 
 const CustomInput = (props) => {
-    const {placeholder, onChange, value, type = 'text', isValid = true, errorMessage, handleKeyPress} = props;
+    const {id, placeholder, onChange, value, type = 'text', isValid = true, errorMessage, handleKeyPress} = props;
     const classes = getClassNames({['sign__input']: true, ['sign__input--error']: !isValid});
 
     return (
-        <div>
+        <>
             <input
-                {...{type, placeholder, onChange, value}}
+                {...{id, type, placeholder, onChange, value}}
                 className={classes}
                 onKeyDown={handleKeyPress}
             />
@@ -19,7 +19,7 @@ const CustomInput = (props) => {
                 !isValid && errorMessage &&
                 <div className='sign__error_message'>{errorMessage}</div>
             }
-        </div>
+        </>
     )
 };
 

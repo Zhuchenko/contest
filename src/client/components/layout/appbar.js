@@ -12,11 +12,11 @@ const AppBar = () => {
             <NavigationPanel/>
             <UserControls/>
             <ReduxToastr
-                timeOut={4000}
+                timeOut={5000}
                 newestOnTop={false}
-                preventDuplicates
-                position="top-right"
-                getState={(state) => state.toastr} // This is the default
+                // preventDuplicates
+                position="bottom-right"
+                getState={(state) => state.toastr}
                 transitionIn="fadeIn"
                 transitionOut="fadeOut"
                 closeOnToastrClick/>

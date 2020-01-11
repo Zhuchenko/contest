@@ -4,8 +4,7 @@ import * as actions from '../../redux/application/actions'
 import {connect} from 'react-redux'
 import getTranslations from '../../utilities/getTranslations'
 
-
-//import './css/user.css';
+const ROLES = ['participant', 'coordinator', 'administrator'];
 
 class User extends Component {
 
@@ -15,7 +14,7 @@ class User extends Component {
             name: '',
             lastName: '',
             email: '',
-            roleIndex: '',
+            roleIndex: 0,
         }
     }
 
@@ -23,14 +22,16 @@ class User extends Component {
         getUser(this.props.match.params.userId)
             .then(user => {
                 const {name, lastName, email, role} = user;
-                this.setState({name, lastName, email, roleIndex: role === 'participant' ? 0 : 1})
+                const roleIndex = ROLES.findIndex(r => r === role);
+                this.setState({name, lastName, email, roleIndex})
             }).catch((errorCode) => {
             this.props.setError({errorCode});
         })
     }
 
     render() {
-        const {name, lastName, email, role} = this.state;
+        const {name, lastName, email, roleIndex} = this.state;
+
         return (
             <div className={'wrapper'}>
                 <div className={'wrapper__line'}>
@@ -47,7 +48,7 @@ class User extends Component {
                 </div>
                 <div className={'wrapper__line'}>
                     <label>{getTranslations({text: 'role'})}:&nbsp;</label>
-                    <span>{role}</span>
+                    <span>{ROLES[roleIndex]}</span>
                 </div>
             </div>
         )

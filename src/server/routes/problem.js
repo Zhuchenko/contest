@@ -1,4 +1,5 @@
 import express from 'express'
+import fetch from 'node-fetch'
 import * as db from '../mongoose/DatabaseHandler'
 import auth from '../config/auth'
 
@@ -107,15 +108,43 @@ router.post('/', auth.required, async (req, res) => {
 
     try {
         if (rights.problem.add) {
+            const generator = files.generator.data;
             let problem = JSON.parse(body.problem);
             const descriptions = JSON.parse(body.descriptions);
+
+            let inputs = [];
+            for (let i = 0, l = descriptions.length; i < l; i++) {
+                inputs.push({
+                    input: Array.from(files['test' + i].data),
+                    number: i + 1
+                });
+            }
+
+            const outputs = await fetch('http://localhost:51786/api/generate_tests', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    generator: Array.from(generator),
+                    tests: inputs,
+                    language: problem.languages[0], //TODO
+                    timeLimit: problem.limitation.time,
+                    memoryLimit: problem.limitation.memory,
+                })
+            }).then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    throw response.status
+                }
+            });
 
             let tests = [];
             for (let i = 0, l = descriptions.length; i < l; i++) {
                 tests.push({
-                    input: files['input' + i].data,
-                    output: files['output' + i].data,
-                })
+                    input: files['test' + i].data,
+                    output: outputs.results[i],
+                    description: descriptions[i]
+                });
             }
 
             problem.tests = tests;
@@ -131,6 +160,7 @@ router.post('/', auth.required, async (req, res) => {
             return res.status(403).end();
         }
     } catch (error) {
+        console.log(error)
         return res.status(500).json({error});
     }
 });

@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/', auth.required, async (req, res) => {
     let {body: {parcel}, files: {code}, payload: {id}} = req;
     parcel = JSON.parse(parcel);
-    const {contestId, problemId, options: {language}} = parcel;
+    const {contestId, problemId} = parcel;
 
     try {
         const isParticipant = await db.isParticipantInTheContest(id, contestId);
@@ -19,19 +19,22 @@ router.post('/', auth.required, async (req, res) => {
 
         const parcelId = await db.addParcel({
             ...parcel,
+            language: 'csharp',
             authorId: id,
             date: Date.now(),
             code: code.data
         });
 
-        const {checker, tests, limitation: {time, memory}} = await db.getProblemByIdInContest(contestId, problemId);
-        const results = await fetch('http://localhost:51786/api/check', {
+        const {checker, tests, limitation: {time, memory}} = await db.getProblemById(problemId);
+        const {results} = await fetch('http://localhost:51786/api/check', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 solution: Array.from(code.data),
                 checker: Array.from(checker.buffer),
-                language, timeLimit: time, memoryLimit: memory,
+                language: 'csharp',
+                timeLimit: time,
+                memoryLimit: memory,
                 tests: convertTests(tests)
             })
         }).then(response => {
@@ -43,7 +46,7 @@ router.post('/', auth.required, async (req, res) => {
         });
         await db.addTestResult({parcelId, tests: results});
 
-        const solution = await db.getSolutionByOptions({authorId: id, problemId, contestId});
+        const solution = await db.getSolution({authorId: id, problemId, contestId});
         if (solution) {
             await db.updateSolution(solution.id, {
                 attemptNumber: solution.attemptNumber + 1,

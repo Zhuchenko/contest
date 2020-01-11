@@ -15,6 +15,21 @@ export const getContests = () => {
         })
 };
 
+export const getContestTableView = (contestId) => {
+    const headers = setAuthToken({});
+
+    return fetch('/api/contests/table-view/' + contestId, {
+        method: 'GET',
+        headers
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            }
+            throw response.status;
+        })
+};
+
 export const getContest = (contestId) => {
     const headers = setAuthToken({});
 

@@ -8,7 +8,7 @@ import path from 'path'
 import {serverConfig} from '../config/serverConfig'
 
 const Schema = mongoose.Schema;
-const Mixed = mongoose.Schema.Types.Mixed;
+const Decimal128 = mongoose.Schema.Types.Decimal128;
 
 export const UnverifiedUserSchema = new Schema({
     email: {
@@ -106,6 +106,7 @@ export const ProblemSchema = new Schema({
         type: String,
         required: true
     },
+    languages: [String],
     generator: {
         type: Buffer,
         required: true
@@ -188,10 +189,6 @@ export const ContestSchema = new Schema({
         type: Date,
         required: true
     },
-    language: {
-        type: String,
-        required: true
-    },
     sharedReadRights: [String],
     sharedWriteRights: [String]
 });
@@ -215,7 +212,7 @@ export const ParcelSchema = new Schema({
     },
     code: {
         type: Buffer,
-        default: new Buffer(''),
+        default: Buffer.from(''),
         required: true
     },
     date: {
@@ -243,7 +240,7 @@ export const SolutionSchema = new Schema({
     },
     code: {
         type: Buffer,
-        default: new Buffer(''),
+        default: Buffer.from(''),
         required: true
     }
 });
@@ -258,19 +255,17 @@ export const TestResultSchema = new Schema({
             type: Number,
             required: true
         },
-        result: {
-            shortening: {
-                type: String,
-                required: true
-            },
-            message: String
+        shortening: {
+            type: String,
+            required: true
         },
+        message: String,
         time: {
-            type: Number,
+            type: Decimal128,
             required: true
         },
         memory: {
-            type: Number,
+            type: Decimal128,
             required: true
         }
     }]

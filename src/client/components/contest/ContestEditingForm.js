@@ -1,97 +1,127 @@
-// import React, {Component} from 'react'
-// import PropTypes from "prop-types";
-// import Input from "../common/Input";
-// import {connect} from "react-redux";
-// import * as actions from "../../redux/groupOfUsers/actions";
-// import getList from "../common/List";
-// import UserItemWithCheckBox from "./UserItemWithCheckBox";
-// import {getGroup, getUsersForGroupCreating} from "../../services/groupOfUsersApi";
-//
-// //import './css/user.css';
-//
-////TODO: add translations
-// class ContestEditingForm extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             name: '',
-//             users: [],
-//         }
-//     }
-//
-//     componentDidMount() {
-//         getUsersForGroupCreating()
-//             .then(allUsers => {
-//                 getGroup(this.props.id)
-//                     .then(group => {
-//                         const {name, users} = group;
-//                         const usersWithSelecting = allUsers.map(user => ({
-//                             ...user,
-//                             isSelected: users.find(u => u.id === user.id)
-//                         }));
-//                         this.setState({
-//                             name,
-//                             users: usersWithSelecting
-//                         })
-//                     })
-//             })
-//     }
-//
-//     handleChangedName = ({target: {value}}) => {
-//         this.setState({name: value});
-//     };
-//
-//     handleChecked = (id) => {
-//         const {users} = this.state;
-//         const index = users.findIndex(user => user.id === id);
-//         users[index].isSelected = !users[index].isSelected;
-//         this.setState({users});
-//     };
-//
-//     edit = () => {
-//         const {id, editGroup, close} = this.props;
-//         const {name, users} = this.state;
-//         const selectedUsers = users.filter(user => user.isSelected).map(user => user.id);
-//         editGroup({id, newState: {name, users: selectedUsers}});
-//         close();
-//     };
-//
-//     handleKeyPress = e => {
-//         if (e.key === 'Enter') {
-//             e.preventDefault();
-//             this.edit();
-//         }
-//         if (e.key === 'Escape') {
-//             e.preventDefault();
-//             this.props.close();
-//         }
-//     };
-//
-//     render() {
-//         const {name, users} = this.state;
-//         const List = getList(UserItemWithCheckBox, users);
-//         return (
-//             <div className={'dialog scrollbar'}>
-//                 <Input key='name'
-//                        placeholder="Name"
-//                        value={name}
-//                        onChange={this.handleChangedName}
-//                        handleKeyPress={this.handleKeyPress}
-//                 />
-//                 <List handleChecked={this.handleChecked}/>
-//                 <div className={'dialog__button-panel'}>
-//                     <button className={'button'} onClick={this.edit}>Save</button>
-//                     <button className={'button'} onClick={this.props.close}>Cancel</button>
-//                 </div>
-//             </div>
-//         )
-//     }
-// }
-//
-// ContestEditingForm.propTypes = {
-//     id: PropTypes.string.isRequired,
-//     close: PropTypes.func.isRequired,
-//     editGroup: PropTypes.func.isRequired,
-// };
-//
-// export default connect(null, actions)(ContestEditingForm)
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
+import CustomInput from '../common/CustomInput'
+import {connect} from 'react-redux'
+import * as actions from '../../redux/contest/actions'
+import ItemWithCheckBox from '../common/ItemWithCheckBox'
+import {getContest, getGroupsForContestCreating, getSetsForContestCreating} from '../../services/contestApi'
+import getList from '../common/List'
+import getTranslations from '../../utilities/getTranslations'
+
+const GroupItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/groups/'}/>;
+const SetItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/sets/'}/>;
+
+
+class ContestEditingForm extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: '',
+            groups: [],
+            sets: []
+        }
+    }
+
+    componentDidMount() {
+        (async () => {
+            const contest =  await getContest(this.props.id);
+            const groups =  await getGroupsForContestCreating();
+            const sets =  await getSetsForContestCreating();
+
+            const groupsWithSelecting = groups.map(group => ({
+                ...group,
+                isSelected: contest.groups.find(g => g.id === group.id)
+            }));
+
+            const setsWithSelecting = sets.map(set => ({
+                ...set,
+                isSelected: contest.sets.find(s => s.id === set.id)
+            }));
+
+            this.setState({
+                name: contest.name,
+                groups: groupsWithSelecting,
+                sets: setsWithSelecting
+            })
+        })();
+    }
+
+    edit = () => {
+        const {name, groups, sets} = this.state;
+        const selectedGroups = groups.filter(group => group.isSelected).map(group => group.id);
+        const selectedSets = sets.filter(set => set.isSelected).map(set => set.id);
+        const {editContest, close} = this.props;
+        editContest({name, groups: selectedGroups, sets: selectedSets});
+        close();
+    };
+
+    handleChangedName = ({target: {value}}) => {
+        this.setState({name: value});
+    };
+
+    handleCheckedGroups = (id) => {
+        const {groups} = this.state;
+        const index = groups.findIndex(group => group.id === id);
+        groups[index].isSelected = !groups[index].isSelected;
+        this.setState({groups})
+    };
+
+    handleCheckedSets = (id) => {
+        const {sets} = this.state;
+        const index = sets.findIndex(set => set.id === id);
+        sets[index].isSelected = !sets[index].isSelected;
+        this.setState({sets})
+    };
+
+    handleKeyPress = e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.add();
+        }
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            this.props.close();
+        }
+    };
+
+    render() {
+        const {name, groups, sets} = this.state;
+        const GroupList = getList(GroupItemWithCheckBox, groups);
+        const SetList = getList(SetItemWithCheckBox, sets);
+
+        return (
+            <div className={'dialog scrollbar'}>
+                <div className={'dialog__line'}>
+                    <CustomInput
+                                 placeholder={getTranslations({text: 'name'})}
+                                 value={name}
+                                 onChange={this.handleChangedName}
+                                 handleKeyPress={this.handleKeyPress}/>
+                </div>
+                <div className={'dialog__line'}>
+                    <div className={'dialog__line__list'}>
+                        <span className={'dialog__line__label'}>{getTranslations({text: 'groups'})}: </span>
+                        <GroupList handleChecked={this.handleCheckedGroups}/>
+                    </div>
+                </div>
+                <div className={'dialog__line'}>
+                    <div className={'dialog__line__list'}>
+                        <span className={'dialog__line__label'}>{getTranslations({text: 'sets'})}: </span>
+                        <SetList handleChecked={this.handleCheckedSets}/>
+                    </div>
+                </div>
+                <div className={'dialog__button-panel'}>
+                    <button className={'button'} onClick={this.add}>{getTranslations({text: 'add'})}</button>
+                    <button className={'button'} onClick={this.props.close}>{getTranslations({text: 'cancel'})}</button>
+                </div>
+            </div>
+        )
+    }
+}
+
+ContestEditingForm.propTypes = {
+    close: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired
+};
+
+export default connect(null, actions)(ContestEditingForm)

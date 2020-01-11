@@ -74,8 +74,7 @@ export const addProblem = ({problem, checker, generator, tests}) => {
     const formData = new FormData();
     const descriptions = [];
     for (let i = 0, l = tests.length; i < l; i++) {
-        formData.append('input' + i, tests[i].input);
-        formData.append('output' + i, tests[i].output);
+        formData.append('test' + i, tests[i].file);
         descriptions[i] = tests[i].description;
     }
     formData.append('checker', checker);

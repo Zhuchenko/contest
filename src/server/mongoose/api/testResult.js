@@ -12,19 +12,7 @@ export const findOne = async (query) => {
 };
 
 export const add = async (newInstance) => {
-    let {tests, parcelId} = newInstance;
-
-    tests = tests.map(res => {
-        return {
-            number: res.number,
-            result: {
-                shortening: res.shortening,
-                message: res.message
-            }
-        }
-    });
-
-    await TestResult.create({parcelId, tests});
+    await TestResult.create(newInstance);
 };
 
 
