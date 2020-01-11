@@ -23,14 +23,14 @@ function* getProblemsSaga() {
 }
 
 function* addProblemSaga(action) {
-    try {
-        const problem = action.payload;
-        yield call(addProblem, problem);
+    const problem = action.payload;
+    const {error} = yield call(addProblem, problem);
 
+    if (!error) {
         yield put(actions.getProblems());
         yield put(actions.addProblemSuccess());
         toastr.success('Успех', "Задача создана");
-    } catch (error) {
+    } else {
         yield put(actions.addProblemFailure(error));
         toastr.error('Ошибка', error);
     }

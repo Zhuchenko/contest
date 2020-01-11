@@ -7,11 +7,7 @@ import * as actions from '../../redux/problem/actions'
 import FileUploader from 'react-input-files'
 import Icon from '../common/Icon'
 import getTranslations from '../../utilities/getTranslations'
-
-const ALL_LANGUAGES = {id: 'all', text: 'All'};
-const CSHARP = {id: 'csharp', text: 'C#'};
-const CPP = {id: 'cpp', text: 'C++'};
-const LANGUAGE_OPTIONS = [ALL_LANGUAGES, CSHARP, CPP];
+import languageOptions from './languages'
 
 const getIndex = (key) => key.substring(key.indexOf("_") + 1);
 
@@ -36,9 +32,8 @@ class ProblemAddingForm extends Component {
     add = () => {
         const {name, text, time, memory, checker, generator, tests, languageIndex} = this.state;
         const {addProblem} = this.props;
-        const selectedLanguage = LANGUAGE_OPTIONS[languageIndex].id;
-        const languages = selectedLanguage !== ALL_LANGUAGES.id ? [selectedLanguage] : [CSHARP.id, CPP.id];
-        addProblem({problem: {name, text, limitation: {time, memory}, languages}, checker, generator, tests});
+        const language = languageOptions[languageIndex].id;
+        addProblem({problem: {name, text, limitation: {time, memory}, language}, checker, generator, tests});
     };
 
     handleChangedName = ({target: {value}}) => {
@@ -131,7 +126,7 @@ class ProblemAddingForm extends Component {
     };
 
     render() {
-        const {name, text, time, memory, checker, generator, languageIndex, tests, testInput, testOutput, testDescription} = this.state;
+        const {name, text, time, memory, checker, generator, languageIndex, tests} = this.state;
         const {isCreating, error, closeProblemCreatingDialog} = this.props;
 
         return <div className={'dialog scrollbar'}>
@@ -157,7 +152,7 @@ class ProblemAddingForm extends Component {
                 <span className={'dialog__line__label'}>{getTranslations({text: 'languages'})}: </span>
                 <select onChange={this.handleChangeLanguage} value={languageIndex}>
                     {
-                        LANGUAGE_OPTIONS.map((lang, i) => (
+                        languageOptions.map((lang, i) => (
                             <option key={lang.id} value={i} label={lang.text}/>
                         ))
                     }
@@ -165,7 +160,7 @@ class ProblemAddingForm extends Component {
             </div>
             <div className={'dialog__line'}>
                 <span className={'dialog__line__label'}>{getTranslations({text: 'checker'})}: </span>
-                <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadChecker}>
+                <FileUploader accept={languageOptions[languageIndex].ext} onChange={this.handleUploadChecker}>
                     <button className={'button button_borderless button_icon'}>
                         <Icon type={'file'} className={'icon'}/>
                     </button>
@@ -182,7 +177,7 @@ class ProblemAddingForm extends Component {
             </div>
             <div className={'dialog__line'}>
                 <span>Generator: </span>
-                <FileUploader accept={'.cs, .cpp'} onChange={this.handleUploadGenerator}>
+                <FileUploader accept={languageOptions[languageIndex].ext} onChange={this.handleUploadGenerator}>
                     <button className={'button button_borderless button_icon'}>
                         <Icon type={'file'} className={'icon'}/>
                     </button>

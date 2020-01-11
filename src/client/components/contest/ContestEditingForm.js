@@ -111,7 +111,7 @@ class ContestEditingForm extends Component {
                     </div>
                 </div>
                 <div className={'dialog__button-panel'}>
-                    <button className={'button'} onClick={this.add}>{getTranslations({text: 'add'})}</button>
+                    <button className={'button'} onClick={this.add}>{getTranslations({text: 'edit'})}</button>
                     <button className={'button'} onClick={this.props.close}>{getTranslations({text: 'cancel'})}</button>
                 </div>
             </div>

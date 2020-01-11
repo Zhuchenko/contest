@@ -157,11 +157,10 @@ router.post('/', auth.required, async (req, res) => {
             await db.addProblem(problem);
             return res.status(200).end();
         } else {
-            return res.status(403).end();
+            return res.status(403).json({error: "You do not have such right."});
         }
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({error});
+        return res.status(500).json({error: error.message});
     }
 });
 

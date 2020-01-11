@@ -106,7 +106,7 @@ export const ProblemSchema = new Schema({
         type: String,
         required: true
     },
-    languages: [String],
+    language: String,
     generator: {
         type: Buffer,
         required: true

@@ -88,11 +88,7 @@ export const addProblem = ({problem, checker, generator, tests}) => {
         body: formData
     })
         .then(response => {
-            if (response.status === 200) {
-                return response;
-            } else {
-                throw response.status
-            }
+            return response.json();
         })
 };
 

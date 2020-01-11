@@ -12,7 +12,6 @@ export const init = () => {
             if (response.status === 200) {
                 return response.json();
             }
-            throw response.status;
         })
 };
 
@@ -47,9 +46,6 @@ export const signUp = (personalData) => {
         body: JSON.stringify(personalData)
     })
         .then(response => {
-            if (response.status === 200) {
-                return response;
-            }
             return response.json();
         })
 };
