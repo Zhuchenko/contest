@@ -153,7 +153,6 @@ router.get('/:contestId', auth.required, async (req, res) => {
         return res.status(400).json({error});
     }
 
-    console.log('here 0')
 
     try {
         const isParticipant = await db.isParticipantInTheContest(id, contestId);
@@ -162,8 +161,6 @@ router.get('/:contestId', auth.required, async (req, res) => {
 
         const canView = rights.contest.view || id === contest.authorId || isParticipant || hasReadRight || hasWriteRight;
         if (canView) {
-
-            console.log('here first')
             let status = '';
             if (!contest.isFinished) {
                 if (!contest.isActive) {
@@ -175,8 +172,72 @@ router.get('/:contestId', auth.required, async (req, res) => {
                 status = 'is finished';
             }
 
-            console.log('status')
-            console.log(status)
+            const groups = await Promise.all(
+                contest.groups.map(async groupId => {
+                    const {id, name, users} = await db.getGroupById(groupId);
+                    const usersFullInfo = await Promise.all(users.map(async usersId => {
+                        return await db.getUserById(usersId);
+                    }));
+                    return {id, name, users: usersFullInfo};
+                })
+            );
+
+            const sets = await Promise.all(
+                contest.sets.map(async setId => {
+                    const {id, name, problems} = await db.getSetById(setId);
+                    const problemsFullInfo = await Promise.all(problems.map(async problemId => {
+                        return await db.getProblemById(problemId);
+                    }));
+                    return {id, name, problems: problemsFullInfo};
+                })
+            );
+
+            return res.json({status, groups, isParticipant, sets})
+        } else {
+            return res.status(403).end();
+        }
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({error});
+    }
+});
+
+router.get('/table-view/:contestId', auth.required, async (req, res) => {
+    const {params: {contestId}, payload: {id}} = req;
+
+    let contest;
+    try {
+        contest = await db.getContestById(contestId);
+    } catch (error) {
+        return res.status(500).json({error});
+    }
+    if (!contest) return res.status(404).end();
+
+    let rights;
+    try {
+        rights = await db.getUserRights(id);
+    } catch (error) {
+        return res.status(400).json({error});
+    }
+
+    try {
+        const isParticipant = await db.isParticipantInTheContest(id, contestId);
+        const hasReadRight = await db.hasReadRightForTheContest(id, contestId);
+        const hasWriteRight = await db.hasWriteRightForTheContest(id, contestId);
+
+        const canView = rights.contest.view || id === contest.authorId || isParticipant || hasReadRight || hasWriteRight;
+        if (canView) {
+            let status = '';
+            if (!contest.isFinished) {
+                if (!contest.isActive) {
+                    status = 'is not started';
+                } else {
+                    status = 'is active';
+                }
+            } else {
+                status = 'is finished';
+            }
+
             const users = flatten(await Promise.all(
                 contest.groups.map(async groupId => {
                     const group = await db.getGroupById(groupId);
@@ -186,8 +247,6 @@ router.get('/:contestId', auth.required, async (req, res) => {
                 })
             ));
 
-            console.log('users')
-            console.log(users)
             const problems = flatten(await Promise.all(
                 contest.sets.map(async setId => {
                     const set = await db.getSetById(setId);
@@ -197,13 +256,10 @@ router.get('/:contestId', auth.required, async (req, res) => {
                 })
             ));
 
-            console.log('problems')
-            console.log(problems)
-            //TODO: add rights to problem list
-
-            let table = [];
+            let table = {};
 
             for (let userIndex = 0; userIndex < users.length; userIndex++){
+                table[users[userIndex].id] = {};
                 for (let problemIndex = 0; problemIndex < problems.length; problemIndex++){
                     let result;
                     try {
@@ -215,15 +271,10 @@ router.get('/:contestId', auth.required, async (req, res) => {
                     catch(e){
                         result = {shortening: '-', message: 'Еще не было решений'};
                     }
-                    table[users[userIndex]][problems[problemIndex]] = result;
+                    table[users[userIndex].id][problems[problemIndex].id] = result;
                 }
             }
 
-
-            console.log('table')
-            console.log(table)
-
-console.log('here last')
             return res.status(200).json({status, table, users, problems})
         } else {
             return res.status(403).end();

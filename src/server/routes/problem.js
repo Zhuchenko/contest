@@ -115,33 +115,37 @@ router.post('/', auth.required, async (req, res) => {
             let inputs = [];
             for (let i = 0, l = descriptions.length; i < l; i++) {
                 inputs.push({
-                    input: files['test' + i].data,
-                    number: i
+                    input: Array.from(files['test' + i].data),
+                    number: i + 1
                 });
             }
-            console.log('0')
+
             const outputs = await fetch('http://localhost:51786/api/generate_tests', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        generator: Array.from(generator),
-                        tests: inputs,
-                        language: problem.languages[0],
-                        timeLimit: problem.limitation.time,
-                        memoryLimit: problem.limitation.memory,
-                    })
-                }).then(response => {
-                    if (response.status === 200) {
-                        return response.json();
-                    } else {
-                        console.log('e')
-                        throw response.status
-                    }
-                }).then(response => {
-                console.log('r')
-                    console.log(response);
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    generator: Array.from(generator),
+                    tests: inputs,
+                    language: problem.languages[0], //TODO
+                    timeLimit: problem.limitation.time,
+                    memoryLimit: problem.limitation.memory,
                 })
-            ;
+            }).then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    throw response.status
+                }
+            });
+
+            let tests = [];
+            for (let i = 0, l = descriptions.length; i < l; i++) {
+                tests.push({
+                    input: files['test' + i].data,
+                    output: outputs.results[i],
+                    description: descriptions[i]
+                });
+            }
 
             problem.tests = tests;
             problem.authorId = id;

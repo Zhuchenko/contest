@@ -44,14 +44,13 @@ class Problem extends Component {
     };
 
     sendSolution = () => {
-        const {attachedFile, options, selectedId} = this.state;
+        const {attachedFile} = this.state;
         const {problemId, contestId} = this.props.match.params;
 
         if (attachedFile) {
             sendParcel({
                 problemId,
-                contestId,
-                options: options[selectedId]
+                contestId
             }, attachedFile)
                 .then(results => {
                     this.setState({results})

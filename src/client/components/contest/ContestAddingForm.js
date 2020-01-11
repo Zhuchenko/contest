@@ -56,7 +56,7 @@ class ContestAddingForm extends Component {
         const selectedGroups = groups.filter(group => group.isSelected).map(group => group.id);
         const selectedSets = sets.filter(set => set.isSelected).map(set => set.id);
         const {addContest, close} = this.props;
-        addContest({name, groups: selectedGroups, sets: selectedSets, startingDate, endingDate, language});
+        addContest({name, groups: selectedGroups, sets: selectedSets, startingDate, endingDate});
         close();
     };
 
@@ -98,7 +98,7 @@ class ContestAddingForm extends Component {
     };
 
     render() {
-        const {name, groups, sets, startingDate, endingDate, languageIndex} = this.state;
+        const {name, groups, sets, startingDate, endingDate} = this.state;
         const GroupList = getList(GroupItemWithCheckBox, groups);
         const SetList = getList(SetItemWithCheckBox, sets);
 

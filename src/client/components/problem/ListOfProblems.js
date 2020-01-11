@@ -8,8 +8,6 @@ import ProblemAddingForm from "./ProblemAddingForm";
 import ProblemItem from "./ProblemItem";
 import Icon from "../common/Icon";
 
-//import './css/list.css'
-
 class ProblemList extends Component {
     componentDidMount() {
         this.props.getProblems();

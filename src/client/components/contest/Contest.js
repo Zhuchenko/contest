@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
-import {getContest} from '../../services/contestApi'
+import {getContestTableView} from '../../services/contestApi'
 import getTranslations from '../../utilities/getTranslations'
+import {Link} from "react-router-dom";
 
 class Contest extends Component {
     constructor(props) {
@@ -14,7 +15,7 @@ class Contest extends Component {
     }
 
     componentDidMount() {
-        getContest(this.props.match.params.contestId)
+        getContestTableView(this.props.match.params.contestId)
             .then(({users, problems, status, table}) => {
                 this.setState({users, problems, status, table})
             }).catch((errorCode) => {
@@ -24,6 +25,7 @@ class Contest extends Component {
 
     render() {
         const {users, problems, status, table} = this.state;
+        const {contestId} = this.props.match.params;
 
         return (
             <div className={'wrapper'}>
@@ -32,7 +34,11 @@ class Contest extends Component {
                     <thead>
                     <tr>
                         <td key={'0'}/>
-                        {problems.map((p) => <th key={p.id}>{p.name}</th> )}
+                        {problems.map((p) => <th key={p.id}>
+                            <Link to={contestId + '/problems/' + p.id}>
+                                {p.name}
+                            </Link>
+                        </th>)}
                     </tr>
                     </thead>
                     <tbody>
@@ -50,7 +56,6 @@ class Contest extends Component {
                     )}
                     </tbody>
                 </table>
-
             </div>
         )
     }

@@ -168,7 +168,7 @@ export default (password, salt, globalSalt, conf) => {
     const bitLength = 512;
 
     let hLen = bitLength / 8, dkLen = len / 8;
-    password = new Uint8Array(buffer(new Buffer(password)));
+    password = new Uint8Array(buffer(Buffer.from(password)));
     salt = fromHexString(salt);
     globalSalt = fromHexString(globalSalt);
 

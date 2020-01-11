@@ -106,7 +106,7 @@ class SharedRightsDialog extends Component {
                                     sharedRights.length > 0 &&
                                     sharedRights.map((item, id) => <div key={id}>
                                         <span>{item.user.lastName + ' ' + item.user.name + ' - ' + item.right}</span>
-                                        <button className={'button button_borderless button_icon'} key={'right_' + id}
+                                        <button className={'button button_borderless button_icon'} id={'right_' + id}
                                                 onClick={this.delete}>
                                             <Icon type={'delete'} className={'icon'}/>
                                         </button>
