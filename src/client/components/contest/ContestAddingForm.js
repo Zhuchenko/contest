@@ -4,15 +4,12 @@ import CustomInput from '../common/CustomInput'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/contest/actions'
 import DatePicker from 'react-datepicker'
-import ItemWithCheckBox from '../common/ItemWithCheckBox'
+import Select from 'react-select'
 import {getGroupsForContestCreating, getSetsForContestCreating} from '../../services/contestApi'
-import getList from '../common/List'
 import getTranslations from '../../utilities/getTranslations'
 
 import 'react-datepicker/dist/react-datepicker.css'
 
-const GroupItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/groups/'}/>;
-const SetItemWithCheckBox =  (props) => <ItemWithCheckBox {...props} path={'/sets/'}/>;
 
 const STARTING_DATE = new Date();
 
@@ -77,18 +74,26 @@ class ContestAddingForm extends Component {
         this.setState({name: value});
     };
 
-    handleCheckedGroups = (id) => {
+    handleCheckedGroups = (values) => {
         const {groups} = this.state;
-        const index = groups.findIndex(group => group.id === id);
-        groups[index].isSelected = !groups[index].isSelected;
-        this.setState({groups})
+        const indexes = [];
+        values.forEach(value => {
+            indexes.push(groups.findIndex(item => item.id === value.id));
+        });
+        groups.forEach(item => item.isSelected = false);
+        indexes.forEach(index => groups[index].isSelected = true);
+        this.setState({groups});
     };
 
-    handleCheckedSets = (id) => {
+    handleCheckedSets = (values) => {
         const {sets} = this.state;
-        const index = sets.findIndex(set => set.id === id);
-        sets[index].isSelected = !sets[index].isSelected;
-        this.setState({sets})
+        const indexes = [];
+        values.forEach(value => {
+            indexes.push(sets.findIndex(item => item.id === value.id));
+        });
+        sets.forEach(item => item.isSelected = false);
+        indexes.forEach(index => sets[index].isSelected = true);
+        this.setState({sets});
     };
 
     handleKeyPress = e => {
@@ -104,11 +109,9 @@ class ContestAddingForm extends Component {
 
     render() {
         const {name, groups, sets, startingDate, endingDate} = this.state;
-        const GroupList = getList(GroupItemWithCheckBox, groups);
-        const SetList = getList(SetItemWithCheckBox, sets);
 
         return (
-            <div className={'dialog scrollbar'}>
+            <div className={'dialog dialog--fixed-width scrollbar'}>
                 <div className={'dialog__line'}>
                     <CustomInput key='name'
                                  placeholder={getTranslations({text: 'name'})}
@@ -135,13 +138,31 @@ class ContestAddingForm extends Component {
                 <div className={'dialog__line'}>
                     <div className={'dialog__line__list'}>
                         <span className={'dialog__line__label'}>{getTranslations({text: 'groups'})}: </span>
-                        <GroupList handleChecked={this.handleCheckedGroups}/>
+                        <Select isMulti isSearchable value={
+                            groups.filter(item => item.isSelected)
+                                .map((item) => ({id: item.id, value: item.name, label: item.name}))
+                        } options={
+                            groups.map(item => ({id: item.id, value: item.name, label: item.name}))
+                        }
+                                onChange={this.handleCheckedGroups}
+                                className="r-select-container r-select-container--multi"
+                                classNamePrefix="r-select"
+                        />
                     </div>
                 </div>
                 <div className={'dialog__line'}>
                     <div className={'dialog__line__list'}>
                         <span className={'dialog__line__label'}>{getTranslations({text: 'sets'})}: </span>
-                        <SetList handleChecked={this.handleCheckedSets}/>
+                        <Select isMulti isSearchable value={
+                            sets.filter(item => item.isSelected)
+                                .map((item) => ({id: item.id, value: item.name, label: item.name}))
+                        } options={
+                            sets.map(item => ({id: item.id, value: item.name, label: item.name}))
+                        }
+                                onChange={this.handleCheckedSets}
+                                className="r-select-container r-select-container--multi"
+                                classNamePrefix="r-select"
+                        />
                     </div>
                 </div>
                 <div className={'dialog__button-panel'}>

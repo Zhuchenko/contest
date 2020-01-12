@@ -1,10 +1,9 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import CustomInput from '../common/CustomInput'
+import Select from 'react-select'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/setOfProblems/actions'
-import getList from '../common/List'
-import ProblemItemWithCheckBox from './ProblemItemWithCheckBox'
 import {getProblemsForSetCreating} from '../../services/setOfProblemsApi'
 import getTranslations from '../../utilities/getTranslations'
 
@@ -43,10 +42,14 @@ class SetAddingForm extends Component {
         this.setState({name: value});
     };
 
-    handleChecked = (id) => {
+    handleChecked = (values) => {
         const {problems} = this.state;
-        const index = problems.findIndex(problem => problem.id === id);
-        problems[index].isSelected = !problems[index].isSelected;
+        const indexes = [];
+        values.forEach(value => {
+            indexes.push(problems.findIndex(item => item.id === value.id));
+        });
+        problems.forEach(item => item.isSelected = false);
+        indexes.forEach(index => problems[index].isSelected = true);
         this.setState({problems})
     };
 
@@ -63,15 +66,23 @@ class SetAddingForm extends Component {
 
     render() {
         const {name, problems} = this.state;
-        const List = getList(ProblemItemWithCheckBox, problems);
         return (
-            <div className={'dialog'}>
+            <div className={'dialog dialog--fixed-width scrollbar'}>
                 <CustomInput key='name'
-                       placeholder={getTranslations({text: 'name'})}
-                       value={name}
-                       onChange={this.handleChangedName}
-                       handleKeyPress={this.handleKeyPress}/>
-                <List handleChecked={this.handleChecked}/>
+                   placeholder={getTranslations({text: 'name'})}
+                   value={name}
+                   onChange={this.handleChangedName}
+                   handleKeyPress={this.handleKeyPress}/>
+                <Select isMulti isSearchable isClearable value={
+                    problems.filter(item => item.isSelected)
+                        .map(item => ({id: item.id, value: item.name, label: item.name}))
+                } options={
+                    problems.map(item => ({id: item.id, value: item.name, label: item.name}))
+                }
+                        onChange={this.handleChecked}
+                        className="r-select-container r-select-container--multi"
+                        classNamePrefix="r-select"
+                />
                 <div className={'dialog__button-panel'}>
                     <button className={'button'} onClick={this.add}>{getTranslations({text: 'add'})}</button>
                     <button className={'button'} onClick={this.props.close}>{getTranslations({text: 'cancel'})}</button>
