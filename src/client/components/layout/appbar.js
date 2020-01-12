@@ -1,6 +1,6 @@
 import React from 'react'
 import UserControls from '../authorization/UserControls'
-import NavigationPanel from "../Navigation/NavigationPanel";
+import NavigationPanel from "../navigation/NavigationPanel";
 import ReduxToastr from 'react-redux-toastr'
 
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
