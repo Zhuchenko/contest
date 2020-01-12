@@ -45,10 +45,10 @@ export const getContest = (contestId) => {
         })
 };
 
-export const getGroupsForContestCreating = () => {
+export const getGroupsForContestCreating = (contestId) => {
     const headers = setAuthToken({});
 
-    return fetch('/api/contests/creating/groups', {
+    return fetch('/api/contests/creating/groups/' + contestId, {
         method: 'GET',
         headers
     })
@@ -61,10 +61,10 @@ export const getGroupsForContestCreating = () => {
         })
 };
 
-export const getSetsForContestCreating = () => {
+export const getSetsForContestCreating = (contestId) => {
     const headers = setAuthToken({});
 
-    return fetch('/api/contests/creating/sets', {
+    return fetch('/api/contests/creating/sets/' + contestId, {
         method: 'GET',
         headers
     })

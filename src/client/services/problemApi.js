@@ -91,7 +91,7 @@ export const addProblem = ({problem, checker, generator, tests}) => {
             if (response.status === 200) {
                 return response;
             } else {
-                throw response.json()
+                return response.json()
             }
         })
 };

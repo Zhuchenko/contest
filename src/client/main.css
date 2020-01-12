@@ -148,6 +148,14 @@ select {
     padding: 0.5em 0;
 }
 
+
+.dialog__column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .dialog__line {
     display: flex;
     flex-direction: row;

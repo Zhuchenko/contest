@@ -25,8 +25,8 @@ class ContestEditingForm extends Component {
     componentDidMount() {
         (async () => {
             const contest =  await getContest(this.props.id);
-            const groups =  await getGroupsForContestCreating();
-            const sets =  await getSetsForContestCreating();
+            const groups =  await getGroupsForContestCreating(this.props.id);
+            const sets =  await getSetsForContestCreating(this.props.id);
 
             const groupsWithSelecting = groups.map(group => ({
                 ...group,
@@ -50,8 +50,8 @@ class ContestEditingForm extends Component {
         const {name, groups, sets} = this.state;
         const selectedGroups = groups.filter(group => group.isSelected).map(group => group.id);
         const selectedSets = sets.filter(set => set.isSelected).map(set => set.id);
-        const {editContest, close} = this.props;
-        editContest({name, groups: selectedGroups, sets: selectedSets});
+        const {editContest, id, close} = this.props;
+        editContest({id, newState: {name, groups: selectedGroups, sets: selectedSets}});
         close();
     };
 
@@ -111,7 +111,7 @@ class ContestEditingForm extends Component {
                     </div>
                 </div>
                 <div className={'dialog__button-panel'}>
-                    <button className={'button'} onClick={this.add}>{getTranslations({text: 'edit'})}</button>
+                    <button className={'button'} onClick={this.edit}>{getTranslations({text: 'edit'})}</button>
                     <button className={'button'} onClick={this.props.close}>{getTranslations({text: 'cancel'})}</button>
                 </div>
             </div>

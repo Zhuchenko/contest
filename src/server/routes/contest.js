@@ -72,8 +72,8 @@ router.get('/', auth.required, async (req, res) => {
     }
 });
 
-router.get('/creating/groups', auth.required, async (req, res) => {
-    const {payload: {id}} = req;
+router.get('/creating/groups/:contestId', auth.required, async (req, res) => {
+    const {params: {contestId}, payload: {id}} = req;
     let rights;
     try {
         rights = await db.getUserRights(id);
@@ -88,9 +88,20 @@ router.get('/creating/groups', auth.required, async (req, res) => {
                 groups = (await db.getAllGroups()).map(({id, name}) => ({id, name}));
             } else {
                 if (rights.groupOfUsers.add) {
-                    groups = (await db.getGroupsByAuthor(id)).map(({id, name}) => ({
-                        id, name
-                    }));
+                    groups = (await db.getGroupsByAuthor(id)).map(({id, name}) => ({id, name}));
+                    let groupsInContest = [];
+
+                    if(!!contestId) {
+                        const contest = await db.getContestById(contestId);
+                        groupsInContest = await Promise.all(
+                            contest.groups.map(async groupId => {
+                                const {id, name} = await db.getGroupById(groupId);
+                                return {id, name};
+                            })
+                        );
+                    }
+
+                    groups = groups.concat(groupsInContest)
                 } else {
                     return res.status(403).end();
                 }
@@ -104,8 +115,8 @@ router.get('/creating/groups', auth.required, async (req, res) => {
     }
 });
 
-router.get('/creating/sets', auth.required, async (req, res) => {
-    const {payload: {id}} = req;
+router.get('/creating/sets/:contestId', auth.required, async (req, res) => {
+    const {params: {contestId}, payload: {id}} = req;
     let rights;
     try {
         rights = await db.getUserRights(id);
@@ -121,6 +132,19 @@ router.get('/creating/sets', auth.required, async (req, res) => {
             } else {
                 if (rights.setOfProblems.add) {
                     sets = (await db.getSetsByAuthor(id)).map(({id, name}) => ({id, name}));
+                    let setsInContest = [];
+
+                    if(!!contestId) {
+                        const contest = await db.getContestById(contestId);
+                        setsInContest = await Promise.all(
+                            contest.sets.map(async setId => {
+                                const {id, name} = await db.getSetById(setId);
+                                return {id, name};
+                            })
+                        );
+                    }
+
+                    sets = sets.concat(setsInContest)
                 } else {
                     return res.status(403).end();
                 }
@@ -192,7 +216,7 @@ router.get('/:contestId', auth.required, async (req, res) => {
                 })
             );
 
-            return res.json({status, groups, isParticipant, sets})
+            return res.status(200).json({name: contest.name, status, groups, isParticipant, sets})
         } else {
             return res.status(403).end();
         }

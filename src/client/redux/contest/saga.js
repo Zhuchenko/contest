@@ -39,7 +39,7 @@ function* addContestSaga(action) {
 
 function* editContestSaga(action) {
     try {
-        const {newState, id} = action.payload;
+        const {id, newState} = action.payload;
         yield call(editContest, id, newState);
 
         yield put(actions.getContests());

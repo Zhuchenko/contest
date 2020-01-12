@@ -6,63 +6,56 @@ import Icon from './common/Icon'
 import getTranslations from '../utilities/getTranslations'
 
 //TODO: add translations to rights
-const rights = ["read", "write"];
-
-const getIndex = (key) => key.substring(key.indexOf("_") + 1);
 
 class SharedRightsDialog extends Component {
     constructor(props) {
         super(props);
-        const sharedReadRights = props.sharedReadRights.map(item => ({user: item, right: "read"}));
-        const sharedWriteRights = props.sharedWriteRights.map(item => ({user: item, right: "write"}));
         this.state = {
-            isOpened: false,
-            coordinators: [],
-            sharedRights: [...sharedReadRights, ...sharedWriteRights],
-            selectedCoordinator: 0,
-            selectedRight: 0,
+            allCoordinators: [],
+            noRight: [],
+            readRights: props.sharedReadRights,
+            writeRights: props.sharedWriteRights,
+            selectedNoRight: [],
+            selectedReadRight: [],
+            selectedWriteRight: [],
+            isOpened: false
         };
     }
 
     componentDidMount() {
         getCoordinators()
-            .then(coordinators => {
-                this.setState({coordinators});
+            .then(allCoordinators => {
+                const {readRights, writeRights} = this.state;
+                let noRight = this.removeSelected(allCoordinators, readRights.map(rr => rr.id));
+                noRight = this.removeSelected(noRight, writeRights.map(wr => wr.id));
+                this.setState({allCoordinators, noRight});
             })
     }
 
-    add = () => {
-        let {sharedRights, selectedCoordinator, selectedRight, coordinators} = this.state;
-        const coordinator = sharedRights.find(({user}) => user.id === coordinators[selectedCoordinator].id);
-        if (coordinator) {
-            if (rights[selectedRight] === coordinator.right || rights[selectedRight] === "read") {
-                return;
+    removeSelected = (someRights, selected) => {
+        return someRights.map(c => {
+            for (let i = 0; i < selected.length; i++) {
+                if (c.id === selected[i]) return false;
             }
-            if (rights[selectedRight] === "write") {
-                sharedRights = sharedRights.filter(({user}) => (user.id !== coordinators[selectedCoordinator].id))
-            }
-        }
-
-        this.setState({
-            sharedRights: [...sharedRights, {user: coordinators[selectedCoordinator], right: rights[selectedRight]}],
-            selectedCoordinator: 0, selectedRight: 0
-        });
+            return c;
+        }).filter(c => !!c);
     };
 
-    delete = ({currentTarget: {id}}) => {
-        const {sharedRights} = this.state;
-        sharedRights.splice(getIndex(id), 1);
-        this.setState({sharedRights});
+    concatWithSelected = (someRights, selected) => {
+        const {allCoordinators} = this.state;
+        let newArr = [...someRights];
+
+        for (let i = 0; i < selected.length; i++) {
+            const newR = allCoordinators.find(c => c.id === selected[i]);
+            newArr.push(newR);
+        }
+
+        return newArr;
     };
 
     open = () => {//TODO: coordinators move to list
-        const sharedReadRights = this.props.sharedReadRights.map(item => ({user: item, right: "read"}));
-        const sharedWriteRights = this.props.sharedWriteRights.map(item => ({user: item, right: "write"}));
         this.setState({
-            isOpened: true,
-            sharedRights: [...sharedReadRights, ...sharedWriteRights],
-            selectedCoordinator: 0,
-            selectedRight: 0,
+            isOpened: true
         });
     };
 
@@ -70,26 +63,79 @@ class SharedRightsDialog extends Component {
         this.setState({isOpened: false});
     };
 
-    handleCoordinatorChanged = (e) => {
-        const selectedCoordinator = e.target.selectedIndex;
-        this.setState({selectedCoordinator});
+    handleSelectCoordinators = ({target: {options}}) => {
+        let selectedNoRight = [];
+        for (let i = 0, l = options.length; i < l; i++) {
+            if (options[i].selected) {
+                selectedNoRight.push(options[i].value);
+            }
+        }
+        this.setState({selectedNoRight});
     };
 
-    handleRightChanged = (e) => {
-        const selectedRight = e.target.selectedIndex;
-        this.setState({selectedRight});
+    handleSelectSharedReadRights = ({target: {options}}) => {
+        let selectedReadRight = [];
+        for (let i = 0, l = options.length; i < l; i++) {
+            if (options[i].selected) {
+                selectedReadRight.push(options[i].value);
+            }
+        }
+        this.setState({selectedReadRight});
+    };
+
+    handleSelectSharedWriteRights = ({target: {options}}) => {
+        let selectedWriteRight = [];
+        for (let i = 0, l = options.length; i < l; i++) {
+            if (options[i].selected) {
+                selectedWriteRight.push(options[i].value);
+            }
+        }
+        this.setState({selectedWriteRight});
+    };
+
+    addReadRight = () => {
+        let {noRight, selectedNoRight, readRights} = this.state;
+        if (selectedNoRight.length === 0) return;
+        readRights = this.concatWithSelected(readRights, selectedNoRight);
+        noRight = this.removeSelected(noRight, selectedNoRight);
+        this.setState({readRights, noRight, selectedNoRight: []})
+    };
+
+    deleteReadRight = () => {
+        let {noRight, selectedReadRight, readRights} = this.state;
+        if (selectedReadRight.length === 0) return;
+        readRights = this.removeSelected(readRights, selectedReadRight);
+        noRight = this.concatWithSelected(noRight, selectedReadRight);
+        this.setState({readRights, noRight, selectedReadRight: []})
+    };
+
+    addWriteRight = () => {
+        let {noRight, selectedNoRight, writeRights} = this.state;
+        if (selectedNoRight.length === 0) return;
+        writeRights = this.concatWithSelected(writeRights, selectedNoRight);
+        noRight = this.removeSelected(noRight, selectedNoRight);
+        this.setState({writeRights, noRight, selectedNoRight: []})
+    };
+
+
+    deleteWriteRight = () => {
+        let {noRight, selectedWriteRight, writeRights} = this.state;
+        if (selectedWriteRight.length === 0) return;
+        writeRights = this.removeSelected(writeRights, selectedWriteRight);
+        noRight = this.concatWithSelected(noRight, selectedWriteRight);
+        this.setState({writeRights, noRight, selectedWriteRight: []})
     };
 
     save = () => {
         const {edit} = this.props;
-        const {sharedRights} = this.state;
-        const sharedReadRights = sharedRights.filter(item => item.right === "read").map(item => (item.user.id));
-        const sharedWriteRights = sharedRights.filter(item => item.right === "write").map(item => (item.user.id));
-        edit({newState: {sharedReadRights, sharedWriteRights}});
+        let {readRights, writeRights} = this.state;
+        readRights = readRights.map(user => (user.id));
+        writeRights = writeRights.map(user => (user.id));
+        edit({newState: {sharedReadRights: readRights, sharedWriteRights: writeRights}});
     };
 
     render() {
-        const {isOpened, sharedRights, coordinators, selectedCoordinator, selectedRight} = this.state;
+        const {isOpened, noRight, selectedNoRight, readRights, selectedReadRight, writeRights, selectedWriteRight} = this.state;
 
         return (
             <>
@@ -100,40 +146,48 @@ class SharedRightsDialog extends Component {
                     isOpened &&
                     <Popup>
                         <div className={'dialog'}>
-                            <div className={'dialog__line dialog__line__list'}>
-                                {
-                                    sharedRights.length > 0 &&
-                                    sharedRights.map((item, id) => <div key={id}>
-                                        <span>{item.user.lastName + ' ' + item.user.name + ' - ' + item.right}</span>
-                                        <button className={'button button_borderless button_icon'} id={'right_' + id}
-                                                onClick={this.delete}>
-                                            <Icon type={'delete'} className={'icon'}/>
-                                        </button>
-                                    </div>)
-                                }
-                            </div>
                             <div className={'dialog__line'}>
-                                <select onChange={this.handleCoordinatorChanged} value={selectedCoordinator}>
-                                    {
-                                        coordinators.map((user, i) => (
-                                            <option key={i} value={i} label={user.lastName + ' ' + user.name}/>
-                                        ))
-                                    }
-                                </select>
-                                <select onChange={this.handleRightChanged} value={selectedRight}>
-                                    {
-                                        rights.map((right, i) => (
-                                            <option key={i} value={i} label={right}/>
-                                        ))
-                                    }
-                                </select>
-                                <button className={'button button_borderless button_icon'} onClick={this.add}>
-                                    <Icon type={'add'} className={'icon'}/>
-                                </button>
+                                <div className={'dialog__column'}>
+                                    <span>{'Read'}</span>
+                                    <select multiple value={selectedReadRight}
+                                            onChange={this.handleSelectSharedReadRights}>
+                                        {readRights.map(c => <option key={c.id}
+                                                                     value={c.id}>{c.name + ' ' + c.lastName}</option>)}
+                                    </select>
+                                </div>
+                                <div className={'dialog__column'}>
+                                    <button className={'button button_borderless'}
+                                            onClick={this.addReadRight}>{'<<'}</button>
+                                    <button className={'button button_borderless'}
+                                            onClick={this.deleteReadRight}>{'>>'}</button>
+                                </div>
+                                <div className={'dialog__column'}>
+                                    <span>{'No'}</span>
+                                    <select multiple value={selectedNoRight} onChange={this.handleSelectCoordinators}>
+                                        {noRight.map(c => <option key={c.id}
+                                                                  value={c.id}>{c.name + ' ' + c.lastName}</option>)}
+                                    </select>
+                                </div>
+                                <div className={'dialog__column'}>
+                                    <button className={'button button_borderless'}
+                                            onClick={this.deleteWriteRight}>{'<<'}</button>
+                                    <button className={'button button_borderless'}
+                                            onClick={this.addWriteRight}>{'>>'}</button>
+                                </div>
+                                <div className={'dialog__column'}>
+                                    <span>{'Write'}</span>
+                                    <select multiple value={selectedWriteRight}
+                                            onChange={this.handleSelectSharedWriteRights}>
+                                        {writeRights.map(c => <option key={c.id}
+                                                                      value={c.id}>{c.name + ' ' + c.lastName}</option>)}
+                                    </select>
+                                </div>
                             </div>
                             <div className={'dialog__button-panel'}>
-                                <button className={'button'} onClick={this.save}>{getTranslations({text: 'save'})}</button>
-                                <button className={'button'} onClick={this.close}>{getTranslations({text: 'cancel'})}</button>
+                                <button className={'button'}
+                                        onClick={this.save}>{getTranslations({text: 'save'})}</button>
+                                <button className={'button'}
+                                        onClick={this.close}>{getTranslations({text: 'cancel'})}</button>
                             </div>
                         </div>
                     </Popup>

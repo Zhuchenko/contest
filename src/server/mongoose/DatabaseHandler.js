@@ -115,11 +115,11 @@ export const addContest = async (newInstance) => {
 };
 
 export const updateContest = async (id, newState) => {
-    contest.update(id, newState);
+    await contest.update(id, newState);
 };
 
 export const deleteContest = async (id) => {
-    contest.remove(id);
+    await contest.remove(id);
 };
 
 // groups of users

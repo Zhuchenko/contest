@@ -30,7 +30,6 @@ class Problem extends Component {
         if (contestId) {
             getProblemFromContest(contestId, problemId)
                 .then(({problem: {name, text, limitation, language}, isParticipant}) => {
-                    console.log(language)
                     this.setState({
                         name,
                         text,
