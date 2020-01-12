@@ -7,6 +7,7 @@ import CustomInput from '../common/CustomInput'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/user/actions'
 import getTranslations from '../../utilities/getTranslations'
+import Select from 'react-select'
 
 class UserEditingForm extends Component {
     constructor(props) {
@@ -99,7 +100,7 @@ class UserEditingForm extends Component {
         this.setState({authKey: {value, touched: true}});
     };
 
-    onChange = ({target: {value}}) => {
+    handleChanged = ({value}) => {
         this.setState({roleIndex: {value, touched: true}});
     };
 
@@ -118,7 +119,7 @@ class UserEditingForm extends Component {
         const {name, lastName, email, roleIndex, unverified, authKey} = this.state;
         const {canChangeRole} = this.props;
         return (
-            <div className={'dialog scrollbar'}>
+            <div className={'dialog dialog--fixed-width scrollbar'}>
                 <CustomInput key='name'
                        placeholder={getTranslations({text: 'name'})}
                        value={name.value}
@@ -139,13 +140,20 @@ class UserEditingForm extends Component {
                 }
                 {
                     canChangeRole &&
-                    <select onChange={this.onChange} value={roleIndex.value}>
-                        {
-                            roles.map((role, i) => (
-                                <option key={i} value={i} label={getTranslations({text: role.name})}/>
-                            ))
-                        }
-                    </select>
+                    <Select onChange={this.handleChanged} value={{
+                        key: roleIndex.value,
+                        value: roleIndex.value,
+                        label: getTranslations({text: roles[roleIndex.value].name})
+                    }} options={
+                        roles.map((role, i) => ({
+                            key: i,
+                            value: i,
+                            label: getTranslations({text: role.name})
+                        }))
+                    }
+                            className="r-select-container r-select-container--single"
+                            classNamePrefix="r-select"
+                    />
                 }
                 {
                     this.props.unverified &&

@@ -66,7 +66,7 @@ class ProblemEditingForm extends Component {
 
     render() {
         const {name, text, time, memory} = this.state;
-        return <div className={'dialog'}>
+        return <div className={'dialog dialog--fixed-width scrollbar'}>
             <CustomInput placeholder={getTranslations({text: 'name'})}
                    value={name}
                    onChange={this.handleChangedName}

@@ -5,6 +5,7 @@ import CustomInput from '../common/CustomInput'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/problem/actions'
 import FileUploader from 'react-input-files'
+import Select from 'react-select'
 import Icon from '../common/Icon'
 import getTranslations from '../../utilities/getTranslations'
 import languageOptions from './languages'
@@ -80,7 +81,7 @@ class ProblemAddingForm extends Component {
         this.setState({memory: value});
     };
 
-    handleChangeLanguage = ({target: {value}}) => {
+    handleChangeLanguage = ({value}) => {
         this.setState({languageIndex: value});
     };
 
@@ -157,7 +158,7 @@ class ProblemAddingForm extends Component {
         const {name, text, time, memory, checker, generator, languageIndex, tests} = this.state;
         const {isCreating, error, closeProblemCreatingDialog} = this.props;
 
-        return <div className={'dialog scrollbar'}>
+        return <div className={'dialog dialog--fixed-width scrollbar'}>
             <div>{error}</div>
             <CustomInput placeholder={getTranslations({text: 'name'})}
                          value={name}
@@ -178,13 +179,16 @@ class ProblemAddingForm extends Component {
             </div>
             <div className={'dialog__line'}>
                 <span className={'dialog__line__label'}>{getTranslations({text: 'languages'})}: </span>
-                <select onChange={this.handleChangeLanguage} value={languageIndex}>
-                    {
-                        languageOptions.map((lang, i) => (
-                            <option key={lang.id} value={i} label={lang.text}/>
-                        ))
+                <Select onChange={this.handleChangeLanguage} options={
+                        languageOptions.map((lang, i) => ({
+                            key: lang.id,
+                            value: i,
+                            label: lang.text
+                        }))
                     }
-                </select>
+                    className="r-select-container r-select-container--single"
+                    classNamePrefix="r-select"
+                />
             </div>
             <div className={'dialog__line'}>
                 <span className={'dialog__line__label'}>{getTranslations({text: 'checker'})}: </span>

@@ -5,6 +5,7 @@ import roles from './roles'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/user/actions'
 import getTranslations from '../../utilities/getTranslations'
+import Select from 'react-select'
 
 class UserAddingForm extends Component {
     constructor(props) {
@@ -37,7 +38,7 @@ class UserAddingForm extends Component {
         this.setState({authKey: value});
     };
 
-    onChange = ({target: {value}}) => {
+    handleChanged = ({value}) => {
         this.setState({roleIndex: value});
     };
 
@@ -55,7 +56,7 @@ class UserAddingForm extends Component {
     render() {
         const {name, lastName, roleIndex, authKey} = this.state;
         return (
-            <div className={'dialog scrollbar'}>
+            <div className={'dialog dialog--fixed-width scrollbar'}>
                 <CustomInput key='name'
                        placeholder={getTranslations({text: 'name'})}
                        value={name}
@@ -66,13 +67,16 @@ class UserAddingForm extends Component {
                        value={lastName}
                        onChange={this.handleChangedLastName}
                        handleKeyPress={this.handleKeyPress}/>
-                <select onChange={this.onChange} defaultValue={roleIndex}>
-                    {
-                        roles.map((role, i) => (
-                            <option key={i} value={i} label={getTranslations({text: role.name})}/>
-                        ))
+                <Select onChange={this.handleChanged} options={
+                        roles.map((role, i) => ({
+                            key: i,
+                            value: i,
+                            label: getTranslations({text: role.name})
+                        }))
                     }
-                </select>
+                    className="r-select-container r-select-container--single"
+                    classNamePrefix="r-select"
+                />
                 <CustomInput key='authKey'
                        placeholder="Auth key"
                        value={authKey}

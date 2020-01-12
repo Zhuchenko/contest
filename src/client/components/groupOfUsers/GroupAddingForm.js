@@ -7,6 +7,7 @@ import getList from '../common/List'
 import UserItemWithCheckBox from './UserItemWithCheckBox'
 import {getUsersForGroupCreating} from '../../services/groupOfUsersApi'
 import getTranslations from '../../utilities/getTranslations'
+import Select from "react-select";
 
 class GroupAddingForm extends Component {
     constructor(props) {
@@ -42,10 +43,14 @@ class GroupAddingForm extends Component {
         this.setState({name: value});
     };
 
-    handleChecked = (id) => {
+    handleChecked = (values) => {
         const {users} = this.state;
-        const index = users.findIndex(user => user.id === id);
-        users[index].isSelected = !users[index].isSelected;
+        const indexes = [];
+        values.forEach(value => {
+            indexes.push(users.findIndex(item => item.id === value.id));
+        });
+        users.forEach(item => item.isSelected = false);
+        indexes.forEach(index => users[index].isSelected = true);
         this.setState({users})
     };
 
@@ -62,15 +67,23 @@ class GroupAddingForm extends Component {
 
     render() {
         const {name, users} = this.state;
-        const List = getList(UserItemWithCheckBox, users);
         return (
-            <div className={'dialog'}>
+            <div className={'dialog dialog--fixed-width scrollbar'}>
                 <CustomInput key='name'
                              placeholder={getTranslations({text: 'name'})}
                              value={name}
                              onChange={this.handleChangedName}
                              handleKeyPress={this.handleKeyPress}/>
-                <List handleChecked={this.handleChecked}/>
+                <Select isMulti isSearchable isClearable value={
+                    users.filter(item => item.isSelected)
+                        .map(item => ({id: item.id, value: item.name, label: item.name}))
+                } options={
+                    users.map(item => ({id: item.id, value: item.name, label: item.name}))
+                }
+                        onChange={this.handleChecked}
+                        className="r-select-container r-select-container--multi"
+                        classNamePrefix="r-select"
+                />
                 <div className={'dialog__button-panel'}>
                     <button className={'button'} onClick={this.add}>{getTranslations({text: 'add'})}</button>
                     <button className={'button'} onClick={this.props.close}>{getTranslations({text: 'cancel'})}</button>

@@ -1,5 +1,5 @@
 :root {
-    --background-color: #f1f0f0;
+    --background-color: #f7f9ff;
 
     --primary-color: #4527a0;
     --secondary-color: #ffa726;
@@ -32,6 +32,9 @@ input, button, div, select {
 a {
     text-decoration: none;
     color: var(--dark-font-color);
+}
+a:hover {
+    color: var(--secondary-color);
 }
 
 textarea {
@@ -137,6 +140,10 @@ select {
     overflow-y: auto;
 }
 
+.dialog--fixed-width {
+    width: 50%;
+}
+
 .dialog__sub-header {
     margin: 1em 0;
     font-weight: bold;
@@ -161,6 +168,7 @@ select {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 .dialog__line div[role="button"] {
@@ -183,6 +191,7 @@ select {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 
 .dialog__button-panel{
@@ -255,4 +264,11 @@ select {
 .wrapper__buttons-panel__button-with-text {
     display: flex;
     align-items: center;
+}
+
+.r-select-container {
+    min-width: 150px;
+}
+.r-select-container--multi {
+    width: 80%;
 }

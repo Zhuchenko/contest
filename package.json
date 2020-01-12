@@ -50,7 +50,8 @@
     "redux-actions": "2.6.1",
     "redux-devtools-extension": "2.13.5",
     "redux-saga": "0.16.0",
-    "sendmail": "1.6.1"
+    "sendmail": "1.6.1",
+    "react-select": "latest"
   },
   "devDependencies": {
     "@babel/cli": "7.4.4",
