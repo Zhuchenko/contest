@@ -172,13 +172,13 @@ class SharedRightsDialog extends Component {
                                     <Select isMulti isSearchable isClearable menuIsOpen value={
                                         selectedReadRight.map(item => ({
                                                 id: item.id,
-                                                value: item.name,
+                                                value: item.id,
                                                 label: item.name + ' ' + item.lastName
                                             }
                                         ))} options={
                                         readRights.map(item => ({
                                                 id: item.id,
-                                                value: item.name,
+                                                value: item.id,
                                                 label: item.name + ' ' + item.lastName
                                             }
                                         ))
@@ -205,13 +205,13 @@ class SharedRightsDialog extends Component {
                                     <Select isMulti isSearchable isClearable menuIsOpen value={
                                         selectedNoRight.map(item => ({
                                                 id: item.id,
-                                                value: item.name,
+                                                value: item.id,
                                                 label: item.name + ' ' + item.lastName
                                             }
                                         ))} options={
                                         noRight.map(item => ({
                                                 id: item.id,
-                                                value: item.name,
+                                                value: item.id,
                                                 label: item.name + ' ' + item.lastName
                                             }
                                         ))
@@ -238,13 +238,13 @@ class SharedRightsDialog extends Component {
                                     <Select isMulti isSearchable isClearable menuIsOpen value={
                                         selectedWriteRight.map(item => ({
                                                 id: item.id,
-                                                value: item.name,
+                                                value: item.id,
                                                 label: item.name + ' ' + item.lastName
                                             }
                                         ))} options={
                                         writeRights.map(item => ({
                                                 id: item.id,
-                                                value: item.name,
+                                                value: item.id,
                                                 label: item.name + ' ' + item.lastName
                                             }
                                         ))
