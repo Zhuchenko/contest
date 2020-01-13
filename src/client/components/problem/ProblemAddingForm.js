@@ -33,31 +33,31 @@ class ProblemAddingForm extends Component {
     add = () => {
         const {name, text, time, memory, checker, generator, tests, languageIndex} = this.state;
         if (!name){
-            toastr.error('Error', 'Enter name');
+            toastr.error(getTranslations({text: 'error'}), getTranslations({text: 'name error message'}));
             return;
         }
         if (!text){
-            toastr.error('Error', 'Enter text');
+            toastr.error(getTranslations({text: 'error'}), getTranslations({text: 'text error message'}));
             return;
         }
         if (time <= 0){
-            toastr.error('Error', 'Time must be greater than 0.');
+            toastr.error(getTranslations({text: 'error'}), getTranslations({text: 'time error message'}));
             return;
         }
         if (memory <= 0){
-            toastr.error('Error', 'Time must be greater than 0.');
+            toastr.error(getTranslations({text: 'error'}), getTranslations({text: 'time error message'}));
             return;
         }
         if (!checker){
-            toastr.error('Error', 'Attach checker');
+            toastr.error(getTranslations({text: 'error'}), getTranslations({text: 'checker error message'}));
             return;
         }
         if (!generator){
-            toastr.error('Error', 'Attach generator');
+            toastr.error(getTranslations({text: 'error'}), getTranslations({text: 'generator error message'}));
             return;
         }
         if (tests.length === 0){
-            toastr.error('Error', 'The number of tests must be more than 0.');
+            toastr.error(getTranslations({text: 'error'}), getTranslations({text: 'number of tests error message'}));
             return;
         }
         const {addProblem} = this.props;
@@ -90,7 +90,7 @@ class ProblemAddingForm extends Component {
             if (files[0].size > 0) {
                 this.setState({checker: files[0]});
             } else {
-                toastr.error('Error', 'Size of the file must be greater then 0.');
+                toastr.error(getTranslations({text: 'error'}), getTranslations({text: 'size of file error message'}));
             }
         }
     };
@@ -104,7 +104,7 @@ class ProblemAddingForm extends Component {
             if (files[0].size > 0) {
                 this.setState({generator: files[0]});
             } else {
-                toastr.error('Error', 'Size of the file must be greater then 0.');
+                toastr.error(getTranslations({text: 'error'}), getTranslations({text: 'size of file error message'}));
             }
         }
     };

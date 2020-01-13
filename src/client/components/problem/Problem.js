@@ -52,7 +52,7 @@ class Problem extends Component {
             if (files[0].size > 0) {
                 this.setState({attachedFile: files[0], results: ''});
             } else {
-                toastr.error('Error', 'Size of the file must be greater then 0.');
+                toastr.error(getTranslations({text: 'error'}), getTranslations({text: 'size of file error message'}));
             }
         }
     };

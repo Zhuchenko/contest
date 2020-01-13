@@ -296,6 +296,34 @@ const translations = {
     'user delete message': {
         'english': 'user has been deleted',
         'russian': 'пользователь удален'
+    },
+    'size of file error message': {
+        'english': 'size of the file must be greater then 0',
+        'russian': 'размер файла должен быть строго больше 0'
+    },
+    'name error message': {
+        'english': 'enter name',
+        'russian': 'введите имя'
+    },
+    'text error message': {
+        'english': 'enter text',
+        'russian': 'введите текст'
+    },
+    'time error message': {
+        'english': 'time must be greater then 0',
+        'russian': 'время должно быть строго больше 0'
+    },
+    'checker error message': {
+        'english': 'attach checker',
+        'russian': 'загрузите чекер'
+    },
+    'generator error message': {
+        'english': 'attach generator',
+        'russian': 'загрузите генератор'
+    },
+    'number of tests error message': {
+        'english': 'number of tests must be greater then 0',
+        'russian': 'количество тестов должно быть строго больше 0'
     }
 };
 
