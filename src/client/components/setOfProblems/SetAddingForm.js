@@ -73,14 +73,14 @@ class SetAddingForm extends Component {
                    value={name}
                    onChange={this.handleChangedName}
                    handleKeyPress={this.handleKeyPress}/>
-                <Select isMulti isSearchable isClearable value={
+                <Select isMulti isSearchable isClearable menuIsOpen value={
                     problems.filter(item => item.isSelected)
                         .map(item => ({id: item.id, value: item.name, label: item.name}))
                 } options={
                     problems.map(item => ({id: item.id, value: item.name, label: item.name}))
                 }
                         onChange={this.handleChecked}
-                        className="r-select-container r-select-container--multi"
+                        className="r-select-container r-select-container--multi r-select-container--open-menu"
                         classNamePrefix="r-select"
                 />
                 <div className={'dialog__button-panel'}>

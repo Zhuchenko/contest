@@ -4,6 +4,7 @@ import Popup from './common/Popup'
 import {getCoordinators} from '../services/userApi'
 import Icon from './common/Icon'
 import getTranslations from '../utilities/getTranslations'
+import Select from 'react-select'
 
 //TODO: add translations to rights
 
@@ -23,19 +24,20 @@ class SharedRightsDialog extends Component {
     }
 
     componentDidMount() {
-        getCoordinators()
-            .then(allCoordinators => {
-                const {readRights, writeRights} = this.state;
-                let noRight = this.removeSelected(allCoordinators, readRights.map(rr => rr.id));
-                noRight = this.removeSelected(noRight, writeRights.map(wr => wr.id));
-                this.setState({allCoordinators, noRight});
-            })
+        getCoordinators().then(this.initializeCoordinators);
     }
+
+    initializeCoordinators = allCoordinators => {
+        const {readRights, writeRights} = this.state;
+        let noRight = this.removeSelected(allCoordinators, readRights);
+        noRight = this.removeSelected(noRight, writeRights);
+        this.setState({allCoordinators, noRight});
+    };
 
     removeSelected = (someRights, selected) => {
         return someRights.map(c => {
             for (let i = 0; i < selected.length; i++) {
-                if (c.id === selected[i]) return false;
+                if (c.id === selected[i].id) return false;
             }
             return c;
         }).filter(c => !!c);
@@ -46,7 +48,7 @@ class SharedRightsDialog extends Component {
         let newArr = [...someRights];
 
         for (let i = 0; i < selected.length; i++) {
-            const newR = allCoordinators.find(c => c.id === selected[i]);
+            const newR = allCoordinators.find(c => c.id === selected[i].id);
             newArr.push(newR);
         }
 
@@ -60,36 +62,54 @@ class SharedRightsDialog extends Component {
     };
 
     close = () => {
-        this.setState({isOpened: false});
+        const {allCoordinators} = this.state;
+        const {sharedReadRights, sharedWriteRights} = this.props;
+        this.setState({
+            allCoordinators: [],
+            noRight: [],
+            readRights: sharedReadRights,
+            writeRights: sharedWriteRights,
+            selectedNoRight: [],
+            selectedReadRight: [],
+            selectedWriteRight: [],
+            isOpened: false
+        });
+        this.initializeCoordinators(allCoordinators);
     };
 
-    handleSelectCoordinators = ({target: {options}}) => {
-        let selectedNoRight = [];
-        for (let i = 0, l = options.length; i < l; i++) {
-            if (options[i].selected) {
-                selectedNoRight.push(options[i].value);
-            }
+    handleSelectCoordinators = (values) => {
+        if (!values || values.length <= 0) {
+            this.setState({selectedNoRight: []});
+            return;
         }
+
+        const {allCoordinators} = this.state;
+        const selectedNoRight = [];
+        values.forEach(value => selectedNoRight.push(allCoordinators.find(c => c.id === value.id)));
         this.setState({selectedNoRight});
     };
 
-    handleSelectSharedReadRights = ({target: {options}}) => {
-        let selectedReadRight = [];
-        for (let i = 0, l = options.length; i < l; i++) {
-            if (options[i].selected) {
-                selectedReadRight.push(options[i].value);
-            }
+    handleSelectSharedReadRights = (values) => {
+        if (!values || values.length <= 0) {
+            this.setState({selectedReadRight: []});
+            return;
         }
+
+        const {allCoordinators} = this.state;
+        const selectedReadRight = [];
+        values.forEach(value => selectedReadRight.push(allCoordinators.find(c => c.id === value.id)));
         this.setState({selectedReadRight});
     };
 
-    handleSelectSharedWriteRights = ({target: {options}}) => {
-        let selectedWriteRight = [];
-        for (let i = 0, l = options.length; i < l; i++) {
-            if (options[i].selected) {
-                selectedWriteRight.push(options[i].value);
-            }
+    handleSelectSharedWriteRights = (values) => {
+        if (!values || values.length <= 0) {
+            this.setState({selectedWriteRight: []});
+            return;
         }
+
+        const {allCoordinators} = this.state;
+        const selectedWriteRight = [];
+        values.forEach(value => selectedWriteRight.push(allCoordinators.find(c => c.id === value.id)));
         this.setState({selectedWriteRight});
     };
 
@@ -149,38 +169,86 @@ class SharedRightsDialog extends Component {
                             <div className={'dialog__line'}>
                                 <div className={'dialog__column'}>
                                     <span>{'Read'}</span>
-                                    <select multiple value={selectedReadRight}
-                                            onChange={this.handleSelectSharedReadRights}>
-                                        {readRights.map(c => <option key={c.id}
-                                                                     value={c.id}>{c.name + ' ' + c.lastName}</option>)}
-                                    </select>
+                                    <Select isMulti isSearchable isClearable menuIsOpen value={
+                                        selectedReadRight.map(item => ({
+                                                id: item.id,
+                                                value: item.name,
+                                                label: item.name + ' ' + item.lastName
+                                            }
+                                        ))} options={
+                                        readRights.map(item => ({
+                                                id: item.id,
+                                                value: item.name,
+                                                label: item.name + ' ' + item.lastName
+                                            }
+                                        ))
+                                    }
+                                            onChange={this.handleSelectSharedReadRights}
+                                            className="r-select-container r-select-container--open-menu"
+                                            classNamePrefix="r-select"
+                                    />
                                 </div>
                                 <div className={'dialog__column'}>
-                                    <button className={'button button_borderless'}
-                                            onClick={this.addReadRight}>{'<<'}</button>
-                                    <button className={'button button_borderless'}
-                                            onClick={this.deleteReadRight}>{'>>'}</button>
+                                    <button className={'button button_borderless button_icon'}
+                                            onClick={this.addReadRight}>{
+                                        <Icon type={'move_left'} className={'icon'}/>
+                                    }</button>
+                                    <button className={'button button_borderless button_icon'}
+                                            onClick={this.deleteReadRight}>{
+                                        <Icon type={'move_right'} className={'icon'}/>
+                                    }</button>
                                 </div>
                                 <div className={'dialog__column'}>
                                     <span>{'No'}</span>
-                                    <select multiple value={selectedNoRight} onChange={this.handleSelectCoordinators}>
-                                        {noRight.map(c => <option key={c.id}
-                                                                  value={c.id}>{c.name + ' ' + c.lastName}</option>)}
-                                    </select>
+                                    <Select isMulti isSearchable isClearable menuIsOpen value={
+                                        selectedNoRight.map(item => ({
+                                                id: item.id,
+                                                value: item.name,
+                                                label: item.name + ' ' + item.lastName
+                                            }
+                                        ))} options={
+                                        noRight.map(item => ({
+                                                id: item.id,
+                                                value: item.name,
+                                                label: item.name + ' ' + item.lastName
+                                            }
+                                        ))
+                                    }
+                                            onChange={this.handleSelectCoordinators}
+                                            className="r-select-container r-select-container--open-menu"
+                                            classNamePrefix="r-select"
+                                    />
                                 </div>
                                 <div className={'dialog__column'}>
-                                    <button className={'button button_borderless'}
-                                            onClick={this.deleteWriteRight}>{'<<'}</button>
-                                    <button className={'button button_borderless'}
-                                            onClick={this.addWriteRight}>{'>>'}</button>
+                                    <button className={'button button_borderless button_icon'}
+                                            onClick={this.deleteWriteRight}>{
+                                        <Icon type={'move_left'} className={'icon'}/>
+                                    }</button>
+                                    <button className={'button button_borderless button_icon'}
+                                            onClick={this.addWriteRight}>{
+                                        <Icon type={'move_right'} className={'icon'}/>
+                                    }</button>
                                 </div>
                                 <div className={'dialog__column'}>
                                     <span>{'Write'}</span>
-                                    <select multiple value={selectedWriteRight}
-                                            onChange={this.handleSelectSharedWriteRights}>
-                                        {writeRights.map(c => <option key={c.id}
-                                                                      value={c.id}>{c.name + ' ' + c.lastName}</option>)}
-                                    </select>
+                                    <Select isMulti isSearchable isClearable menuIsOpen value={
+                                        selectedWriteRight.map(item => ({
+                                                id: item.id,
+                                                value: item.name,
+                                                label: item.name + ' ' + item.lastName
+                                            }
+                                        ))} options={
+                                        writeRights.map(item => ({
+                                                id: item.id,
+                                                value: item.name,
+                                                label: item.name + ' ' + item.lastName
+                                            }
+                                        ))
+                                    }
+                                            onChange={this.handleSelectSharedWriteRights}
+                                            className="r-select-container r-select-container--open-menu"
+                                            classNamePrefix="r-select"
+                                    />
                                 </div>
                             </div>
                             <div className={'dialog__button-panel'}>

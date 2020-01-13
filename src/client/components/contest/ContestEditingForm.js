@@ -102,14 +102,14 @@ class ContestEditingForm extends Component {
                 <div className={'dialog__line'}>
                     <div className={'dialog__line__list'}>
                         <span className={'dialog__line__label'}>{getTranslations({text: 'groups'})}: </span>
-                        <Select isMulti isSearchable value={
+                        <Select isMulti isSearchable isClearable menuIsOpen value={
                             groups.filter(item => item.isSelected)
                                 .map((item) => ({id: item.id, value: item.name, label: item.name}))
                         } options={
                             groups.map(item => ({id: item.id, value: item.name, label: item.name}))
                         }
                                 onChange={this.handleCheckedGroups}
-                                className="r-select-container r-select-container--multi"
+                                className="r-select-container r-select-container--multi r-select-container--open-menu"
                                 classNamePrefix="r-select"
                         />
                     </div>
@@ -117,14 +117,14 @@ class ContestEditingForm extends Component {
                 <div className={'dialog__line'}>
                     <div className={'dialog__line__list'}>
                         <span className={'dialog__line__label'}>{getTranslations({text: 'sets'})}: </span>
-                        <Select isMulti isSearchable value={
+                        <Select isMulti isSearchable isClearable menuIsOpen value={
                             sets.filter(item => item.isSelected)
                                 .map((item) => ({id: item.id, value: item.name, label: item.name}))
                         } options={
                             sets.map(item => ({id: item.id, value: item.name, label: item.name}))
                         }
                                 onChange={this.handleCheckedSets}
-                                className="r-select-container r-select-container--multi"
+                                className="r-select-container r-select-container--multi r-select-container--open-menu"
                                 classNamePrefix="r-select"
                         />
                     </div>
