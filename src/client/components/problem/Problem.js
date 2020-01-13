@@ -5,6 +5,7 @@ import getTranslations from '../../utilities/getTranslations'
 import marked from 'marked'
 import languageOptions from './languages'
 import {toastr} from "react-redux-toastr";
+import Icon from "../common/Icon";
 
 class Problem extends Component {
     constructor(props) {
@@ -88,7 +89,9 @@ class Problem extends Component {
                     <div className={'wrapper__buttons-panel'}>
                         <div className={'wrapper__buttons-panel__button-with-text'}>
                             <FileUploader accept={languageExt} onChange={this.handleUploadFile}>
-                                <button className={'button'}>{getTranslations({text: 'upload'})}</button>
+                                <button className={'button button_borderless button_icon'}>
+                                    <Icon type={'file'} className={'icon'}/>
+                                </button>
                             </FileUploader>
                             {attachedFile ?
                                 <div>{attachedFile.name}</div>
