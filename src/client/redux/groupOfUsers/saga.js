@@ -2,6 +2,7 @@ import {all, call, put, takeLatest} from 'redux-saga/effects'
 import * as actions from './actions'
 import {addGroup, deleteGroup, editGroup, getGroups} from '../../services/groupOfUsersApi'
 import {toastr} from "react-redux-toastr";
+import getTranslations from "../../utilities/getTranslations";
 
 export default function* groupOfUsersSaga() {
     yield all([
@@ -19,7 +20,7 @@ function* getGroupsSaga() {
         yield put(actions.getGroupsSuccess(groups));
     } catch (error) {
         yield put(actions.getGroupsFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }
 
@@ -30,10 +31,10 @@ function* addGroupSaga(action) {
 
         yield put(actions.getGroups());
         yield put(actions.getGroupsSuccess());
-        toastr.success('Успех', "Группа пользователей создана");
+        toastr.success(getTranslations({text: 'success'}), getTranslations({text: 'group of users create message'}));
     } catch (error) {
         yield put(actions.getGroupsFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }
 
@@ -44,10 +45,10 @@ function* editGroupSaga(action) {
 
         yield put(actions.getGroups());
         yield put(actions.editGroupSuccess());
-        toastr.success('Успех', "Группа пользователей изменена");
+        toastr.success(getTranslations({text: 'success'}), getTranslations({text: 'group of users edit message'}));
     } catch (error) {
         yield put(actions.editGroupFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }
 
@@ -58,9 +59,9 @@ function* deleteGroupSaga(action) {
 
         yield put(actions.getGroups());
         yield put(actions.deleteGroupSuccess());
-        toastr.success('Успех', "Группа пользователей удалена");
+        toastr.success(getTranslations({text: 'success'}), getTranslations({text: 'group of users delete message'}));
     } catch (error) {
         yield put(actions.deleteGroupFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }

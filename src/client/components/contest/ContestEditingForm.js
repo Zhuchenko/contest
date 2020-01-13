@@ -100,7 +100,7 @@ class ContestEditingForm extends Component {
                                  handleKeyPress={this.handleKeyPress}/>
                 </div>
                 <div className={'dialog__line'}>
-                    <div className={'dialog__line__list'}>
+                    <div className={'dialog__column'}>
                         <span className={'dialog__line__label'}>{getTranslations({text: 'groups'})}: </span>
                         <Select isMulti isSearchable isClearable menuIsOpen value={
                             groups.filter(item => item.isSelected)
@@ -108,14 +108,16 @@ class ContestEditingForm extends Component {
                         } options={
                             groups.map(item => ({id: item.id, value: item.name, label: item.name}))
                         }
-                                onChange={this.handleCheckedGroups}
-                                className="r-select-container r-select-container--multi r-select-container--open-menu"
-                                classNamePrefix="r-select"
+                            onChange={this.handleCheckedGroups}
+                            className="r-select-container r-select-container--multi r-select-container--open-menu"
+                            classNamePrefix="r-select"
+                            placeholder={''}
+                            noOptionsMessage={() => getTranslations({text: 'no options message'})}
                         />
                     </div>
                 </div>
                 <div className={'dialog__line'}>
-                    <div className={'dialog__line__list'}>
+                    <div className={'dialog__column'}>
                         <span className={'dialog__line__label'}>{getTranslations({text: 'sets'})}: </span>
                         <Select isMulti isSearchable isClearable menuIsOpen value={
                             sets.filter(item => item.isSelected)
@@ -123,9 +125,11 @@ class ContestEditingForm extends Component {
                         } options={
                             sets.map(item => ({id: item.id, value: item.name, label: item.name}))
                         }
-                                onChange={this.handleCheckedSets}
-                                className="r-select-container r-select-container--multi r-select-container--open-menu"
-                                classNamePrefix="r-select"
+                            onChange={this.handleCheckedSets}
+                            className="r-select-container r-select-container--multi r-select-container--open-menu"
+                            classNamePrefix="r-select"
+                            placeholder={''}
+                            noOptionsMessage={() => getTranslations({text: 'no options message'})}
                         />
                     </div>
                 </div>

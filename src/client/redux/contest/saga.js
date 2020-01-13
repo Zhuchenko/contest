@@ -2,6 +2,7 @@ import {all, call, put, takeLatest} from 'redux-saga/effects'
 import * as actions from './actions'
 import {addContest, deleteContest, editContest, getContests} from '../../services/contestApi'
 import {toastr} from "react-redux-toastr";
+import getTranslations from "../../utilities/getTranslations";
 
 export default function* groupOfUsersSaga() {
     yield all([
@@ -19,7 +20,7 @@ function* getContestsSaga() {
         yield put(actions.getContestsSuccess(contests));
     } catch (error) {
         yield put(actions.getContestsFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }
 
@@ -30,10 +31,10 @@ function* addContestSaga(action) {
 
         yield put(actions.getContests());
         yield put(actions.getContestsSuccess());
-        toastr.success('Успех', "Соревнование создано");
+        toastr.success(getTranslations({text: 'success'}), getTranslations({text: 'contest create message'}));
     } catch (error) {
         yield put(actions.getContestsFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }
 
@@ -44,10 +45,10 @@ function* editContestSaga(action) {
 
         yield put(actions.getContests());
         yield put(actions.editContestSuccess());
-        toastr.success('Успех', "Соревнование изменено");
+        toastr.success(getTranslations({text: 'success'}),  getTranslations({text: 'contest edit message'}));
     } catch (error) {
         yield put(actions.editContestFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }
 
@@ -58,9 +59,9 @@ function* deleteContestSaga(action) {
 
         yield put(actions.getContests());
         yield put(actions.deleteContestSuccess());
-        toastr.success('Успех', "Соревнование удалено");
+        toastr.success(getTranslations({text: 'success'}), getTranslations({text: 'contest delete message'}));
     } catch (error) {
         yield put(actions.deleteContestFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }

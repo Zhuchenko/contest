@@ -86,9 +86,11 @@ class GroupEditingForm extends Component {
                 } options={
                     users.map(item => ({id: item.id, value: item.id, label: item.name + ' ' + item.lastName}))
                 }
-                        onChange={this.handleChecked}
-                        className="r-select-container r-select-container--multi r-select-container--open-menu"
-                        classNamePrefix="r-select"
+                    onChange={this.handleChecked}
+                    className="r-select-container r-select-container--multi r-select-container--open-menu"
+                    classNamePrefix="r-select"
+                    placeholder={''}
+                    noOptionsMessage={() => getTranslations({text: 'no options message'})}
                 />
                 <div className={'dialog__button-panel'}>
                     <button className={'button'} onClick={this.edit}>{getTranslations({text: 'save'})}</button>

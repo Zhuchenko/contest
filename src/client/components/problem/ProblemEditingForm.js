@@ -78,10 +78,10 @@ class ProblemEditingForm extends Component {
             <span className={'dialog__sub-header'}>{getTranslations({text: 'limitations'})}:</span>
             <div className={'dialog__line'}>
                 <span className={'dialog__line__label'}>{getTranslations({text: 'time'})}: </span>
-                <CustomInput type="number" placeholder={getTranslations({text: 'time', format: 'lowercase'})} onChange={this.handleChangedTime} value={time}
+                <CustomInput type="number" placeholder={getTranslations({text: 'time', format: 'lowercase'})} onChange={this.handleChangedTime} value={time.toString()}
                        handleKeyPress={this.handleKeyPress}/>
                 <span className={'dialog__line__label'}>{getTranslations({text: 'memory'})}: </span>
-                <CustomInput type="number" placeholder={getTranslations({text: 'tests', format: 'lowercase'})} onChange={this.handleChangedMemory} value={memory}
+                <CustomInput type="number" placeholder={getTranslations({text: 'tests', format: 'lowercase'})} onChange={this.handleChangedMemory} value={memory.toString()}
                        handleKeyPress={this.handleKeyPress}/>
             </div>
             <div className={'dialog__button-panel'}>

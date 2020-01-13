@@ -3,6 +3,6 @@ import getTranslations from '../../utilities/getTranslations'
 
 export default () => {
     return (
-        <h1>{getTranslations({text: 'no elements here yet'})}</h1>
+        <h1>{getTranslations({text: 'no elements message'})}</h1>
     )
 };

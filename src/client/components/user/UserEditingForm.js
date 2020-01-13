@@ -151,8 +151,10 @@ class UserEditingForm extends Component {
                             label: getTranslations({text: role.name})
                         }))
                     }
-                            className="r-select-container r-select-container--single"
-                            classNamePrefix="r-select"
+                        className="r-select-container r-select-container--single"
+                        classNamePrefix="r-select"
+                        placeholder={''}
+                        noOptionsMessage={() => getTranslations({text: 'no options message'})}
                     />
                 }
                 {

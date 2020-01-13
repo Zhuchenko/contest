@@ -37,23 +37,23 @@ const translations = {
         'english': 'last name',
         'russian': 'фамилия'
     },
-    'it is not valid': {
+    'not valid value message': {
         'english': 'it is not valid',
         'russian': 'неверное значение'
     },
-    'it is not equal to the requirements': {
+    'password requirements error message': {
         'english': 'it is not equal to the requirements',
         'russian': 'пароль не соответствует требованиям'
     },
-    'it does not match': {
+    'password match error message': {
         'english': 'it does not match',
         'russian': 'пароли не совпадают'
     },
-    'it is required': {
+    'require error message': {
         'english': 'it is required',
         'russian': 'обязательное поле'
     },
-    'no elements here yet': {
+    'no elements message': {
         'english': 'no elements here yet',
         'russian': 'здесь пока нет элементов'
     },
@@ -76,6 +76,14 @@ const translations = {
     'share': {
         'english': 'share',
         'russian': 'поделиться'
+    },
+    'move right': {
+        'english': 'move right',
+        'russian': 'переместить вправо'
+    },
+    'move left': {
+        'english': 'move left',
+        'russian': 'переместить влево'
     },
     'participants': {
         'english': 'participants',
@@ -130,12 +138,12 @@ const translations = {
         'russian': 'отправить'
     },
     'time': {
-        'english': 'time',
-        'russian': 'время'
+        'english': 'time (in seconds)',
+        'russian': 'время (в секундах)'
     },
     'memory': {
-        'english': 'memory',
-        'russian': 'память'
+        'english': 'memory (in MBytes)',
+        'russian': 'память (в МБайтах)'
     },
     'text': {
         'english': 'text',
@@ -144,6 +152,10 @@ const translations = {
     'checker': {
         'english': 'checker',
         'russian': 'чекер'
+    },
+    'generator': {
+        'english': 'generator',
+        'russian': 'генератор'
     },
     'tests': {
         'english': 'tests',
@@ -190,16 +202,100 @@ const translations = {
         'russian': 'запись'
     },
     'is not started': {
-        'english': 'is not started',
-        'russian': 'не запущен'
+        'english': 'contest is not started',
+        'russian': 'соревнование не запущено'
     },
     'is active': {
-        'english': 'is active',
-        'russian': 'открыт'
+        'english': 'contest is active',
+        'russian': 'соревнование открыто'
     },
     'is finished': {
-        'english': 'is finished',
-        'russian': 'закрыт'
+        'english': 'contest is finished',
+        'russian': 'соревнование закрыто'
+    },
+    'no options message': {
+        'english': 'no options',
+        'russian': 'нет опций'
+    },
+    'read right': {
+        'english': 'read right',
+        'russian': 'право на чтение'
+    },
+    'no rights': {
+        'english': 'no rights',
+        'russian': 'нет прав'
+    },
+    'write right': {
+        'english': 'write right',
+        'russian': 'право на запись'
+    },
+    'error': {
+        'english': 'error',
+        'russian': 'ошибка'
+    },
+    'success': {
+        'english': 'success',
+        'russian': 'успех'
+    },
+    'contest create message': {
+        'english': 'contest has been created',
+        'russian': 'соревнование создано'
+    },
+    'contest edit message': {
+        'english': 'contest has been edited',
+        'russian': 'соревнование изменено'
+    },
+    'contest delete message': {
+        'english': 'contest has been deleted',
+        'russian': 'соревнование удалено'
+    },
+    'group of users create message': {
+        'english': 'group of users has been created',
+        'russian': 'группа пользователей создана'
+    },
+    'group of users edit message': {
+        'english': 'group of users has been edited',
+        'russian': 'группа пользователей изменена'
+    },
+    'group of users delete message': {
+        'english': 'group of users has been deleted',
+        'russian': 'группа пользователей удалена'
+    },
+    'problem create message': {
+        'english': 'problem has been created',
+        'russian': 'задача создана'
+    },
+    'problem edit message': {
+        'english': 'problem has been edited',
+        'russian': 'задача изменена'
+    },
+    'problem delete message': {
+        'english': 'problem has been deleted',
+        'russian': 'задача удалена'
+    },
+    'set of problems create message': {
+        'english': 'set of problems has been created',
+        'russian': 'набор задач создан'
+    },
+    'set of problems edit message': {
+        'english': 'set of problems has been edited',
+        'russian': 'набор задач изменен'
+    },
+    'set of problems delete message': {
+        'english': 'set of problems has been deleted',
+        'russian': 'набор задач удален'
+    },
+    'user create message': {
+        'english': 'user has been created',
+        'russian': 'пользователь создан'
+    },
+    'user edit message': {
+        'english': 'user has been edited',
+        'russian': 'пользователь изменен'
+    },
+    'user delete message': {
+        'english': 'user has been deleted',
+        'russian': 'пользователь удален'
     }
 };
 

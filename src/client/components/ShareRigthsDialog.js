@@ -168,7 +168,7 @@ class SharedRightsDialog extends Component {
                         <div className={'dialog'}>
                             <div className={'dialog__line'}>
                                 <div className={'dialog__column'}>
-                                    <span>{'Read'}</span>
+                                    <span className={'dialog__line__label'}>{getTranslations({text: 'read right'})}</span>
                                     <Select isMulti isSearchable isClearable menuIsOpen value={
                                         selectedReadRight.map(item => ({
                                                 id: item.id,
@@ -183,9 +183,11 @@ class SharedRightsDialog extends Component {
                                             }
                                         ))
                                     }
-                                            onChange={this.handleSelectSharedReadRights}
-                                            className="r-select-container r-select-container--open-menu"
-                                            classNamePrefix="r-select"
+                                        onChange={this.handleSelectSharedReadRights}
+                                        className="r-select-container r-select-container--open-menu"
+                                        classNamePrefix="r-select"
+                                        placeholder={''}
+                                        noOptionsMessage={() => getTranslations({text: 'no options message'})}
                                     />
                                 </div>
                                 <div className={'dialog__column'}>
@@ -199,7 +201,7 @@ class SharedRightsDialog extends Component {
                                     }</button>
                                 </div>
                                 <div className={'dialog__column'}>
-                                    <span>{'No'}</span>
+                                    <span className={'dialog__line__label'}>{getTranslations({text: 'no rights'})}</span>
                                     <Select isMulti isSearchable isClearable menuIsOpen value={
                                         selectedNoRight.map(item => ({
                                                 id: item.id,
@@ -214,9 +216,11 @@ class SharedRightsDialog extends Component {
                                             }
                                         ))
                                     }
-                                            onChange={this.handleSelectCoordinators}
-                                            className="r-select-container r-select-container--open-menu"
-                                            classNamePrefix="r-select"
+                                        onChange={this.handleSelectCoordinators}
+                                        className="r-select-container r-select-container--open-menu"
+                                        classNamePrefix="r-select"
+                                        placeholder={''}
+                                        noOptionsMessage={() => getTranslations({text: 'no options message'})}
                                     />
                                 </div>
                                 <div className={'dialog__column'}>
@@ -230,7 +234,7 @@ class SharedRightsDialog extends Component {
                                     }</button>
                                 </div>
                                 <div className={'dialog__column'}>
-                                    <span>{'Write'}</span>
+                                    <span className={'dialog__line__label'}>{getTranslations({text: 'write right'})}</span>
                                     <Select isMulti isSearchable isClearable menuIsOpen value={
                                         selectedWriteRight.map(item => ({
                                                 id: item.id,
@@ -245,9 +249,11 @@ class SharedRightsDialog extends Component {
                                             }
                                         ))
                                     }
-                                            onChange={this.handleSelectSharedWriteRights}
-                                            className="r-select-container r-select-container--open-menu"
-                                            classNamePrefix="r-select"
+                                        onChange={this.handleSelectSharedWriteRights}
+                                        className="r-select-container r-select-container--open-menu"
+                                        classNamePrefix="r-select"
+                                        placeholder={''}
+                                        noOptionsMessage={() => getTranslations({text: 'no options message'})}
                                     />
                                 </div>
                             </div>

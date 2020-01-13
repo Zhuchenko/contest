@@ -106,7 +106,7 @@ class SignUpForm extends Component {
             {
                 placeholder: 'email',
                 value: email,
-                errorMessage: getTranslations({text: 'it is not valid', format: 'lowercase'}),
+                errorMessage: getTranslations({text: 'not valid value message', format: 'lowercase'}),
                 onChange: this.handleChangedEmail
             },
             {
@@ -129,14 +129,14 @@ class SignUpForm extends Component {
                 placeholder: getTranslations({text: 'password', format: 'lowercase'}),
                 type: 'password',
                 value: password,
-                errorMessage: getTranslations({text: 'it is not equal to the requirements', format: 'lowercase'}),
+                errorMessage: getTranslations({text: 'password requirements error message', format: 'lowercase'}),
                 onChange: this.handleChangedPassword
             },
             {
                 placeholder: getTranslations({text: 'repeat password', format: 'lowercase'}),
                 type: 'password',
                 value: repeatPassword,
-                errorMessage: getTranslations({text: 'it does not match', format: 'lowercase'}),
+                errorMessage: getTranslations({text: 'password match error message', format: 'lowercase'}),
                 onChange: this.handleChangedRepeatPassword
             }
         ];
@@ -148,7 +148,7 @@ class SignUpForm extends Component {
                         <CustomInput key={placeholder}
                                      {...{placeholder, value, type, onChange}}
                                      isValid={!invalidFields.includes(placeholder)}
-                                     errorMessage={errorMessage ?? getTranslations({text: 'it is required', format: 'lowercase'})}
+                                     errorMessage={errorMessage ?? getTranslations({text: 'require error message', format: 'lowercase'})}
                                      handleKeyPress={this.handleKeyPress}
                         />
                     )

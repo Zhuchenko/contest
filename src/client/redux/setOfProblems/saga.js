@@ -2,6 +2,7 @@ import {all, call, put, takeLatest} from 'redux-saga/effects'
 import * as actions from './actions'
 import {addSet, deleteSet, editSet, getSets} from '../../services/setOfProblemsApi'
 import {toastr} from "react-redux-toastr";
+import getTranslations from "../../utilities/getTranslations";
 
 export default function* setOfUsersSaga() {
     yield all([
@@ -19,7 +20,7 @@ function* getSetsSaga() {
         yield put(actions.getSetsSuccess(sets));
     } catch (error) {
         yield put(actions.getSetsFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }
 
@@ -30,10 +31,10 @@ function* addSetSaga(action) {
 
         yield put(actions.getSets());
         yield put(actions.getSetsSuccess());
-        toastr.success('Успех', "Набор задач создан");
+        toastr.success(getTranslations({text: 'success'}), getTranslations({text: 'set of problems create message'}));
     } catch (error) {
         yield put(actions.getSetsFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }
 
@@ -44,10 +45,10 @@ function* editSetSaga(action) {
 
         yield put(actions.getSets());
         yield put(actions.editSetSuccess());
-        toastr.success('Успех', "Набор задач изменен");
+        toastr.success(getTranslations({text: 'success'}), getTranslations({text: 'set of problems edit message'}));
     } catch (error) {
         yield put(actions.editSetFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }
 
@@ -58,9 +59,9 @@ function* deleteSetSaga(action) {
 
         yield put(actions.getSets());
         yield put(actions.deleteSetSuccess());
-        toastr.success('Успех', "Набор задач удален");
+        toastr.success(getTranslations({text: 'success'}), getTranslations({text: 'set of problems delete message'}));
     } catch (error) {
         yield put(actions.deleteSetFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }

@@ -84,9 +84,11 @@ class SetEditingForm extends Component {
                 } options={
                     problems.map(item => ({id: item.id, value: item.name, label: item.name}))
                 }
-                        onChange={this.handleChecked}
-                        className="r-select-container r-select-container--multi r-select-container--open-menu"
-                        classNamePrefix="r-select"
+                    onChange={this.handleChecked}
+                    className="r-select-container r-select-container--multi r-select-container--open-menu"
+                    classNamePrefix="r-select"
+                    placeholder={''}
+                    noOptionsMessage={() => getTranslations({text: 'no options message'})}
                 />
                 <div className={'dialog__button-panel'}>
                     <button className={'button'} onClick={this.edit}>{getTranslations({text: 'save'})}</button>

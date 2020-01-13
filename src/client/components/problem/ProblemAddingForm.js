@@ -172,10 +172,10 @@ class ProblemAddingForm extends Component {
             <div className={'dialog__line'}>
                 <span className={'dialog__line__label'}>{getTranslations({text: 'time'})}: </span>
                 <CustomInput type="number" min={0} step={10} placeholder={getTranslations({text: 'time', format: 'lowercase'})}
-                             onChange={this.handleChangedTime} value={time} handleKeyPress={this.handleKeyPress}/>
+                             onChange={this.handleChangedTime} value={time.toString()} handleKeyPress={this.handleKeyPress}/>
                 <span className={'dialog__line__label'}>{getTranslations({text: 'memory'})}: </span>
                 <CustomInput type="number" min={0} step={8}  placeholder={getTranslations({text: 'memory', format: 'lowercase'})}
-                             onChange={this.handleChangedMemory} value={memory} handleKeyPress={this.handleKeyPress}/>
+                             onChange={this.handleChangedMemory} value={memory.toString()} handleKeyPress={this.handleKeyPress}/>
             </div>
             <div className={'dialog__line'}>
                 <span className={'dialog__line__label'}>{getTranslations({text: 'languages'})}: </span>
@@ -188,6 +188,8 @@ class ProblemAddingForm extends Component {
                     }
                     className="r-select-container r-select-container--single"
                     classNamePrefix="r-select"
+                    placeholder={''}
+                    noOptionsMessage={() => getTranslations({text: 'no options message'})}
                 />
             </div>
             <div className={'dialog__line'}>
@@ -200,7 +202,7 @@ class ProblemAddingForm extends Component {
                 {
                     checker &&
                     <>
-                        <span className={'dialog__line__label'}>{checker.name}</span>
+                        <span>{checker.name}</span>
                         <button className={'button button_borderless button_icon'} onClick={this.handleRemoveChecker}>
                             <Icon type={'delete'} className={'icon'}/>
                         </button>
@@ -208,7 +210,7 @@ class ProblemAddingForm extends Component {
                 }
             </div>
             <div className={'dialog__line'}>
-                <span>Generator: </span>
+                <span className={'dialog__line__label'}>{getTranslations({text: 'generator'})}: </span>
                 <FileUploader accept={languageOptions[languageIndex].ext} onChange={this.handleUploadGenerator}>
                     <button className={'button button_borderless button_icon'}>
                         <Icon type={'file'} className={'icon'}/>
@@ -217,7 +219,7 @@ class ProblemAddingForm extends Component {
                 {
                     generator &&
                     <>
-                        <span className={'dialog__line__label'}>{generator.name}</span>
+                        <span>{generator.name}</span>
                         <button className={'button button_borderless button_icon'} onClick={this.handleRemoveGenerator}>
                             <Icon type={'delete'} className={'icon'}/>
                         </button>

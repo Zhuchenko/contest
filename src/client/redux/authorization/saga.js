@@ -2,6 +2,7 @@ import {all, call, put, takeLatest} from 'redux-saga/es/effects'
 import * as actions from './actions'
 import {toastr} from 'react-redux-toastr'
 import {signIn, signOut, signUp} from '../../services/authorizationApi'
+import getTranslations from "../../utilities/getTranslations";
 
 export default function* authorizationSaga() {
     yield all([
@@ -19,7 +20,7 @@ function* signInSaga(action) {
         yield put(actions.signInSuccess(user));
     } else {
         yield put(actions.signInFailure({errorMessage}));
-        toastr.error('Ошибка', errorMessage);
+        toastr.error(getTranslations({text: 'error'}), errorMessage);
     }
 }
 
@@ -31,7 +32,7 @@ function* signUpSaga(action) {
         yield put(actions.signUpSuccess());
     } else {
         yield put(actions.signUpFailure({errorMessage}));
-        toastr.error('Ошибка', errorMessage);
+        toastr.error(getTranslations({text: 'error'}), errorMessage);
     }
 }
 

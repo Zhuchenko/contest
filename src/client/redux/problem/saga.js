@@ -2,6 +2,7 @@ import {all, call, put, takeLatest} from 'redux-saga/effects'
 import * as actions from './actions'
 import {addProblem, deleteProblem, editProblem, getProblems} from '../../services/problemApi'
 import {toastr} from "react-redux-toastr";
+import getTranslations from "../../utilities/getTranslations";
 
 export default function* problemSaga() {
     yield all([
@@ -18,7 +19,7 @@ function* getProblemsSaga() {
         yield put(actions.getProblemsSuccess(problems));
     } catch (error) {
         yield put(actions.getProblemsFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }
 
@@ -29,10 +30,10 @@ function* addProblemSaga(action) {
     if (!error) {
         yield put(actions.getProblems());
         yield put(actions.addProblemSuccess());
-        toastr.success('Успех', "Задача создана");
+        toastr.success(getTranslations({text: 'success'}), getTranslations({text: 'problem create message'}));
     } else {
         yield put(actions.addProblemFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }
 
@@ -43,10 +44,10 @@ function* editProblemSaga(action) {
 
         yield put(actions.getProblems());
         yield put(actions.editProblemSuccess());
-        toastr.success('Успех', "Задача изменена");
+        toastr.success(getTranslations({text: 'success'}), getTranslations({text: 'problem edit message'}));
     } catch (error) {
         yield put(actions.editProblemFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }
 
@@ -57,9 +58,9 @@ function* deleteProblemSaga(action) {
 
         yield put(actions.getProblems());
         yield put(actions.deleteProblemSuccess());
-        toastr.success('Успех', "Задача удалена");
+        toastr.success(getTranslations({text: 'success'}), getTranslations({text: 'problem delete message'}));
     } catch (error) {
         yield put(actions.deleteProblemFailure(error));
-        toastr.error('Ошибка', error);
+        toastr.error(getTranslations({text: 'error'}), error);
     }
 }

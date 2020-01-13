@@ -76,6 +76,8 @@ class UserAddingForm extends Component {
                     }
                     className="r-select-container r-select-container--single"
                     classNamePrefix="r-select"
+                    placeholder={''}
+                    noOptionsMessage={() => getTranslations({text: 'no options message'})}
                 />
                 <CustomInput key='authKey'
                        placeholder="Auth key"

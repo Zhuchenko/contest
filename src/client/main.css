@@ -163,12 +163,17 @@ select {
     align-items: center;
 }
 
+.dialog__column .dialog__line__label {
+    padding-bottom: 0.5em;
+}
+
 .dialog__line {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     width: 100%;
+    padding: 0.5em 0;
 }
 
 .dialog__line div[role="button"] {
@@ -184,14 +189,7 @@ select {
 
 .dialog__line__label {
     font-weight: bold;
-}
-
-.dialog__line__list {
-    margin-top: 0.5em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+    text-align: right;
 }
 
 .dialog__button-panel{
@@ -201,11 +199,6 @@ select {
     align-items: flex-start;
     justify-content: space-around;
     margin: 2em 0 0.5em 0;
-}
-
-.Select {
-    min-width: 5em;
-    margin: 0 0.5em;
 }
 
 .wrapper {
@@ -266,9 +259,9 @@ select {
 }
 
 .r-select-container {
-    min-width: 10em;
+    min-width: 15em;
     max-width: 20em;
-    padding: 1em;
+    padding: 0 1em;
 }
 .r-select-container--multi {
     width: 80%;
