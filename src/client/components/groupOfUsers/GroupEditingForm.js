@@ -82,9 +82,9 @@ class GroupEditingForm extends Component {
                 />
                 <Select isMulti isSearchable isClearable menuIsOpen value={
                     users.filter(item => item.isSelected)
-                        .map(item => ({id: item.id, value: item.name, label: item.name}))
+                        .map(item => ({id: item.id, value: item.id, label: item.name + ' ' + item.lastName}))
                 } options={
-                    users.map(item => ({id: item.id, value: item.name, label: item.name}))
+                    users.map(item => ({id: item.id, value: item.id, label: item.name + ' ' + item.lastName}))
                 }
                         onChange={this.handleChecked}
                         className="r-select-container r-select-container--multi r-select-container--open-menu"

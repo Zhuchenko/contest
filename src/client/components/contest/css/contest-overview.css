@@ -1,0 +1,31 @@
+.contest-overview {
+    width: 100%;
+    overflow-x: auto;
+    padding: 1em 0;
+}
+
+.contest-overview table {
+    width: fit-content;
+    border-collapse: collapse;
+}
+
+.contest-overview tbody th {
+    min-width: 10em;
+}
+
+.contest-overview thead th {
+    min-width: 5em;
+}
+
+.contest-overview tbody th, .contest-overview thead th {
+    border: solid 2px var(--primary-color);
+}
+
+.contest-overview tbody td {
+    border: solid 1px var(--primary-color);
+}
+
+.contest-overview tbody th, .contest-overview tbody td, .contest-overview thead th {
+    text-align: center;
+    padding: 1em;
+}

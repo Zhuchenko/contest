@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import {getContestTableView} from '../../services/contestApi'
 import getTranslations from '../../utilities/getTranslations'
-import {Link} from "react-router-dom";
+import {Link} from 'react-router-dom'
+
+import './css/contest-overview.css'
 
 class Contest extends Component {
     constructor(props) {
@@ -30,32 +32,40 @@ class Contest extends Component {
         return (
             <div className={'wrapper'}>
                 <div className={'wrapper__header'}>{getTranslations({text: status, format: 'lowercase'})}</div>
-                <table>
-                    <thead>
-                    <tr>
-                        <td key={'0'}/>
-                        {problems.map((p) => <th key={p.id}>
-                            <Link to={contestId + '/problems/' + p.id}>
-                                {p.name}
-                            </Link>
-                        </th>)}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {users.map((u) =>
-                        <tr key={u.id}>
-                            <th key={u.id}>{u.name + ' ' + u.lastName}</th>
-                            {
-                                problems.map((p) =>
-                                    <td key={p.id}>
-                                        <span id={p.id}>{table[u.id][p.id].shortening}</span>
-                                    </td>
-                                )
-                            }
+                <div className={'contest-overview scrollbar'}>
+                    <table>
+                        <thead>
+                        <tr>
+                            <td key={'0'}/>
+                            {problems.map((p) => <th key={p.id}>
+                                <Link to={contestId + '/problems/' + p.id}>
+                                    {p.name}
+                                </Link>
+                            </th>)}
                         </tr>
-                    )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {users.map((u) =>
+                            <tr key={u.id}>
+                                <th key={u.id}>{u.name + ' ' + u.lastName}</th>
+                                {
+                                    problems.map((p) =>
+                                        <td key={p.id}>
+                                            <span id={p.id}
+                                                  title={table[u.id][p.id].shortening !== '-' ? (
+                                                      getTranslations({text: 'time'}) + ': ' + table[u.id][p.id].time + '\r\n'
+                                                      + getTranslations({text: 'memory'}) + ': ' + table[u.id][p.id].memory)
+                                                      : ''}>
+                                                {table[u.id][p.id].shortening}
+                                            </span>
+                                        </td>
+                                    )
+                                }
+                            </tr>
+                        )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         )
     }
