@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import * as actions from '../../redux/contest/actions'
-import SharedRightsDialog from '../ShareRigthsDialog'
+import SharedRightsDialog from '../common/ShareRigthsDialog'
 import Icon from '../common/Icon'
 import Popup from "../common/Popup";
 import ContestEditingForm from "./ContestEditingForm";

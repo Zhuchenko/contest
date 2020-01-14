@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import * as actions from '../../redux/problem/actions'
 import ProblemEditingForm from './ProblemEditingForm'
 import Popup from '../common/Popup'
-import SharedRightsDialog from '../ShareRigthsDialog'
+import SharedRightsDialog from '../common/ShareRigthsDialog'
 import Icon from "../common/Icon";
 
 class ProblemItem extends Component {

@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import * as actions from '../../redux/groupOfUsers/actions'
 import GroupEditingForm from './GroupEditingForm'
 import Popup from '../common/Popup'
-import SharedRightsDialog from '../ShareRigthsDialog'
+import SharedRightsDialog from '../common/ShareRigthsDialog'
 import Icon from '../common/Icon'
 
 //import './css/item.css'

@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import Popup from './common/Popup'
-import {getCoordinators} from '../services/userApi'
-import Icon from './common/Icon'
-import getTranslations from '../utilities/getTranslations'
+import Popup from './Popup'
+import {getCoordinators} from '../../services/userApi'
+import Icon from './Icon'
+import getTranslations from '../../utilities/getTranslations'
 import Select from 'react-select'
 
 //TODO: add translations to rights
