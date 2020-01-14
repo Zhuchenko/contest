@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import { TestResultSchema } from '../schemas'
 
-export const TestResult = mongoose.model('TestResult', TestResultSchema, 'testResults')
+export const TestResult = mongoose.model('TestResult', TestResultSchema, 'testResults');
 
 export const find = async (query) => {
     return TestResult.find(query, null, {lean: true}).exec();

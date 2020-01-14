@@ -53,8 +53,8 @@ class Contest extends Component {
                                         <td key={p.id}>
                                             <span id={p.id}
                                                   title={table[u.id][p.id].shortening !== '-' ? (
-                                                      getTranslations({text: 'time'}) + ': ' + table[u.id][p.id].time + '\r\n'
-                                                      + getTranslations({text: 'memory'}) + ': ' + table[u.id][p.id].memory)
+                                                      getTranslations({text: 'time'}) + ': ' + Math.round(table[u.id][p.id].time.$numberDecimal) + '\r\n'
+                                                      + getTranslations({text: 'memory'}) + ': ' + Math.round(table[u.id][p.id].memory.$numberDecimal))
                                                       : ''}>
                                                 {table[u.id][p.id].shortening}
                                             </span>

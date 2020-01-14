@@ -7,8 +7,8 @@ export const find = async (query) => {
     return Parcel.find(query, null, {lean: true}).exec();
 };
 
-export const findOne = async (query) => {
-    return Parcel.findOne(query, null, {lean: true});
+export const findOne = async (query, sort) => {
+    return Parcel.findOne(query, null, sort);
 };
 
 export const add = async (newInstance) => {

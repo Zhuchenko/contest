@@ -21,7 +21,7 @@ class Problem extends Component {
             languageExt: '',
             selectedId: 0,
             attachedFile: '',
-            results: '',
+            results: [],
             isParticipant: false
         }
     }
@@ -48,9 +48,9 @@ class Problem extends Component {
     }
 
     handleUploadFile = (files) => {
-        if (files && files[0] && files[0].size > 0) {
+        if (files && files[0]) {
             if (files[0].size > 0) {
-                this.setState({attachedFile: files[0], results: ''});
+                this.setState({attachedFile: files[0], results: []});
             } else {
                 toastr.error(getTranslations({text: 'error'}), getTranslations({text: 'size of file error message'}));
             }
@@ -67,7 +67,7 @@ class Problem extends Component {
                 contestId
             }, attachedFile)
                 .then(results => {
-                    this.setState(results)
+                    this.setState({results})
                 })
         } else {
         }
@@ -99,14 +99,13 @@ class Problem extends Component {
                         </div>
                         <button className={'button'}
                                 onClick={this.sendSolution}>{getTranslations({text: 'send'})}</button>
-                        {results ?
-                            results.map((result, index) =>
-                                <div key={index}>
-                                    {getTranslations({text: 'number'})}: {result.number} {result.shortening}
-                                    <br/>
-                                    {result.message}
-                                </div>)
-                            : null}
+                        {results.map((result, index) =>
+                            <div key={index}>
+                                {getTranslations({text: 'number'})}: {result.number} {result.shortening}
+                                <br/>
+                                {result.message}
+                            </div>)
+                        }
                     </div>
                     : null
                 }

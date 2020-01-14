@@ -179,7 +179,7 @@ export const getParcelById = async (id) => {
 };
 
 export const getParcel = async (query) => {
-    return removeUnderscore(await parcel.findOne(query));
+    return removeUnderscore(await parcel.findOne(query, { sort: { 'date' : -1 }}));
 };
 
 export const getAllParcels = async () => {
@@ -339,8 +339,8 @@ export const getAllTestResults = async () => {
     return removeUnderscoreFromArray(await testResult.find());
 };
 
-export const getTestResultsByParcel = async (id) => {
-    return removeUnderscoreFromArray(await testResult.find({parcel: id}));
+export const getTestResultsByParcel = async (parcelId) => {
+    return removeUnderscore(await testResult.findOne({parcelId}));
 };
 
 export const addTestResult = async (newInstance) => {
