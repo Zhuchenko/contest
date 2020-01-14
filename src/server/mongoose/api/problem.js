@@ -12,8 +12,6 @@ export const findOne = (query, select) => {
 };
 
 export const add = async (newInstance) => {
-    newInstance.numberOfTests = newInstance.tests.length;
-
     for (let i = 0, l = newInstance.tests.length; i < l; i++){
         newInstance.tests[i].number = i+1;
     }
@@ -23,8 +21,6 @@ export const add = async (newInstance) => {
 
 export const update = async (id, newState) => {
     if(newState.tests){
-        newState.numberOfTests = newState.tests.length;
-
         for (let i = 0, l = newState.tests.length; i < l; i++){
             newState.tests[i].number = i+1;
         }

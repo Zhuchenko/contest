@@ -140,10 +140,6 @@ export const ProblemSchema = new Schema({
         },
         description: String
     }],
-    numberOfTests: {
-        type: Number,
-        required: true
-    },
     sharedReadRights: [String],
     sharedWriteRights: [String]
 });
