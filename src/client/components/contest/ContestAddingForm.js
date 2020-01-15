@@ -140,9 +140,9 @@ class ContestAddingForm extends Component {
                         <span className={'dialog__line__label'}>{getTranslations({text: 'groups'})}: </span>
                         <Select isMulti isSearchable isClearable menuIsOpen value={
                             groups.filter(item => item.isSelected)
-                                .map((item) => ({id: item.id, value: item.name, label: item.name}))
+                                .map((item) => ({id: item.id, value: item.id, label: item.name}))
                         } options={
-                            groups.map(item => ({id: item.id, value: item.name, label: item.name}))
+                            groups.map(item => ({id: item.id, value: item.id, label: item.name}))
                         }
                             onChange={this.handleCheckedGroups}
                             className="r-select-container r-select-container--multi r-select-container--open-menu"
@@ -157,9 +157,9 @@ class ContestAddingForm extends Component {
                         <span className={'dialog__line__label'}>{getTranslations({text: 'sets'})}: </span>
                         <Select isMulti isSearchable isClearable menuIsOpen value={
                             sets.filter(item => item.isSelected)
-                                .map((item) => ({id: item.id, value: item.name, label: item.name}))
+                                .map((item) => ({id: item.id, value: item.id, label: item.name}))
                         } options={
-                            sets.map(item => ({id: item.id, value: item.name, label: item.name}))
+                            sets.map(item => ({id: item.id, value: item.id, label: item.name}))
                         }
                             onChange={this.handleCheckedSets}
                             className="r-select-container r-select-container--multi r-select-container--open-menu"

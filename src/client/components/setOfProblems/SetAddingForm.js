@@ -75,9 +75,9 @@ class SetAddingForm extends Component {
                    handleKeyPress={this.handleKeyPress}/>
                 <Select isMulti isSearchable isClearable menuIsOpen value={
                     problems.filter(item => item.isSelected)
-                        .map(item => ({id: item.id, value: item.name, label: item.name}))
+                        .map(item => ({id: item.id, value: item.id, label: item.name}))
                 } options={
-                    problems.map(item => ({id: item.id, value: item.name, label: item.name}))
+                    problems.map(item => ({id: item.id, value: item.id, label: item.name}))
                 }
                     onChange={this.handleChecked}
                     className="r-select-container r-select-container--multi r-select-container--open-menu"
