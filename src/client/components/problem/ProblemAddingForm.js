@@ -261,9 +261,9 @@ class ProblemAddingForm extends Component {
             </div>
             <div className={'dialog__button-panel'}>
                 <button className={'button'} disabled={isCreating}
-                        onClick={this.add}>{isCreating ? 'Wait' : getTranslations({text: 'add'})}</button>
+                        onClick={this.add}>{isCreating ? '...' : getTranslations({text: 'add'})}</button>
                 <button className={'button'} disabled={isCreating}
-                        onClick={closeProblemCreatingDialog}>{isCreating ? 'Wait' : getTranslations({text: 'cancel'})}</button>
+                        onClick={closeProblemCreatingDialog}>{isCreating ? '...' : getTranslations({text: 'cancel'})}</button>
             </div>
         </div>
     }

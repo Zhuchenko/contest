@@ -4,6 +4,7 @@ import {Redirect, Route, withRouter} from 'react-router-dom';
 import {ErrorPage} from './errorPages/'
 
 const Wrapper = ({errorCode, ComponentToRender, ...rest}) => {
+
     return <>
         {
             errorCode

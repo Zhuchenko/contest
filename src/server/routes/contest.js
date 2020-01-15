@@ -221,7 +221,6 @@ router.get('/:contestId', auth.required, async (req, res) => {
             return res.status(403).end();
         }
     } catch (error) {
-        console.log(error)
         return res.status(500).json({error});
     }
 });
@@ -331,7 +330,7 @@ router.get('/:contestId/problems/:problemId', auth.required, async (req, res) =>
         const hasReadRight = await db.hasReadRightForTheContest(id, contestId);
         const hasWriteRight = await db.hasWriteRightForTheContest(id, contestId);
 
-        const canView = rights.contest.view || id === contest.authorId || isParticipant || hasReadRight || hasWriteRight;
+        const canView = rights.contest.view || id === contest.authorId || (isParticipant && contest.isActive) || hasReadRight || hasWriteRight;
         if (canView) {
             const problem = await db.getProblemById(problemId);
 

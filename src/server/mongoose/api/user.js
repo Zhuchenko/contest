@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import { UserSchema } from '../schemas'
 
-export const User = mongoose.model('User', UserSchema, 'users')
+export const User = mongoose.model('User', UserSchema, 'users');
 
 export const find = (query, select) => {
     return User.find(query, null, {lean: true}).select(select);

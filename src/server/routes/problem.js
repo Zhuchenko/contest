@@ -102,8 +102,8 @@ router.post('/', auth.required, async (req, res) => {
     let rights;
     try {
         rights = await db.getUserRights(id);
-    } catch (e) {
-        return res.status(400).json({e});
+    } catch (error) {
+        return res.status(400).json({error: error.message});
     }
 
     try {
@@ -134,7 +134,7 @@ router.post('/', auth.required, async (req, res) => {
                 if (response.status === 200) {
                     return response.json();
                 } else {
-                    throw response.status
+                    return res.status(500).json({error: "Invalid generator or inputs"});
                 }
             });
 

@@ -55,10 +55,15 @@ router.post('/:userId', auth.required, async (req, res) => {
         return res.status(400).json({e});
     }
 
-    const oldUser = await getUserById(userId);
+    let oldUser;
+    try {
+        oldUser = await getUserById(userId);
+    } catch (e) {
+        return res.status(404).end();
+    }
     if (!oldUser) return res.status(404).end();
 
-    if (rights.users.edit || oldUser.id === id) {
+    if (rights.user.edit || oldUser.id === id) {
         if (!rights.user.changeRole) {
             await db.updateUser(userId, pickBy(user, isNotRole));
         } else {

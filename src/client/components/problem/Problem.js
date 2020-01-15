@@ -6,6 +6,8 @@ import marked from 'marked'
 import languageOptions from './languages'
 import {toastr} from "react-redux-toastr";
 import Icon from "../common/Icon";
+import {connect} from "react-redux";
+import * as actions from "../../redux/application/actions";
 
 class Problem extends Component {
     constructor(props) {
@@ -19,7 +21,6 @@ class Problem extends Component {
                 memory: 0
             },
             languageExt: '',
-            selectedId: 0,
             attachedFile: '',
             results: [],
             isParticipant: false
@@ -39,11 +40,17 @@ class Problem extends Component {
                         isParticipant
                     });
                 })
+                .catch((errorCode) => {
+                    this.props.setError({errorCode});
+                });
         } else {
             getProblem(problemId)
                 .then(({name, text, limitation}) => {
                     this.setState({name, text, limitation});
                 })
+                .catch((errorCode) => {
+                    this.props.setError({errorCode});
+                });
         }
     }
 
@@ -119,4 +126,4 @@ class Problem extends Component {
     }
 }
 
-export default Problem
+export default connect(null, actions)(Problem);

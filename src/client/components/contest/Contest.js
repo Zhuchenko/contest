@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
+import {connect} from "react-redux";
 import {getContestTableView} from '../../services/contestApi'
 import getTranslations from '../../utilities/getTranslations'
+import * as actions from "../../redux/application/actions";
 import {Link} from 'react-router-dom'
 
 import './css/contest-overview.css'
@@ -71,4 +73,4 @@ class Contest extends Component {
     }
 }
 
-export default Contest;
+export default connect(null, actions)(Contest);
