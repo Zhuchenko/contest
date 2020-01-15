@@ -9,7 +9,7 @@ import {getGroupsForContestCreating, getSetsForContestCreating} from '../../serv
 import getTranslations from '../../utilities/getTranslations'
 
 import 'react-datepicker/dist/react-datepicker.css'
-
+import '../../main.css'
 
 const STARTING_DATE = new Date();
 

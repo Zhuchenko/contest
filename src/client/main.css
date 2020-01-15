@@ -201,6 +201,10 @@ select {
     margin: 2em 0 0.5em 0;
 }
 
+.react-datepicker-popper {
+    z-index: 100 !important;
+}
+
 .wrapper {
     margin: 1.9rem 5% 0 5%;
     display: flex;
