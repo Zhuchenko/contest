@@ -184,7 +184,11 @@ router.post('/:problemId', auth.required, async (req, res) => {
     try {
         const hasWriteRight = await db.hasWriteRightForTheProblem(id, problemId);
 
-        const canEdit = rights.problem.edit || id === problem.authorId || hasWriteRight;
+        const canEdit = rights.problem.edit || id === oldProblem.authorId || hasWriteRight;
+        console.log(id)
+        console.log(problem.authorId)
+        console.log(id === problem.authorId)
+        console.log(canEdit)
         if (canEdit) {
             await db.updateProblem(problemId, problem);
             return res.status(200).end();
