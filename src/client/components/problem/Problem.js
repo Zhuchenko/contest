@@ -99,9 +99,14 @@ class Problem extends Component {
                         </div>
                         <button className={'button'}
                                 onClick={this.sendSolution}>{getTranslations({text: 'send'})}</button>
+                    </div>
+                    : null
+                }
+                {isParticipant ?
+                    <div className={'wrapper__line wrapper__line__list'}>
                         {results.map((result, index) =>
                             <div key={index}>
-                                {getTranslations({text: 'number'})}: {result.number} {result.shortening}
+                                <label>{getTranslations({text: 'number'})} {result.number}:</label> {result.shortening}
                                 <br/>
                                 {result.message}
                             </div>)

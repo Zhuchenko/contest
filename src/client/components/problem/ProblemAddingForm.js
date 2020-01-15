@@ -179,7 +179,13 @@ class ProblemAddingForm extends Component {
             </div>
             <div className={'dialog__line'}>
                 <span className={'dialog__line__label'}>{getTranslations({text: 'languages'})}: </span>
-                <Select onChange={this.handleChangeLanguage} options={
+                <Select onChange={this.handleChangeLanguage} defaultValue={
+                        {
+                            key: languageOptions[0].id,
+                            value: 0,
+                            label: languageOptions[0].text
+                        }
+                    } options={
                         languageOptions.map((lang, i) => ({
                             key: lang.id,
                             value: i,
