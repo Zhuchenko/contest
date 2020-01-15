@@ -114,7 +114,7 @@ router.get('/share-rights/coordinators', auth.required, async (req, res) => {
     const isCoordinator = await db.isCoordinator(id);
 
     if (rights.user.view || isCoordinator) {
-        const coordinators = await db.getAllCoordinators();
+        const coordinators = (await db.getAllCoordinators()).filter(c => c.id.toString() !== id.toString());
         return res.json({coordinators})
     } else {
         return res.status(403).end();
