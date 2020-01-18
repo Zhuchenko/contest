@@ -15,7 +15,7 @@
     border-bottom: var(--primary-color) solid 0.1em;
 }
 
-.list__item a {
+.list__item a, .list__item span {
     min-width: 10em;
     padding: 0.1em;
 }
