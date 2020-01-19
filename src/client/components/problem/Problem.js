@@ -86,7 +86,7 @@ class Problem extends Component {
         return (
             <div className={'wrapper'}>
                 <div className={'wrapper__header'}>{name}</div>
-                <div dangerouslySetInnerHTML={{__html: marked(text)}}/>
+                <div id={'problem-description'} dangerouslySetInnerHTML={{__html: marked(text)}}/>
                 <div className={'wrapper__line wrapper__line__list'}>
                     <label>{getTranslations({text: 'limitations'})}:</label>
                     <div>{getTranslations({text: 'time'})}: {time}</div>

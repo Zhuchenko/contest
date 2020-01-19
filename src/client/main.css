@@ -276,3 +276,16 @@ select {
 .r-select-container--open-menu .r-select__indicators {
     display: none;
 }
+
+#problem-description table {
+    border-collapse: collapse;
+}
+#problem-description table thead tr {
+    border-bottom: 1px solid var(--primary-color);
+}
+#problem-description table td, #problem-description  table th {
+    padding: 0.5em;
+}
+#problem-description table td:first-child, #problem-description  table th:first-child {
+    border-right: 1px solid var(--primary-color);
+}
