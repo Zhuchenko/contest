@@ -26,7 +26,7 @@
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.15",
     "marked": "0.8.0",
-    "minimist": "1.2.0",
+    "minimist": "1.2.5",
     "mongodb": "3.3.5",
     "mongoose": "5.7.13",
     "node-fetch": "2.5.0",
